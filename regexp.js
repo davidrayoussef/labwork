@@ -22,7 +22,9 @@ var htmltagRegExp = /^<([a-z]+)([^>]+)*(?:>(.*)<\/\1>|\s+\/>)$/;
 
 
 
+// CAPTURE WHATS IN OPENING TAG TO USE FOR CLOSING TAG REGEXP
+var re = /<(\w+)>(.+)<\/\1>/;
+
 
 // REGEX SEARCH AND REPLACE USING CAPTURE
-
 '<a> <bbb>'.replace(/<(.*?)>/g, '[$1]');
