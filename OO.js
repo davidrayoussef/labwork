@@ -277,3 +277,67 @@ function Employee(firstName, position) {
   Person.call(this, firstName);
   this.position = position;
 }
+
+
+// Recreating 'new' keyword...
+function Person(saying, strength) {
+  this.saying = saying;
+  this.strength = strength;
+}
+
+Person.prototype.talk = function() {
+  console.log('I will say, ' + this.saying + ' and I am ' + this.strength);
+}
+
+function NEW(constructor) {
+  var obj = {};
+  var args = [].slice.call(arguments, 1);
+  Object.setPrototypeOf(obj, constructor.prototype);
+  constructor.apply(obj, args);
+  return obj;
+}
+
+var arnold = NEW(Person, "I'll be back", "very strong");
+
+arnold.talk();
+
+
+
+// Use Object.defineProperty so that changes to instances carry over to other combined properties eg fullName
+
+function NamedOne(first, last) {
+    this.firstName = first;
+    this.lastName = last;
+
+  Object.defineProperty(this, 'fullName', {
+    get: function() { return this.firstName + ' ' + this.lastName; },
+    set: function(newValue) {
+      if((/\s/).test(newValue)) {
+        this.firstName = newValue.split(' ')[0],
+        this.lastName = newValue.split(' ')[1]
+      }
+    }
+  });
+}
+
+var named = new NamedOne('john', 'doh');
+named.firstName = 'jane';
+named.fullName = 'new name';
+named.fullName;
+
+
+
+// Use Object.defineProperty to create immutable properties
+
+function OnceNamedOne(first, last) {
+    this.firstName = first;
+    this.lastName = last;
+    this.fullName = this.firstName + ' ' + this.lastName;
+
+  Object.defineProperties(this, {
+    firstName: { writable: false },
+    lastName: { writable: false },
+    fullName: { writable: false }
+  });
+}
+// or just Object.freeze(this)

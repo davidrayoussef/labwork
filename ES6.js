@@ -22,24 +22,6 @@ const partiallyAppliedMapWith = ____(mapWith, square);
 
 console.log(partiallyAppliedMapWith([1,2,3]));
 
-// making it work with methods by passing the this property
-
-const ____ = (fn, x) => function(y) { 
-    fn.call(this, x, y);
-};
-
-// making it so that we can pass it a function that takes as many arguments as we like
-
-const ____ = (fn, x) => function(...remainingArgs) {
-  return fn.call(this, x, ...remainingArgs);
-};
-
-const add = (verb, a, b, c) => `The ${verb} of ${a} and ${b} and ${c} is ${a + b + c}`
-
-const summer = ____(add, 'sum');
-
-console.log(summer(2, 3, 5));
-
 
 
 // FILL ARRAY WITH 26 LETTERS OF ALPHABET
@@ -47,7 +29,8 @@ console.log(summer(2, 3, 5));
 var alphabetFill = new Array(26).fill().map((_, i) => String.fromCharCode(65 + i));
 
 
-// MAYBE FUNCTION - DECORATES FUNCTION TO BE NULL SAFGE
+
+// MAYBE FUNCTION - DECORATES FUNCTION TO BE NULL SAFE
 const maybe = function(fn) {
 	return function(input) {
 		if(!input) return;
@@ -108,27 +91,28 @@ console.log(tail); // [2,3,4,5];
 
 var complicatedObj = {
 	arrayProp: [
-		'Zapp',
-		{ second: 'Brannigan' }
+		'Eddard',
+		{ second: 'Stark' }
 	]
 };
 var { arrayProp: [first, { second }] } = complicatedObj;
-console.log(first); // 'Zapp'
-console.log(second); // 'Brannigan'
+console.log(first); // 'Eddard'
+console.log(second); // 'Stark'
 
 
 
 // SPREAD OPERATOR
 
-function foo(x,y,z) {
+function foo(x, y, z) {
 	console.log(x, y, z);
 }
-foo( ...[1,2,3] ); // 1 2 3
+foo( ...[1, 2, 3] ); // 1 2 3
 
 
-var a = [2,3,4];
+
+var a = [2, 3, 4];
 var b = [1, ...a, 5];
-console.log(b) // [1,2,3,4,5]
+console.log(b) // [1, 2, 3, 4, 5]
 
 
 
@@ -146,7 +130,7 @@ function foo(...allargs) { // over here it gathers the parameters
 	console.log(...allargs); // over here it spreads the arguments
 }
 
-foo(1,2,3,4,5); // 1 2 3 4 5
+foo(1, 2, 3, 4, 5); // 1 2 3 4 5
 
 
 
@@ -154,13 +138,12 @@ foo(1,2,3,4,5); // 1 2 3 4 5
 
 Array.from(new Set([1, 2, 2, 3]));
 
-// It comes in handy when dealing with the infamous NodeList returned by document.querySelectorAll.
+// Useful when dealing with "NodeList" returned by document.querySelectorAll.
 
 var divs = document.querySelectorAll('div');
 
-Array.from(divs).forEach(function(node) {
-	console.log(node);
-});
+Array.from(divs).forEach(node => console.log(node));
+
 
 
 // SETS
@@ -171,6 +154,7 @@ function uniq(a) {
     return !seen.has(x) && seen.add(x);
   });
 }
+
 
 
 // GENERATORS
@@ -186,8 +170,6 @@ var sq = function* (initialValue) {
 };
 
 var sequence = sq(20);
-
-
 
 
 
