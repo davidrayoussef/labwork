@@ -2,11 +2,11 @@
 function fibonacci(n) {
   var fibo = [0,1];
 
-  if(n < 2) {
+  if (n < 2) {
     return 1;
   }
 
-  for(var i = 2; i <= n; i++) {
+  for (var i = 2; i <= n; i++) {
     fibo[i] = fibo[i-1] + fibo[i-2];
     console.log(fibo);
   }
@@ -302,3 +302,167 @@ var hanoi = function(disks) {
 };
 
 hanoi(5);
+
+
+
+// Find all permutations of characters in an array
+// This solution also gives you repeated characters
+// For instance, ['a', 'b', 'c'] gives you 'aaa', 'bbb', 'ccc' among results
+let permute = (arr, str = '', perms = []) => {
+  if (str.length == arr.length) perms.push(str);
+  else {
+    for (item of arr) {
+      permute(arr, str + item, perms);
+    }
+  }
+  return perms;
+}
+permute(['a', 'b']); //=> ["aa", "ab", "ba", "bb"]
+
+
+
+// A pangram is a sentence that contains every single letter of the alphabet at least once.
+function isPangram(string){
+  return /abcdefghijklmnopqrstuvwxyz/
+    .test(string
+      .toLowerCase()
+      .match(/[a-z]/g)
+      .sort()
+      .filter((v,i,a) => a.indexOf(v) === i)
+      .join('')
+    );
+}
+
+isPangram('The quick brown fox jumps over the lazy dog.'); //=> true
+
+
+
+// You are given an array strarr of strings and an integer k.
+// Your task is to return the first longest string consisting of k consecutive strings taken in the array.
+function longestConsecutiveStrings(strarr, k) {
+  if (k <= 0 || k > strarr.length) return '';
+
+  var longest = strarr.slice(0, k).join('');
+  var temp = '';
+
+  for (var i = 1; i < strarr.length; i++) {
+    temp = strarr.slice(i, i + k).join('');
+    if (temp.length > longest.length) {
+      longest = temp;
+    }
+  }
+  return longest;
+}
+longestConsecutiveStrings(['itvayloxrp','wkppqsztdkmvcuwvereiupccauycnjutlv','vweqilsfytihvrzlaodfixoyxvyuyvgpck'], 2);
+
+
+
+// Cut the string into chunks of size sz (ignore the last chunk if its size is less than sz).
+// If a chunk represents an integer such as the sum of the cubes of its digits is divisible by 2, reverse it;
+// otherwise rotate it to the left by one position. Put together these modified chunks and return the result as a string.
+function reverseOrRotate(str, sz) {
+  if (sz === 0 || sz >= str.length) return '';
+
+  let chunks = new RegExp('.{' + sz + '}', 'g');
+  let reverse = s => s.split('').reverse().join('');
+  let rotate = s => s.slice(1) + s.slice(0, 1);
+  let sumCubes = s => s.split('').reduce((acc, curr) => acc + (+curr * +curr * +curr), 0);
+
+  return str
+    .match(chunks)
+    .map(chunk => sumCubes(chunk) % 2 === 0 ? reverse(chunk) : rotate(chunk))
+    .join('');
+}
+reverseOrRotate('992845886559874108', 5);
+
+// Use RegExp to grab chunks; better than using a loop. - D.R.
+var chunks = '992845886559874108'.match(/.{3}/g); //=> ["992", "845", "886", "559", "874", "108"]
+
+
+
+// Merge items from two arrays together
+var list1 = [1,3,5,7,9];
+var list2 = [2,4,6,8];
+
+function merge(list1, list2) {
+  var merged = [];
+
+  while (list1.length > 0 || list2.length > 0) {
+    if (list1.length) {
+      merged.push(list1.shift());
+    }
+    if (list2.length) {
+      merged.push(list2.shift());
+    }
+
+  }
+  return merged;
+}
+
+merge(list1, list2);
+
+// ORRRRR
+
+function merge(list1, list2) {
+  return list1.reduce((acc, curr, i) => {
+    return (acc.splice(i * 2, 0, curr), acc);
+  }, list2);
+}
+merge(list1, list2);
+
+
+
+// Hash Tables: Ransom Note
+// Given two arrays of words, find out if you can print the message in the ransom array
+// using only the words from the magazine array. Print 'Yes' or 'No'
+
+// Will fail if there's more than one occurence of a word in the ransom array,
+// but only one in the magazine array, so check for that. -D.R.
+function hashTables() {
+  var magazine = [ 'give', 'me', 'one', 'grand', 'today', 'night' ];
+  var ransom = [ 'give', 'one', 'grand', 'today', 'today', 'zombies' ];
+
+  var result = true;
+
+  // Tally up word counts in magazine.
+  var magazineHash = magazine.reduce((obj, item) => {
+    obj[item] ? obj[item]++ : obj[item] = 1;
+    return obj;
+  }, {});
+
+  // Iterate through ransom array using its words to check magazine hash table...
+  // If ransom word is not found in magazine hash, result is false; i.e. the ransom
+  // message can't be made from magazine words.
+  // If ransom word is found, decrement the tally count. This checks for dupes,
+  // because once all matches decrement to zero, if there's a dupe word,
+  // it will trigger the if condition and result will become false;
+  ransom.map(ransomItem => {
+    if (magazineHash[ransomItem] === 0) result = false;
+    magazineHash[ransomItem] ? magazineHash[ransomItem]-- : result = false;
+  });
+
+  console.log(result ? 'Yes' : 'No');
+}
+
+hashTables();
+
+
+
+// Write a function, persistence, that takes in a positive parameter num and
+// returns its multiplicative persistence, which is the number of times you
+// must multiply the digits in num until you reach a single digit.
+function persistence(num) {
+  if (num < 10) return 0;
+  var count = 0;
+
+  const digitize = num => [num].join(',').split('').map(Number);
+  const multiplyAndCount = nums => nums.reduce((acc, curr) => acc * curr);
+
+  while (num > 9) {
+    count++;
+    num = multiplyAndCount(digitize(num));
+  }
+
+  return count;
+}
+persistence(39); //=> 3
