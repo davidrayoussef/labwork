@@ -1808,3 +1808,22 @@ function createSSP(password){
   return password;
 }
 createSSP('haxorpassword'); //=> 5@*0rp@$$w0rd
+
+
+
+// Find most frequent string in array
+// This solution doesn't work if there's a tie
+var arr = ['apples', 'oranges', 'bananas', 'oranges', 'bananas', 'apples', 'oranges', 'bananas', 'apples', 'apples'];
+
+function mostFrequentString(arr) {
+  var tally = arr.reduce((obj, item) => {
+    !obj[item] ? obj[item] = 1 : obj[item]++;
+    return obj;
+  }, {});
+
+  return Object.keys(tally).reduce((acc, curr) => {
+    return tally[acc] > tally[curr] ? acc : curr;
+  });
+}
+
+mostFrequentString(arr);
