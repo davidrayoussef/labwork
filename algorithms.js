@@ -68,12 +68,24 @@ function fibonacci(n) {
 // FIBONACCI USING ARRAY.APPLY
 
 function fibo(n) {
-  return Array.apply(0, Array(n)).reduce(function(x,y,z) {
-    return x.concat((z < 2) ? z : x[z-1] + x[z-2]);
+  return Array.apply(0, Array(n)).reduce(function(acc, curr, i) {
+    return acc.concat((i < 2) ? i : acc[i - 1] + acc[i - 2]);
   }, []);
 }
 
 fibo(10);
+
+
+
+function factorialize(num) {
+  var result = 1;
+  for (var i = 1; i <= num; i++) {
+    result *= i;
+  }
+  return result;
+}
+
+factorialize(5);
 
 
 
@@ -322,15 +334,15 @@ permute(['a', 'b']); //=> ["aa", "ab", "ba", "bb"]
 
 
 // A pangram is a sentence that contains every single letter of the alphabet at least once.
-function isPangram(string){
-  return /abcdefghijklmnopqrstuvwxyz/
-    .test(string
-      .toLowerCase()
-      .match(/[a-z]/g)
-      .sort()
-      .filter((v,i,a) => a.indexOf(v) === i)
-      .join('')
-    );
+function isPangram(str) {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  return str
+    .split('')
+    .map(v => v.toLowerCase())
+    .filter(v => /[a-z]/.test(v))
+    .filter((v,i,a) => a.indexOf(v) === i)
+    .sort()
+    .join('') === alphabet ? 'pangram' : 'not pangram';
 }
 
 isPangram('The quick brown fox jumps over the lazy dog.'); //=> true
@@ -466,3 +478,98 @@ function persistence(num) {
   return count;
 }
 persistence(39); //=> 3
+
+
+
+function findLongestWord(str) {
+  return str.split(' ').reduce(function(longestLength, curr) {
+    if (curr.length > longestLength) longestLength = curr.length;
+    return longestLength;
+  }, 0);
+}
+
+findLongestWord("The quick brown fox jumped over the lazy dog");
+
+
+
+// Return an array consisting of the largest number from each provided sub-array.
+function largestOfFour(arr) {
+  return arr.map(function(subArr) {
+    return subArr.sort(function(a,b) {
+      return b - a;
+    })[0];
+  });
+}
+
+largestOfFour([[4, 5, 1, 3], [13, 27, 18, 26], [32, 35, 37, 39], [1000, 1001, 857, 1]]);
+
+
+
+// Check if a string ends with the given target string without using .endsWith().
+function confirmEnding(str, target) {
+  var lastIndex = str.lastIndexOf(target);
+  return lastIndex !== -1 && lastIndex === str.length - target.length;
+}
+
+confirmEnding("Connor", "n"); //=> false
+
+
+// USE FOR CHUNKIFY
+function chunkArrayInGroups(arr, size) {
+  var result = [];
+  for (var i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+  return result;
+}
+
+chunkArrayInGroups([0, 1, 2, 3, 4, 5], 2);
+
+
+
+// Return true if the string in the first element of the array contains
+// all of the letters of the string in the second element of the array.
+function mutation(arr) {
+  var arr1 = arr[0].toLowerCase().split('');
+  var arr2 = arr[1].toLowerCase().split('');
+
+  return arr2.every(function(v) {
+    return arr1.indexOf(v) !== -1;
+  });
+}
+
+mutation(["hello", "hey"]);
+
+
+
+// Remove all elements from the initial array that are of the same value as these arguments.
+function destroyer(arr) {
+  var args = Array.apply(null, arguments).slice(1);
+  var reg = new RegExp(args.join('|'));
+
+  return arr.filter(function(v) {
+    return !reg.test(v);
+  });
+}
+
+destroyer([1, 2, 3, 1, 2, 3], 2, 3);
+
+
+
+// Write a function which takes a ROT13 encoded string as input and returns a decoded string.
+//A common modern use is the ROT13 cipher, where the values of the letters are shifted by 13 places. Thus 'A' ↔ 'N', 'B' ↔ 'O' and so on.
+// Do not transform any non-alphabetic character but do pass them on.
+function rot13(str) { // LBH QVQ VG!
+
+  var chars = Array.apply(null, Array(26)).map(function(v,i) {
+    return String.fromCharCode(i + 65);
+  });
+
+  chars = chars.concat(chars);
+
+  return str.split('').map(function(v) {
+    return !v.match(/[A-Z]/g) ? v : chars[chars.indexOf(v) + 13];
+  }).join('');
+}
+
+rot13("SERR PBQR PNZC");

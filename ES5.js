@@ -1,39 +1,3 @@
-// Converts array of string to array of integers.
-var parseNumbers = function(intStrs) {
-  return intStrs.map(function(number) {
-    if(number=="0") { return 0; }
-    else return parseInt(number);
-  });
-}
-
-
-function disemvowel(str) { return str.replace(/[aeiou]/gi, ''); };
-
-disemvowel("This website is for losers LOL!");
-
-
-
-function sumDigits(number) {
-  return Math.abs(number).toString().split('').reduce(function(a, b) {
-    return +a + +b;
-  }, 0);
-}
-
-sumDigits(-32);
-
-
-
-function titleCasePhrase(str) {
-  return str.split(' ').map(function(word) {
-    return word.slice(0,1).toUpperCase() + word.slice(1).toLowerCase();
-  }).join(' ');
-}
-
-var phrase = 'YIN YANG';
-
-titleCasePhrase(phrase);
-
-
 
 // Checks if a string ends in a substring, using the RegExp Constructor
 function solution(str, ending) {
@@ -1299,6 +1263,26 @@ function diamond(n) {
 
 diamond(10);
 
+
+// Alternative: Building top, then reversing it to construct bottom
+function diamond(n) {
+  if (n < 3 || n % 2 === 0) return null;
+  var str = '';
+
+  for (var i = 1; i <= n; i += 2) {
+    for (var space = 0; space < (n - i) / 2; space++ ) {
+      str += ' ';
+    }
+    for (var star = 0; star < i; star++) {
+      str += '*';
+    }
+    str += i === n ? '' : '\n';
+  }
+
+  var reverseStr = str.split('\n').reverse().slice(1).join('\n');
+
+  return str + '\n' + reverseStr + '\n';
+}
 
 
 
