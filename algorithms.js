@@ -317,38 +317,6 @@ hanoi(5);
 
 
 
-// Find all permutations of characters in an array
-// This solution also gives you repeated characters
-// For instance, ['a', 'b', 'c'] gives you 'aaa', 'bbb', 'ccc' among results
-let permute = (arr, str = '', perms = []) => {
-  if (str.length == arr.length) perms.push(str);
-  else {
-    for (item of arr) {
-      permute(arr, str + item, perms);
-    }
-  }
-  return perms;
-}
-permute(['a', 'b']); //=> ["aa", "ab", "ba", "bb"]
-
-
-
-// A pangram is a sentence that contains every single letter of the alphabet at least once.
-function isPangram(str) {
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-  return str
-    .split('')
-    .map(v => v.toLowerCase())
-    .filter(v => /[a-z]/.test(v))
-    .filter((v,i,a) => a.indexOf(v) === i)
-    .sort()
-    .join('') === alphabet ? 'pangram' : 'not pangram';
-}
-
-isPangram('The quick brown fox jumps over the lazy dog.'); //=> true
-
-
-
 // You are given an array strarr of strings and an integer k.
 // Your task is to return the first longest string consisting of k consecutive strings taken in the array.
 function longestConsecutiveStrings(strarr, k) {
@@ -366,29 +334,6 @@ function longestConsecutiveStrings(strarr, k) {
   return longest;
 }
 longestConsecutiveStrings(['itvayloxrp','wkppqsztdkmvcuwvereiupccauycnjutlv','vweqilsfytihvrzlaodfixoyxvyuyvgpck'], 2);
-
-
-
-// Cut the string into chunks of size sz (ignore the last chunk if its size is less than sz).
-// If a chunk represents an integer such as the sum of the cubes of its digits is divisible by 2, reverse it;
-// otherwise rotate it to the left by one position. Put together these modified chunks and return the result as a string.
-function reverseOrRotate(str, sz) {
-  if (sz === 0 || sz >= str.length) return '';
-
-  let chunks = new RegExp('.{' + sz + '}', 'g');
-  let reverse = s => s.split('').reverse().join('');
-  let rotate = s => s.slice(1) + s.slice(0, 1);
-  let sumCubes = s => s.split('').reduce((acc, curr) => acc + (+curr * +curr * +curr), 0);
-
-  return str
-    .match(chunks)
-    .map(chunk => sumCubes(chunk) % 2 === 0 ? reverse(chunk) : rotate(chunk))
-    .join('');
-}
-reverseOrRotate('992845886559874108', 5);
-
-// Use RegExp to grab chunks; better than using a loop. - D.R.
-var chunks = '992845886559874108'.match(/.{3}/g); //=> ["992", "845", "886", "559", "874", "108"]
 
 
 
@@ -556,20 +501,124 @@ destroyer([1, 2, 3, 1, 2, 3], 2, 3);
 
 
 
-// Write a function which takes a ROT13 encoded string as input and returns a decoded string.
-//A common modern use is the ROT13 cipher, where the values of the letters are shifted by 13 places. Thus 'A' ↔ 'N', 'B' ↔ 'O' and so on.
-// Do not transform any non-alphabetic character but do pass them on.
-function rot13(str) { // LBH QVQ VG!
 
-  var chars = Array.apply(null, Array(26)).map(function(v,i) {
-    return String.fromCharCode(i + 65);
-  });
 
-  chars = chars.concat(chars);
 
-  return str.split('').map(function(v) {
-    return !v.match(/[A-Z]/g) ? v : chars[chars.indexOf(v) + 13];
-  }).join('');
+
+
+// Compare two arrays and return a new array with any items only found in one of the two given arrays, but not both.
+// In other words, return the symmetric difference of the two arrays.
+function diffArray(arr1, arr2) {
+  var result = [];
+  for (var i = 0; i < arr1.length; i++) {
+    if (arr2.indexOf(arr1[i]) == -1) {
+      result.push(arr1[i]);
+    }
+  }
+  for (var j = 0; j < arr2.length; j++) {
+    if (arr1.indexOf(arr2[j]) == -1) {
+      result.push(arr2[j]);
+    }
+  }
+  return result;
 }
 
-rot13("SERR PBQR PNZC");
+diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5]);
+
+
+
+// add binary without converting
+function addBinary(a,b) {
+  a = [...a];
+  b = [...b];
+  let c = 0;
+  let result = '';
+
+  while (a.length || b.length || c) {
+    c += ~~a.pop() + ~~b.pop();
+    result = c % 2 + result;
+    c = c < 2 ? 0 : 1;
+  }
+
+  return result.replace(/^0+/g, '') || '0';
+}
+
+
+
+/* Should return ᐃ type:
+  0 : if ᐃ cannot be made with given sides
+  1 : acute ᐃ
+  2 : right ᐃ
+  3 : obtuse ᐃ
+*/
+function triangleType(a, b, c) {
+  const a1 = +(Math.acos((b * b + c * c - a * a) / (2 * b * c)) * 180 / Math.PI).toFixed(2);
+  const a2 = +(Math.acos((c * c + a * a - b * b) / (2 * c * a)) * 180 / Math.PI).toFixed(2);
+  const a3 = +(180 - a1 - a2).toFixed(2);
+
+  if (a1 === 180 || a2 === 180 || a3 === 180) return 0;
+  else if (a1 < 90 && a2 < 90 && a3 < 90) return 1;
+  else if (a1 === 90 || a2 === 90 || a3 === 90 ) return 2;
+  else if (a1 > 90 || a2 > 90 || a3 > 90 ) return 3;
+  return 0;
+
+}
+
+
+
+function range(from, to) {
+  return Array.from({length: to - from + 1}, (_,i) => from + i);
+}
+
+range(5, 20);
+
+
+
+// Given the string representations of two integers, return the string representation of
+// the sum of those integers.
+
+// Big numbers in JavaScript are represented by scientific notation, so this must be solved
+// using single-digit addition
+
+function addBigNumbers(a, b) {
+  a = [...a].map(Number);
+  b = [...b].map(Number);
+  let c = 0;
+  let result = '';
+
+  while (a.length || b.length || c) {
+    // double tilde operator returns a zero if value is NaN
+    // add right-most digit to right-most digit to remainder if there is one
+    c += ~~a.pop() + ~~b.pop();
+    // then concatenate that to the string result, using remainder of base 10 to exclude carryover
+    result = c % 10 + result;
+    // if the current total was less than 10, then carryover becomes 0, otherwise carry over a 1
+    c = c < 10 ? 0 : 1;
+  }
+
+  return result.replace(/^0/, '');
+};
+
+addBigNumbers('752856458734565548245482', '2456656775795255654375915'); //=> "3209513234529821202621397"
+
+
+
+// Use one while loop instead of two for loops to search for the result of a calculation, but array must be sorted
+function twoSum(numbers, target) {
+  let i = 0;
+  let j = numbers.length - 1;
+  let x;
+
+  while (i < j) {
+    x = numbers[i] + numbers[j];
+    if (x < target) {
+      i++;
+    }
+    else if (x > target) {
+      j--;
+    }
+    else return [i + 1, j + 1];
+  }
+}
+
+twoSum([2,3,4], 6);

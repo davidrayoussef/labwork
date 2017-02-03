@@ -21,7 +21,7 @@ console.log(odds); //=> [1, 3, 5]
 
 // Returns missing number by subtracting the sum of numbers in
 // order in the complete set of numbers
-function getMissingNumber(arr){
+function getMissingNumber(arr) {
   return 45 - arr.reduce(function(a, b) {
     return a + b;
   })
@@ -46,21 +46,6 @@ function missingNumber(arr) {
 }
 
 missingNumber([1,2,3,4,5,6,8,9,10])
-
-
-
-var numberOfOccurrences = function(search, arr) {
-  return arr.filter(function(number) {
-    return search === number;
-  }).length;
-}
-
-var arr = [0,0,2,2,2,4,0,'a','b','a',0];
-
-numberOfOccurrences(0, arr); //=> 4
-numberOfOccurrences(4, arr); //=> 1
-numberOfOccurrences(2, arr); //=> 3
-numberOfOccurrences('a', arr); //=> 2
 
 
 
@@ -263,17 +248,6 @@ function mapWith(fn) {
 
 
 
-// Calls a function only once
-function once(fn) {
-  var done = false;
-
-  return function() {
-    return done ? void 0 : ((done = true), fn.apply(this, arguments));
-  }
-}
-
-
-
 var Singleton = function(){
   if (Singleton.instance) {
     return Singleton.instance;
@@ -322,12 +296,12 @@ function numToIp(number) {
 
 
 function rgbToHex(r, g, b){
-  if(r <= 0) r = '00';
-  else if(r > 255) r = 'FF';
-  if(g <= 0) g = '00';
-  else if(g > 255) g = 'FF';
-  if(b <= 0) b = '00';
-  else if(b > 255) b = 'FF';
+  if (r <= 0) r = '00';
+  else if (r > 255) r = 'FF';
+  if (g <= 0) g = '00';
+  else if (g > 255) g = 'FF';
+  if (b <= 0) b = '00';
+  else if (b > 255) b = 'FF';
   return (r.toString(16) + g.toString(16) + b.toString(16)).toUpperCase();
 }
 
@@ -462,26 +436,6 @@ function isValidIP(str) {
 }
 
 
-function christmasTree(height) {
-  var tree = '';
-
-  for (var i = height; i > 0; i--) {
-    tree = repeat(height - i, ' ') + repeat(i * 2 - 1, '*') + repeat(height - i, ' ') + newLine(i) + tree;
-  }
-
-  function repeat(count, el) {
-    return new Array(count + 1).join(el);
-  }
-
-  function newLine(line) {
-    return line == height ? '' : '\n';
-  }
-  return tree;
-}
-
-christmasTree(3)
-
-
 
 function minimumSum(values, n) {
   return values.sort(function(a,b) {
@@ -602,7 +556,7 @@ palindrome("A man, a plan, a canal: Panama");
 function palindrome(string) {
   var s = string.toLowerCase().replace(/[^a-z0-9]+/g, '');
   return s == s.split('').reduce(function(str, value) {
-    return value+str;
+    return value + str;
   }, '');
 }
 
@@ -629,7 +583,7 @@ wordCount('one two three words');
 
 // BUILD OBJECT OUT OF ARRAY
 
-var obj = arr.reduce(function (newObj, item) {
+var obj = arr.reduce(function(newObj, item) {
   newObj[item] = item;
   return newObj;
 }, {});
@@ -712,7 +666,16 @@ romanToArabic('XXI');
 
 
 
-// remove random elements from page on clicks
+// remove random divs from page every half second
+setInterval(function() {
+  var divs = document.getElementsByTagName('div');
+  var randomDiv = divs[Math.floor(Math.random() * divs.length)];
+  console.log(randomDiv)
+  randomDiv.parentNode.removeChild(randomDiv);
+}, 500);
+
+
+// remove random divs from page on clicks
 
 document.addEventListener('click', function(evt) {
   var divs = document.getElementsByTagName('div');
@@ -861,48 +824,19 @@ assert(eval("5 + 5") === 10, "5 and 5 is 10");
 
 
 
-function dupeNumber(arr) {
-	return arr.filter(function(v,i,a) {
-		if(v==(a[i+1])) {
-				return v;
-		}
-	}).pop();
-}
+function divisors(num) {
+  var res = [];
 
-var nums = [1,2,3,4,5,6,7,7,8,9,10];
-
-dupeNumber(nums);
-
-
-
-function divisors(n) {
-  var divs = [];
-  for (var i = 2; i < n; i++) {
-    if((n/i) == ~~(n/i)) {
-        divs.push(n/i);
-    }
-  }
-  return divs.length > 0 ? divs.sort(function(a,b) {
-    return a - b;
-  }) : n + ' is prime';
-}
-
-divisors(12);
-
-//ORRRRR
-
-function divisors(integer) {
-  for (var res = [], i = 2; i < integer - 1; i++) {
-    if (integer % i == 0) res.push(i)
+  for (var i = 2; i < num - 1; i++) {
+    if (num % i == 0) res.push(i);
   }
 
-  return res.length ? res : integer + ' is prime'
+  return res.length ? res : num + ' is prime';
 }
 
 
 
 // RECURSIVE REVERSE STRING
-
 function reverse(str) {
   return str.length <= 1 ? str : reverse(str.substr(1)) + str.charAt(0);
 }
@@ -994,25 +928,6 @@ var words = "You've recently taken an internship at an up and coming lingustic a
 
 
 console.log(JSON.stringify(wordCount(words), null, 2));
-
-
-
-// RETURNS INDICES OF FIRST TWO VALUES IN ARRAY THAT ADD UP TO THE NUMBER
-var buy = function(x, arr){
-  var len = arr.length;
-  for (var i = 0; i < len; i++) {
-    for (var j = 0; j < len; j++) {
-      if ((arr[i]+arr[j])==x && i !=j ) {
-          return [i, j].sort(function(a,b) {
-            return a - b;
-          });
-      }
-    }
-  }
-  return null;
-};
-
-buy(5,[1,2,3,4,5])
 
 
 
@@ -1114,14 +1029,6 @@ ranks([3,3,3,3,3,5,1])
 
 
 
-// DIFFERENCE BETWEEN SUBSTRING, SUBSTR AND SLICE
-// Method       Parameters       Negative Start Support
-// substring    Start, End       No
-// substr       Start, Length    Yes
-// slice        Start, End       Yes
-
-
-
 // Use filter array method on string
 
 var original = 'There is 1 number.';
@@ -1205,6 +1112,27 @@ function fizzBuzzShort() {
   for(i = 0; i < 100;)console.log((++i%3?'':'Fizz')+(i%5?'':'Buzz')||i);
 }
 fizzBuzzShort();
+
+
+
+function christmasTree(height) {
+  var tree = '';
+
+  for (var i = height; i > 0; i--) {
+    tree = repeat(height - i, ' ') + repeat(i * 2 - 1, '*') + repeat(height - i, ' ') + newLine(i) + tree;
+  }
+
+  function repeat(count, el) {
+    return new Array(count + 1).join(el);
+  }
+
+  function newLine(line) {
+    return line == height ? '' : '\n';
+  }
+  console.log(tree);
+}
+
+christmasTree(3)
 
 
 
@@ -1433,7 +1361,7 @@ function countOccurences(regex, str) {
 
 // CLOSURE EXAMPLE WITH FOR LOOP AND SETTIMEOUT
 
-for (var i = 0; i < 100; ++i) {
+for (var i = 0; i < 100; i++) {
   setTimeout(function(x) {
     return function() {
       console.log(x);
@@ -1663,6 +1591,17 @@ onceFn();
 
 
 
+// Calls a function only once
+function once(fn) {
+  var done = false;
+
+  return function() {
+    return done ? void 0 : ((done = true), fn.apply(this, arguments));
+  }
+}
+
+
+
 function isPrime(n) {
   var divisor = 2;
 
@@ -1709,24 +1648,6 @@ function primeFactors(n) {
 
 
 
-// A permutation is a sequence containing each element from 1 to N once, and only once.
-// The goal is to check whether A is a permutation
-
-var arr = [2,3,1,5];
-
-function isPermutation(A) {
-  var boolean = A.sort(function(a,b) {
-      return b < a;
-  }).every(function(v,i){
-      return v === i + 1;
-  });
-  return boolean ? 1 : 0;
-}
-
-isPermutation(arr);
-
-
-
 // Find the maximal product of any triplet.
 
 var arr = [-3, 1, 2, -2, 5, 6];
@@ -1743,71 +1664,155 @@ maximalProduct(arr);
 
 
 
-// Remove duplicates in array OR string
+// Use reduce to concatenate a list of names into a string, taking into account commas and ampersands
 
-function removeDuplicates(arr) {
-  if (typeof arr === 'string') arr = arr.split('');
-  return arr.filter(function(v, i, a) {
-      return a.indexOf(v) == i;
-  }).join('');
-}
+function list(names) {
+  return names.reduce((acc,curr,i) => {
+    return i === 0 ? curr.name : i === names.length - 1 ? `${acc} & ${curr.name}` : `${acc}, ${curr.name}`;
+  }, '');
+ }
 
-removeDuplicates('dirdi');
-
-
-
-function multiplicationTables(max) {
-  var str = '';
-  for (var i = 1; i <= max; i++) {
-    for (var j = 1; j <= max; j++) {
-      // conditionals for number padding based on character length
-      var charLength = (j * i).toString().split('').length;
-      if (charLength === 3) {
-        str += ' ' + (j * i);
-      }
-      else if (charLength === 2) {
-        str += '  ' + (j * i);
-      }
-      else {
-        str += '   ' + (j * i);
-      }
-    }
-    str += '\n';
-  }
-  console.table(str);
-}
-
-multiplicationTables(12);
+ list([{name: 'Bart'},{name: 'Lisa'},{name: 'Maggie'},{name: 'Homer'},{name: 'Marge'}]); //=> "Bart, Lisa, Maggie, Homer & Marge"
 
 
 
-// Use characters in the superSecretChars variable to replace the matching characters in password
-// eg. replace all 'a's with '@'s. Make sure you get the upper case characters too
-var superSecretChars = [['a', '@'], ['s', '$'], ['o', '0'], ['h', '5'], ['x', '*']];
-function createSSP(password){
-  superSecretChars.map((v,i) => {
-    var reg = new RegExp(v[0], 'gi');
-    password = password.replace(reg, v[1]);
-  });
-  return password;
-}
-createSSP('haxorpassword'); //=> 5@*0rp@$$w0rd
+ class DI {
+   constructor(dependency) {
+     this.dependency = dependency;
+   }
+
+   inject(fn) {
+     return function() {
+       const args = fn.toString().match(/\((.*?)\)/)[1].split(', ');
+       if (args.every(v => v === '')) return 0;
+       const funcArr = args.map(arg => this.dependency[arg]);
+       return fn.apply(this, funcArr);
+     }.bind(this);
+   }
+ }
+
+ let deps = {
+   'dep1': function() { return 'this is dep1'; },
+   'dep2': function() { return 'this is dep2'; },
+   'dep3': function() { return 'this is dep3'; },
+   'dep4': function() { return 'this is dep4'; }
+ };
+
+ let di = new DI(deps);
+
+ let myFunc = di.inject(function(dep3, dep1, dep2) {
+   return [dep1(), dep2(), dep3()].join(' -> ');
+ });
+
+ myFunc();
 
 
 
-// Find most frequent string in array
-// This solution doesn't work if there's a tie
-var arr = ['apples', 'oranges', 'bananas', 'oranges', 'bananas', 'apples', 'oranges', 'bananas', 'apples', 'apples'];
+ // PARTIAL APPLICATION IN ES6
 
-function mostFrequentString(arr) {
-  var tally = arr.reduce((obj, item) => {
-    !obj[item] ? obj[item] = 1 : obj[item]++;
-    return obj;
-  }, {});
+ const mapWith = (unaryFn) => (collection) => collection.map(unaryFn);
+ const square = (n) => n * n;
+ const partiallyAppliedMapWith = mapWith(square);
 
-  return Object.keys(tally).reduce((acc, curr) => {
-    return tally[acc] > tally[curr] ? acc : curr;
-  });
-}
+ const result = partiallyAppliedMapWith([1,2,3]);
 
-mostFrequentString(arr);
+ console.log(result);
+
+
+ // FILL ARRAY WITH 26 LETTERS OF ALPHABET
+
+ var alphabetFill = new Array(26).fill().map((_, i) => String.fromCharCode(65 + i));
+
+
+
+ // MAYBE FUNCTION - DECORATES FUNCTION TO BE NULL SAFE
+
+ const maybe = function(fn) {
+ 	return function(input) {
+ 		if(!input) return;
+ 		return fn.call(this, input)
+ 	}
+ }
+ const imp1 = input => input.toLowerCase();
+
+ imp1(void 0);
+
+ const imp2 = maybe(input => input.toLowerCase());
+
+ imp2(void 0);
+
+
+
+ // COMPOSE
+
+ const compose = (fn1, fn2) => input => fn1(fn2(input));
+ const prefix = (i) => 'Some text: ' + i;
+ const shrink = (i) => i.toLowerCase();
+ const prefixedAndShrunk = compose(prefix, shrink);
+
+ prefixedAndShrunk('DAVID');
+
+
+
+ // MORE PARTIAL APPLICATION
+
+ const partial = (fn, a) => (b) => fn(a, b);
+ const greet = (greeting, name) => greeting + ', ' + name;
+ const hello = partial(greet, 'hello');
+
+ hello('david');
+
+
+
+
+ // DESTRUCTURING OBJECTS
+
+ const complicatedObj = {
+ 	arrayProp: [
+ 		'Eddard',
+ 		{ second: 'Stark' }
+ 	]
+ };
+ const { arrayProp: [first, { second }] } = complicatedObj;
+ console.log(first); // 'Eddard'
+ console.log(second); // 'Stark'
+
+
+
+ // GENERATORS
+
+ var sq = function* (initialValue) {
+ 	var num = initialValue || 2;
+ 	var step = 0;
+ 	var current;
+ 	while(true) {
+ 		current = num * step++;
+ 		yield current;
+ 	}
+ };
+
+ var sequence = sq(20);
+
+
+
+ // SUBCLASSING IN ES6 VS ES5
+
+ class ColorPoint extends Point {
+   constructor(x, y, color) {
+     super(x, y);
+     this.color = color;
+   }
+   toString() {
+     return this.color + ' ' + super.toString();
+   }
+ }
+
+ function ColorPoint(x, y, color) {
+   Point.call(this, x, y);
+   this.color = color;
+ }
+ ColorPoint.prototype = Object.create(Point.prototype);
+ ColorPoint.prototype.constructor = ColorPoint;
+ ColorPoint.prototype.toString = function() {
+   return this.color + ' ' + Point.prototype.toString.call(this);
+ };

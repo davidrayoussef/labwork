@@ -237,4 +237,37 @@ input2 = [
 [9,10,11,12],
 [13,14,15,16]
 ]
-snailSort(input2);   
+snailSort(input2);
+
+
+
+// Insertion Sort - Part 1
+var input = `6
+1 4 3 5 6 2`;
+
+function insertionSort(input) {
+  input = input.split('\n')[1].split(' ').map(Number);
+  const length = input.length;
+  let result = '';
+  let tempValue;
+  let innerIndex;
+
+  for (let outerIndex = 1; outerIndex < length; outerIndex++) {
+    tempValue = input[outerIndex];
+    innerIndex = outerIndex;
+
+    while (innerIndex > 0 && input[innerIndex - 1] > tempValue) {
+      input[innerIndex] = input[innerIndex - 1];
+      innerIndex--;
+    }
+
+    input[innerIndex] = tempValue;
+    result += input.join(' ') + '\n';
+
+  }
+
+  console.log(result);
+
+}
+
+insertionSort(input);
