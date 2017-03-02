@@ -1602,68 +1602,6 @@ function once(fn) {
 
 
 
-function isPrime(n) {
-  var divisor = 2;
-
-  while (n > divisor) {
-    if (n % divisor === 0) {
-      return false;
-    }
-    else divisor++;
-  }
-  return true;
-}
-
-// OR
-
-function isPrime(n) {
-  if (n == 2) {
-    return true;
-  } else if ((n < 2) || (n % 2 == 0)) {
-    return false;
-  } else {
-    for (var i = 3; i <= Math.sqrt(n); i += 2) {
-      if (n % i == 0)
-        return false;
-    }
-    return true;
-  }
-}
-
-
-
-function primeFactors(n) {
-  var factors = [];
-  var divisor = 2;
-
-  while (n > 2) {
-    if (n % divisor === 0) {
-      factors.push(divisor);
-      n = n / divisor;
-    }
-    else divisor++;
-  }
-  return factors;
-}
-
-
-
-// Find the maximal product of any triplet.
-
-var arr = [-3, 1, 2, -2, 5, 6];
-
-function maximalProduct(A) {
-  return A.sort(function(a,b) {
-    return b < a;
-  }).splice(-3).reduce(function(a,b) {
-    return a * b;
-  });
-}
-
-maximalProduct(arr);
-
-
-
 // Use reduce to concatenate a list of names into a string, taking into account commas and ampersands
 
 function list(names) {
@@ -1729,16 +1667,14 @@ function list(names) {
 
  const maybe = function(fn) {
  	return function(input) {
- 		if(!input) return;
+ 		if (!input) return;
  		return fn.call(this, input)
  	}
  }
+
  const imp1 = input => input.toLowerCase();
-
  imp1(void 0);
-
  const imp2 = maybe(input => input.toLowerCase());
-
  imp2(void 0);
 
 

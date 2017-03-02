@@ -1,161 +1,151 @@
-// 
-// LISTS
+//
+// LIST
 //
 
-function List() {
-  this.listSize = 0;
-  this.pos = 0;
-  this.dataStore = [];
-  this.clear = clear;
-  this.find = find;
-  this.toString = toString;
-  this.insert = insert;
-  this.append = append;
-  this.remove = remove;
-  this.front = front;
-  this.end = end;
-  this.prev = prev;
-  this.next = next;
-  this.length = length;
-  this.currPos = currPos;
-  this.moveTo = moveTo;
-  this.getElement = getElement;
-  this.contains = contains;
-}
+class List {
+  constructor() {
+    this.size = 0;
+    this.position = 0;
+    this.store = [];
+  }
 
-function append(element) {
-  this.dataStore[this.listSize++] = element;
-}
+  append(element) {
+    this.store[this.size] = element;
+    this.size++;
+  }
 
-function find(element) {
-  for (var i = 0; i < this.dataStore.length; ++i) {
-    if(this.dataStore[i] == element) {
-      return i;
+  find(element) {
+    for (let i = 0; i < this.store.length; i++) {
+      if (this.store[i] === element) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  remove(element) {
+    const index = this.find(element);
+
+    if (index > -1) {
+      this.store.splice(index, 1);
+      this.size--;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  length() {
+    return this.size;
+  }
+
+  toString() {
+    return JSON.stringify(this.store);
+  }
+
+  insert(element, after) {
+    const insertPosition = this.find(after);
+
+    if (insertPosition > -1) {
+      this.store.shift(insertPosition + 1, 0, element);
+      this.size++;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  clear() {
+    delete this.store;
+    this.store = [];
+    this.size = this.position = 0;
+  }
+
+  contains(element) {
+    return this.store.includes(element);
+  }
+
+  front() {
+    this.position = 0;
+  }
+
+  end() {
+    this.position = this.size - 1;
+  }
+
+  prev() {
+    if (this.position > 0) {
+      this.position--;
     }
   }
-  return -1;
-}
 
-function remove(element) {
-  var foundAt = this.find(element);
-  if(foundAt > -1) {
-    this.dataStore.splice(foundAt, 1);
-    --this.listSize;
-    return true;
+  next() {
+    if (this.position < this.size - 1) {
+      this.position++;
+    }
   }
-  return false;
-}
 
-function length() {
-  return this.listSize;
-}
-
-function toString() {
-  return JSON.stringify(this.dataStore);
-}
-
-function insert(element, after) {
-  var insertPos = this.find(after);
-
-  if(insertPos > -1) {
-      this.dataStore.shift(insertPos+1, 0, element);
-      ++this.listSize;
-      return true;
+  currentPos() {
+    return this.position;
   }
-  return false;
-}
 
-function clear() {
-  delete this.dataStore;
-  this.dataStore = [];
-  this.listSize = this.pos = 0;
-}
+  moveTo(position) {
+    this.position = position;
+  }
 
-function contains(element) {
-  return this.dataStore.filter(function(x) {
-    return x == element;
-  })
-}
-
-function front() {
-  this.pos = 0;
-}
-
-function end() {
-  this.pos = this.listSize-1;
-}
-
-function prev() {
-  if(this.pos > 0) {
-    --this.pos;
+  getElement() {
+    return this.store[this.position];
   }
 }
 
-function next() {
-  if(this.pos < this.listSize-1) {
-    ++this.pos;
-  }
-}
-
-function currPos() {
-  return this.pos;
-}
-
-function moveTo(position) {
-  this.pos = position;
-}
-
-function getElement() {
-  return this.dataStore[this.pos];
-}
-
-var names = new List();
+let names = new List();
 names.append("Clayton");
 names.append("Raymond");
 names.append("Cynthia");
 names.append("Jennifer");
 names.append("Bryan");
 names.append("Danny");
-
 names.front();
-console.log(names.getElement());
+names.getElement();
 
 
 
 //
-// ARRAYS in ES6 (SAME AS LIST ABOVE?)
-// 
+// ARRAYS in ES6
+//
 
 class Array {
   constructor(){
-    this.array = [];
+    this.store = [];
   }
 
   add(data) {
-    this.array.push(data);
+    this.store.push(data);
   }
 
   remove(data) {
-    this.array = this.array.filter(v => v !== data);
+    this.store = this.store.filter(v => v !== data);
   }
 
   search(data) {
     // tilde operator runs this algo -(N+1) which converts -1 to 0
-    var foundIndex = ~this.array.indexOf(data);
+    let foundIndex = ~this.store.indexOf(data);
+
     return foundIndex ? foundIndex : null;
   }
 
   find(index) {
-    return this.array[index];
+    return this.store[index];
   }
 
   length() {
-    return this.array.length;
+    return this.store.length;
   }
 }
 
-var myArray = new Array();
-
+let myArray = new Array();
 myArray.add('David');
 myArray.add('Bill');
 myArray.add('Jenny');
@@ -165,50 +155,44 @@ myArray.length();
 
 
 
-
-
-
-// 
-// STACKS
+//
+// STACK
 //
 
-function Stack() {
-  this.dataStore = [];
-  this.top = 0;
-  this.push = push;
-  this.pop = pop;
-  this.peek = peek;
-  this.clear = clear;
-  this.length = length;
+class Stack {
+  constructor() {
+    this.store = [];
+    this.top = 0;
+  }
+
+  push(element) {
+    this.store[this.top++] = element;
+  }
+
+  pop() {
+    return this.store[--this.top];
+  }
+
+  peek() {
+    return this.store[this.top - 1];
+  }
+
+  clear() {
+    this.top = 0;
+  }
+
+  length() {
+    return this.top;
+  }
 }
 
-function push(element) {
-  this.dataStore[this.top++] = element;
-}
-
-function pop() {
-  return this.dataStore[--this.top];
-}
-
-function peek() {
-  return this.dataStore[this.top - 1];
-}
-
-function clear() {
-  this.top = 0;
-}
-
-function length() {
-  return this.top;
-}
-
-var s = new Stack();
+let s = new Stack();
 s.push('David');
 s.push('Raymond');
 s.push('Bryan');
 console.log('length: ' + s.length());
 console.log(s.peek());
-var popped = s.pop();
+let popped = s.pop();
 console.log('The popped element is: ' + popped);
 console.log(s.peek());
 s.push('Cynthia');
@@ -220,75 +204,42 @@ s.push('Clayton');
 console.log(s.peek());
 
 
-// STACK EXAMPLE 2
 
-function Stack() {
-  this.size = 0;
-  this.storage = {};
-}
-
-Stack.prototype = {
-  push: function(data) {
-    this.storage[this.size++] = data; 
-  },
-  pop: function() {
-    if(size) {
-      var newData = this.storage[this.size - 1];
-      delete this.storage[this.size - 1];
-      this.size--;
-      return newData;
-    }
-  }
-};
-var s = new Stack();
-
-s.push('David');
-s.push('Michael');
-s.push('Dawn');
-
-
-
-// 
-// QUEUES
+//
+// QUEUE
 //
 
-function Queue() {
-  this.dataStore = [];
-  this.enqueue = enqueue;
-  this.dequeue = dequeue;
-  this.front = front;
-  this.back = back;
-  this.toString = toString;
-  this.empty = empty;
+class Queue {
+  constructor() {
+    this.store = [];
+  }
+
+  enqueue(element) {
+    this.store.push(element);
+  }
+
+  dequeue() {
+    return this.store.shift();
+  }
+
+  front() {
+    return this.store[0];
+  }
+
+  back() {
+    return this.store[this.store.length - 1];
+  }
+
+  toString() {
+    return this.store.map(v => v).join('\n');
+  }
+
+  empty() {
+    return this.store.length === 0;
+  }
 }
 
-function enqueue(element) {
-  this.dataStore.push(element);
-}
-
-function dequeue() {
-  return this.dataStore.shift();
-}
-
-function front() {
-  return this.dataStore[0];
-}
-
-function back() {
-  return this.dataStore[this.dataStore.length-1];
-}
-
-function toString() {
-  return this.dataStore.map(function(V) {
-    return V;
-  }).join('\n');
-}
-
-function empty() {
-  return this.dataStore.length == 0;
-}
-
-var q = new Queue();
+let q = new Queue();
 q.enqueue("Meredith");
 q.enqueue("Cynthia");
 q.enqueue("Jennifer");
@@ -300,183 +251,169 @@ console.log("Back of queue: " + q.back());
 
 
 
-// 
-// LINKED LISTS
+//
+// LINKED LIST
 //
 
-function Node(element) {
-  this.element = element;
+function Node(data) {
+  this.data = data;
   this.next = null;
 }
 
-function LList() {
-  this.head = new Node('head');
-  this.find = find;
-  this.insert = insert;
-  this.display = display;
-  this.findPrevious = findPrevious;
-  this.remove = remove;
-}
-
-function find(item) {
-  var currNode = this.head;
-  while(currNode.element != item) {
-    currNode = currNode.next;
+class LinkedList {
+  constructor() {
+    this.head = null
   }
-  return currNode;
-}
 
-function insert(newElement, item) {
-  var newNode = new Node(newElement);
-  var current = this.find(item);
-  newNode.next = current.next;
-  current.next = newNode;
-}
+  find(item) {
+    let current = this.head;
 
-function display() {
-  var currNode = this.head;
-  while(!(currNode.next == null)) {
-    console.log(currNode.next.element);
-    currNode = currNode.next;
+    while (current.data !== item) {
+      current = current.next;
+    }
+
+   return current;
+  }
+
+  append(data) {
+    const newNode = new Node(data);
+
+    if (!this.head) {
+      this.head = newNode;
+      return;
+    }
+
+    let current = this.head;
+
+    while (current.next !== null) {
+      current = current.next;
+    }
+
+    current.next = newNode;
+  }
+
+  prepend(data) {
+   let newHead = new Node(data);
+   newHead.next = this.head;
+   this.head = newHead;
+  }
+
+  print() {
+    let current = this.head;
+
+    while (current !== null) {
+      console.log(current.data);
+      current = current.next;
+    }
+  }
+
+  printLinks() {
+    let current = this.head;
+    let elements = [];
+
+    while (current !== null) {
+      elements.push(current.data);
+      current = current.next;
+    }
+
+    console.log(elements.join(' -> '));
+  }
+
+  reversePrint(node) {
+    if (node === null) return;
+
+    this.reversePrint(node.next);
+
+    console.log(node.data);
   }
 }
 
-function findPrevious(item) {
-  var currNode = this.head;
-  while(!(currNode.next == null) && (currNode.next.element != item)) { 
-    currNode = currNode.next;
+function mergeSortedLists(l1, l2) {
+  let copy = merged = new Node(0);
+
+  while (l1 !== null && l2 !== null) {
+    if (l1.data < l2.data) {
+      merged.next = l1;
+      l1 = l1.next;
+      merged = merged.next;
+    }
+    else {
+      merged.next = l2;
+      l2 = l2.next;
+      merged = merged.next;
+    }
   }
-  return currNode;
+
+  if (l1 !== null) merged.next = l1;
+  if (l2 !== null) merged.next = l2;
+
+  return copy.next;
 }
 
-function remove(item) {
-  var prevNode = this.findPrevious(item);
-  if(!(prevNode.next == null)) {
-    prevNode.next = prevNode.next.next;
-  }
-}
-
-var cities = new LList();
-cities.insert("Conway", "head");
-cities.insert("Russellville", "Conway");
-cities.insert("Carlisle", "Russellville");
-cities.insert("Alma", "Carlisle");
-cities.display();
-console.log(cities);
-cities.remove("Carlisle");
-cities.display();
+let cities = new LinkedList();
+cities.append("Jersey City");
+cities.append("NYC");
+cities.append("Miami");
+cities.append("LA");
+cities.reversePrint(cities.head);
 
 
 
-// 
-// DICTIONARIES
+//
+// DICTIONARY
 //
 
+class Dictionary {
+  constructor() {
+    this.store = {};
+  }
 
-function Dictionary() {
-  this.add = add;
-  this.dataStore = new Array();
-  this.find = find;
-  this.remove = remove;
-  this.showAll = showAll;
-  this.count = count;
-  this.clear = clear;
+  add(key, value) {
+    this.store[key] = value;
+  }
+
+  find(key) {
+    return this.store[key];
+  }
+
+  remove(key) {
+    delete this.store[key];
+  }
+
+  showAll() {
+    return Object.keys(this.store).map(key => `${key} - ${this.store[key]}`).join('\n');
+  }
+
+  count() {
+    return Object.keys(this.store).length;
+  }
+
+  clear() {
+    this.store = {};
+  }
 }
 
-function add(key, value) {
-  this.dataStore[key] = value;
-}
-
-function find(key) {
-  return this.dataStore[key];
-}
-
-function remove(key) {
-  delete this.dataStore[key];
-}
-
-function showAll() {
-  return Object.keys(this.dataStore).map(function(key) {
-    return key + ' - ' + this.dataStore[key];
-  });
-}
-
-function count() {
-  return Object.keys(this.dataStore).map(function(x) {
-    return x;
-  }).length;
-}
-
-function clear() {
-  return Object.keys(this.dataStore).map(function(x) {
-    delete this.dataStore[x];
-  })
-}
-
-var pbook = new Dictionary();
+let pbook = new Dictionary();
 pbook.add("Raymond", "123");
 pbook.add("David", "345");
 pbook.add("Cynthia", "456");
 console.log("Number of entries: " + pbook.count());
 console.log("David's extension: " + pbook.find("David"));
-// pbook.showAll();
+console.log(pbook.showAll());
 pbook.clear();
 console.log("Number of entries: " + pbook.count());
 
 
 
-// 
-// HASHES
 //
-
-function HashTable() {
-  this.table = new Array(137);
-  this.betterHash = betterHash;
-  this.showDistro = showDistro;
-  this.put = put;
-  // this.get = get;
-}
-
-function betterHash(data) {
-  const H = 37;
-  return data.split('').map(function(v,i) {
-    return data.charCodeAt(i);
-  }).reduce(function(acc,curr) {
-    console.log('data is: ' + data);
-    return (acc + curr) * H;
-  }, 0) % this.table.length;
-}
-
-function showDistro() {
-  return this.table.map(function(v,i) {
-    if(v!=undefined) console.log(i + ': ' + v);
-  })
-}
-
-function put(data) {
-  var pos = this.betterHash(data);
-  this.table[pos] = data;
-}
-
-var someNames = ["David", "Jennifer", "Donnie", "Raymond", "Cynthia", "Mike", "Clayton", "Danny", "Jonathan"];
-
-var hTable = new HashTable();
-
-someNames.map(function(v) { hTable.put(v); })
-
-hTable.showDistro();
-
-
-
-// 
-// HASHTABLE IN ES6
+// HASHTABLE
 //
 
 class HashTable {
   constructor(size) {
-    this.values = {};
-    this.numberOfValues = 0;
     this.size = size;
+    this.store = {};
+    this.numberOfValues = 0;
   }
 
   calculateHash(key) {
@@ -484,28 +421,28 @@ class HashTable {
   }
 
   add(key, value) {
-    var hash = this.calculateHash(key);
-    if (!this.values.hasOwnProperty(hash)) {
-      this.values[hash] = {};
+    let hash = this.calculateHash(key);
+    if (!this.store.hasOwnProperty(hash)) {
+      this.store[hash] = {};
     }
-    if (!this.values[hash].hasOwnProperty(key)) {
+    if (!this.store[hash].hasOwnProperty(key)) {
       this.numberOfValues++;
     }
-    this.values[hash][key] = value;
+    this.store[hash][key] = value;
   }
 
   remove(key) {
-    var hash = this.calculateHash(key);
-    if (this.values.hasOwnProperty(hash) && this.values[hash].hasOwnProperty(key)) {
-      delete this.values[hash][key];
+    let hash = this.calculateHash(key);
+    if (this.store.hasOwnProperty(hash) && this.store[hash].hasOwnProperty(key)) {
+      delete this.store[hash][key];
       this.numberOfValues--;
     }
   }
 
   search(key) {
-    var hash = this.calculateHash(key);
-    if (this.values.hasOwnProperty(hash) && this.values[hash].hasOwnProperty(key)) {
-      return this.values[hash][key];
+    let hash = this.calculateHash(key);
+    if (this.store.hasOwnProperty(hash) && this.store[hash].hasOwnProperty(key)) {
+      return this.store[hash][key];
     } else {
       return null;
     }
@@ -516,16 +453,16 @@ class HashTable {
   }
 
   print() {
-    var string = '';
-    for (var value in this.values) {
-      for (var key in this.values[value]) {
-        string += this.values[value][key] + ' ';
+    let string = '';
+    for (let value in this.store) {
+      for (let key in this.store[value]) {
+        string += this.store[value][key] + ' ';
       }
     }
     console.log(string.trim());
   }
 }
-var hashTable = new HashTable(3);
+let hashTable = new HashTable(3);
 hashTable.add('first', 1);
 hashTable.add('second', 2);
 hashTable.add('third', 3);
@@ -542,228 +479,71 @@ console.log('length gives 3:', hashTable.length()); // => 3
 
 
 //
-// SETS
-//
-
-function Set() {
-  this.dataStore = [];
-  this.add = add;
-  this.remove = remove;
-  this.size = size;
-  this.contains = contains;
-  this.union = union;
-  this.intersect = intersect;
-  this.subset = subset;
-  this.difference = difference;
-  this.show = show;
-}
-
-function add(data) {
-  if(this.dataStore.indexOf(data) < 0) {
-      this.dataStore.push(data);
-      return true;
-  }
-  else return false;
-}
-
-function remove(data) {
-  var pos = this.dataStore.indexOf(data);
-  if(pos > -1) {
-      this.dataStore.splice(pos, 1);
-      return true;
-  }
-  else return false;
-}
-
-function size() {
-  return this.dataStore.length;
-}
-
-function show() {
-  return this.dataStore;
-}
-
-function contains(data) {
-  if(this.dataStore.indexOf(data) > -1) {
-      return true;
-  }
-  else return false;
-}
-
-function union(set) {
-  var tempSet = new Set();
-
-  this.dataStore.map(function(v) {
-    tempSet.add(v);
-  })
-
-  set.dataStore.map(function(v) {
-    if(!tempSet.contains(v)) {
-      tempSet.dataStore.push(v);
-    }
-  })
-  return tempSet;
-}
-
-function intersect(set) {
-  var tempSet = new Set();
-
-  this.dataStore.map(function(v) {
-    if(set.contains(v)) tempSet.add(v);
-  })
-
-  return tempSet;
-}
-
-function subset(set) {
-  if (this.size() > set.size()) { return false; }
-  else {
-    return this.dataStore.every(function(v) {
-      return set.contains(v);
-    })
-  }
-  // return true;
-}
-
-function difference(set) {
-  var tempSet = new Set();
-  this.dataStore.map(function(v) {
-    if(!set.contains(v)) { tempSet.add(v); }
-  })
-
-  return tempSet;
-}
-
-var names = new Set();
-names.add("David");
-names.add("Jennifer");
-names.add("Cynthia");
-names.add("Mike");
-names.add("Raymond");
-if (names.add("Mike")) { console.log("Mike added"); } 
-else { console.log("Can't add Mike, must already be in set"); }
-console.log(names.show());
-
-// Computing the union of two sets
-var cis = new Set();
-cis.add("Mike");
-cis.add("Clayton");
-cis.add("Jennifer");
-cis.add("Raymond");
-var dmp = new Set();
-dmp.add("Raymond");
-dmp.add("Cynthia");
-dmp.add("Jonathan");
-var it = new Set();
-it = cis.union(dmp);
-console.log(it.show());
-
-// Computing the intersection of two sets
-var cis = new Set();
-cis.add("Mike");
-cis.add("Clayton");
-cis.add("Jennifer");
-cis.add("Raymond");
-var dmp = new Set();
-dmp.add("Raymond");
-dmp.add("Cynthia");
-dmp.add("Bryan");
-var inter = cis.intersect(dmp);
-console.log(inter.show());
-
-// Computing the subset of two sets
-var it = new Set();
-it.add("Cynthia");
-it.add("Clayton");
-it.add("Jennifer");
-it.add("Danny");
-it.add("Jonathan");
-it.add("Terrill");
-it.add("Raymond");
-it.add("Mike");
-var dmp = new Set();
-dmp.add("Cynthia");
-dmp.add("Raymond");
-dmp.add("Jonathan");
-
-if (dmp.subset(it)) { console.log("DMP is a subset of IT."); }
-else { console.log("DMP is not a subset of IT."); }
-
-// Computing the difference of two sets
-var cis = new Set();
-var it = new Set();
-cis.add("Clayton");
-cis.add("Jennifer");
-cis.add("Danny");
-it.add("Bryan");
-it.add("Clayton");
-it.add("Jennifer");
-var diff = new Set();
-diff = cis.difference(it);
-console.log("[" + cis.show() + "] difference [" + it.show() + "] -> [" + diff.show() + "]");
-
-
-// 
-// SET IN ES6
+// SET
 //
 
 class Set {
   constructor() {
-    this.values = [];
+    this.store = [];
     this.numberOfValues = 0;
   }
 
   add(value) {
-    // tilde operator runs this algo -(N+1) which converts -1 to 0 (because negative 1 is truthy)
-    if (!~this.values.indexOf(value)) {
-      this.values.push(value);
+    if (!this.store.includes(value)) {
+      this.store.push(value);
       this.numberOfValues++;
     }
   }
 
   remove(value) {
-    var index = this.values.indexOf(value);
+    let index = this.store.indexOf(value);
     if (~index) {
-      this.values.splice(index, 1);
+      this.store.splice(index, 1);
       this.numberOfValues--;
     }
   }
 
   contains(value) {
-    return this.values.indexOf(value) !== -1;
+    return this.store.includes(value);
   }
 
   union(set) {
-    var newSet = new Set();
-    set.values.forEach(value => newSet.add(value));
-    this.values.forEach(value => newSet.add(value));
+    let newSet = new Set();
+
+    set.store.forEach(value => newSet.add(value));
+    this.store.forEach(value => newSet.add(value));
+
     return newSet;
   }
 
   intersect(set) {
     // intersection of two sets A and B is the set that contains all elements of A that also belong to B
     // (or equivalently, all elements of B that also belong to A
-    var newSet = new Set();
-    this.values.forEach(value => {
+    let newSet = new Set();
+
+    this.store.forEach(value => {
       if (set.contains(value)) {
         newSet.add(value);
       }
     });
+
     return newSet;
   }
 
   difference(set) {
-    var newSet = new Set();
-    this.values.forEach(value => {
+    let newSet = new Set();
+
+    this.store.forEach(value => {
       if (!set.contains(value)) {
         newSet.add(value);
       }
     });
+
     return newSet;
   }
 
   isSubset(set) {
-    return set.values.every(value => this.contains(value));
+    return set.store.every(value => this.contains(value));
   }
 
   length() {
@@ -771,11 +551,11 @@ class Set {
   }
 
   print() {
-    console.log(this.values.join(' '));
+    console.log(this.store.join(' '));
   }
 }
 
-var set = new Set();
+let set = new Set();
 set.add(1);
 set.add(2);
 set.add(3);
@@ -785,19 +565,19 @@ set.remove(3);
 set.print(); // => 1 2 4
 console.log('contains 4 is true:', set.contains(4)); // => true
 console.log('contains 3 is false:', set.contains(3)); // => false
-var set1 = new Set();
+let set1 = new Set();
 set1.add(1);
 set1.add(2);
-var set2 = new Set();
+let set2 = new Set();
 set2.add(2);
 set2.add(3);
-var set3 = set2.union(set1);
+let set3 = set2.union(set1);
 set3.print(); // => 1 2 3
-var set4 = set2.intersect(set1);
+let set4 = set2.intersect(set1);
 set4.print(); // => 2
-var set5 = set.difference(set3);
+let set5 = set.difference(set3);
 set5.print(); // => 4
-var set6 = set3.difference(set); // 1 2 3 diff 1 2 4
+let set6 = set3.difference(set); // 1 2 3 diff 1 2 4
 set6.print(); // => 3
 console.log('set1 subset of set is true:', set.isSubset(set1)); // => true
 console.log('set2 subset of set is false:', set.isSubset(set2)); // => false
@@ -806,132 +586,265 @@ console.log('set3 length gives 3:', set3.length()); // => 3
 
 
 
-
 //
 // BINARY SEARCH TREE
 //
 
-function Node(data, left, right) {
-  this.data = data;
-  this.left = left;
-  this.right = right;
-  this.show = show;
-}
-
-function show() {
-  return this.data;
-}
-
-function BST() {
-  this.root = null;
-  this.insert = insert;
-  this.inOrder = inOrder;
-  this.getMin = getMin;
-  this.getMax = getMax;
-  this.find = find;
-}
-
-function insert(data) {
-  var n = new Node(data, null, null);
-  if(this.root == null) {
-      this.root = n;
+class Node {
+  constructor(val, left, right) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
   }
-  else {
-    var current = this.root;
-    var parent;
-    while(true) {
-      parent = current;
-      if(data < current.data) {
-        current = current.left;
-        if(current == null) {
-          parent.left = n;
-          break;
+
+  show() {
+    return this.val;
+  }
+}
+
+class BinarySearchTree {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(val) {
+    let newNode = new Node(val, null, null);
+
+    if (this.root === null) {
+      this.root = newNode;
+    }
+    else {
+      let current = this.root;
+      let parent;
+
+      while (true) {
+        parent = current;
+
+        if (val < current.val) {
+          current = current.left;
+
+          if (current === null) {
+            parent.left = newNode;
+            break;
+          }
         }
-      }
-      else {
-        current = current.right;
-        if(current == null) {
-          parent.right = n;
-          break;
+        else {
+          current = current.right;
+
+          if (current === null) {
+            parent.right = newNode;
+            break;
+          }
         }
       }
     }
   }
-}
 
-function inOrder(node) {
-  if(!(node == null)) {
-    inOrder(node.left);
-    console.log(node.show() + ' ');
-    inOrder(node.right);
-  }
-}
-
-function preOrder(node) {
-  if(!(node == null)) {
+  inOrder(node) {
+    if (node !== null) {
+      this.inOrder(node.left);
       console.log(node.show() + ' ');
-      preOrder(node.left);
-      preOrder(node.right);
+      this.inOrder(node.right);
+    }
   }
-}
 
-function postOrder(node) {
-  if(!(node == null)) {
-      postOrder(node.left);
-      postOrder(node.right);
+  preOrder(node) {
+    if (node !== null) {
       console.log(node.show() + ' ');
+      this.preOrder(node.left);
+      this.preOrder(node.right);
+    }
+  }
+
+  postOrder(node) {
+    if (node !== null) {
+      this.postOrder(node.left);
+      this.postOrder(node.right);
+      console.log(node.show() + ' ');
+    }
+  }
+
+  getMin() {
+    let current = this.root;
+    while (current.left !== null) {
+      current = current.left;
+    }
+    return current.val;
+  }
+
+  getMax() {
+    let current = this.root;
+    while (current.right === !null) {
+      current = current.right;
+    }
+    return current.val;
+  }
+
+  find(val) {
+    let current = this.root;
+    while (current.val !== val) {
+      current = val < current.val ? current.left : current.right;
+      if (current === null) return null;
+    }
+    return current;
+  }
+
+  invert(node) {
+    if (!node) return node;
+
+    let temp = node.left;
+    node.left = node.right;
+    node.right = temp;
+
+    this.invert(node.left);
+    this.invert(node.right);
+
+    return node;
+  }
+
+  findLCA(node, n1, n2) {
+    if (node.val > Math.max(n1.val, n2.val)) {
+      return this.findLCA(node.left, n1, n2);
+    }
+    else if (node.val < Math.min(n1.val, n2.val)) {
+      return this.findLCA(node.right, n1, n2);
+    }
+    else return node.val;
+  }
+
+  printPaths(node, path = [], pathLength = 0, paths = []) {
+    if (node === null) return [];
+
+    path[pathLength] = node.val;
+    pathLength++;
+
+    if (node.left === null && node.right === null) {
+      paths.push(Array.from({length: pathLength}, (v,i) => path[i]).join('->'));
+    }
+    else {
+      this.printPaths(node.left, path, pathLength, paths);
+      this.printPaths(node.right, path, pathLength, paths);
+    }
+
+    return paths;
+  }
+
+  pathSum(node, sum) {
+    // let vals = [];
+    //
+    // const traverse = (node) => {
+    //   if (node === null) return;
+    //
+    //   if (node.left === null && node.right === null) {
+    //     vals.push(node.val);
+    //   }
+    //
+    //   traverse(node.left);
+    //   traverse(node.right);
+    // }
+    //
+    // traverse(node);
+    //
+    // return vals;
+  }
+
+  sumOfLeftLeaves(node) {
+    let sum = 0;
+
+    const traverse = (node, isLeftChild) => {
+      if (node === null) return;
+
+      if (isLeftChild) {
+        if (node.left === null && node.right === null) {
+          sum += node.val;
+        }
+      }
+
+      traverse(node.left, true);
+      traverse(node.right, false);
+    }
+
+    traverse(node);
+
+    return sum;
+  }
+
+  areIdentical(a, b) {
+    if (a === null && b === null) return true;
+
+    if (a !== null && b !== null) {
+      return a. val === b. val &&
+        this.areIdentical(a.left, b.left) &&
+        this.areIdentical(a.right, b.right);
+    }
+
+    return false;
+  }
+
+  isSymmetric(node) {
+    const isMirror = (node1, node2) => {
+      if (node1 === null && node2 === null) return true;
+      else if (node1 !== null && node2 !== null && node1.val === node2.val) {
+        return isMirror(node1.left, node2.right) && isMirror(node2.left, node1.right);
+      }
+
+      return false;
+    };
+
+    return isMirror(node, node);
+  }
+
+  maxDepth(node) {
+    if (node === null) return 0;
+
+    let leftHeight = this.maxDepth(node.left);
+    let rightHeight = this.maxDepth(node.right);
+
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  convertSortedArray(nums, start = 0, end = nums.length - 1) {
+    if (start > end) return null;
+
+    let mid = Math.round((start + end) / 2);
+    let node = new TreeNode(nums[mid]);
+
+    node.left = this.convertSortedArray(nums, start, mid - 1);
+    node.right = this.convertSortedArray(nums, mid + 1, end);
+
+    return node;
   }
 }
 
-function getMin() {
-  var current = this.root;
-  while(!(current.left == null)) {
-    current = current.left;
-  }
-  return current.data;
-}
-
-function getMax() {
-  var current = this.root;
-  while(!(current.right == null)) {
-    current = current.right;
-  }
-  return current.data;
-}
-
-function find(data) {
-  var current = this.root;
-  while(current.data != data) {
-    current = data < current.data ? current.left : current.right;
-    if(current == null) return null;
-  }
-  return current;
-}
-
-
-var nums = new BST();
-nums.insert(23);
-nums.insert(45);
-nums.insert(16);
-nums.insert(37);
+let nums = new BinarySearchTree();
 nums.insert(3);
-nums.insert(99);
-nums.insert(22);
+nums.insert(9);
+nums.insert(20);
+nums.insert(null);
+nums.insert(null);
+nums.insert(15);
+nums.insert(7);
+nums.maxDepth(nums.root);
+nums.sumOfLeftLeaves(nums.root);
+nums.invert(nums.root);
+let n1 = new Node(1);
+let n2 = new Node(4);
+nums.findLCA(nums.root, n1, n2);
 console.log("inorder traversal: ");
-inOrder(nums.root);
+nums.inOrder(nums.root);
 console.log("preorder traversal: ");
-preOrder(nums.root);
+nums.preOrder(nums.root);
 console.log("postorder traversal: ");
-postOrder(nums.root);
-var min = nums.getMin();
-console.log("The minimum value of the BST is: " + min);
-var max = nums.getMax();
-console.log("The maximum value of the BST is: " + max);
+nums.postOrder(nums.root);
+let min = nums.getMin();
+console.log("The minimum value of the BinarySearchTree is: " + min);
+let max = nums.getMax();
+console.log("The maximum value of the BinarySearchTree is: " + max);
 
 
 
 //
-// GRAPHS
+// GRAPH
 //
 
 function Vertex(label) {
@@ -942,7 +855,7 @@ function Graph(v) {
   this.vertices = v;
   this.edges = 0;
   this.adj = [];
-  for(var i = 0; i < this.vertices; ++i) {
+  for(let i = 0; i < this.vertices; ++i) {
     this.adj[i] = [];
     this.adj[i].push("");
   }
@@ -950,7 +863,7 @@ function Graph(v) {
   this.showGraph = showGraph;
   this.dfs = dfs;
   this.marked = [];
-  for (var i = 0; i < this.vertices; ++i) {
+  for (let i = 0; i < this.vertices; ++i) {
     this.marked[i] = false;
   }
 }
@@ -963,22 +876,22 @@ function addEdge(v, w) {
 
 function dfs(v) {
   this.marked[v] = true;
-  if(this.adj[v] != undefined) {
+  if (this.adj[v] !== undefined) {
     console.log('Visited vertex: ' + v);
   }
   // Object.keys(this.adj[v]).map(function(w) {
-  //   if(!this.marked[w]) {
+  //   if (!this.marked[w]) {
   //     this.dfs(w);
   //   }
   // })
 }
 
 function showGraph() {
-  var str = '';
-  for (var i = 0; i < this.vertices; ++i) {
+  let str = '';
+  for (let i = 0; i < this.vertices; ++i) {
     str += i + ' -> ';
-    for (var j = 0; j < this.vertices; ++j) {
-      if(this.adj[i][j] != undefined) {
+    for (let j = 0; j < this.vertices; ++j) {
+      if (this.adj[i][j] !== undefined) {
         str += this.adj[i][j] + ' ';
       }
     }
@@ -986,7 +899,7 @@ function showGraph() {
   console.log(str);
 }
 
-g = new Graph(5);
+let g = new Graph(5);
 g.addEdge(0,1);
 g.addEdge(0,2);
 g.addEdge(1,3);

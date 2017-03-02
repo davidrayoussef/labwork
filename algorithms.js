@@ -1,3 +1,49 @@
+function isPrime(n) {
+  var divisor = 2;
+
+  while (n > divisor) {
+    if (n % divisor === 0) {
+      return false;
+    }
+    else divisor++;
+  }
+  return true;
+}
+
+// OR
+
+function isPrime(n) {
+  if (n == 2) {
+    return true;
+  } else if ((n < 2) || (n % 2 == 0)) {
+    return false;
+  } else {
+    for (var i = 3; i <= Math.sqrt(n); i += 2) {
+      if (n % i == 0)
+        return false;
+    }
+    return true;
+  }
+}
+
+
+
+function primeFactors(n) {
+  let factors = [];
+  let divisor = 2;
+
+  while (n > 2) {
+    if (n % divisor === 0) {
+      factors.push(divisor);
+      n = n / divisor;
+    }
+    else divisor++;
+  }
+  return factors;
+}
+
+
+
 // GET NTH FIBONACCI NUMBER
 function fibonacci(n) {
   var fibo = [0,1];
@@ -55,20 +101,21 @@ iterFib(10);
 // MEMOIZED FIBONACCI
 
 var memo = [];
+
 function fibonacci(n) {
   if (memo[n]) {
-      return memo[n];
+    return memo[n];
   }
   if (n >= 2) {
-      return memo[n] = fibonacci(n - 2) + fibonacci(n - 1);
+    return memo[n] = fibonacci(n - 2) + fibonacci(n - 1);
   }
   return n;
 }
 
-// FIBONACCI USING ARRAY.APPLY
+// FUNCTIONAL FIBONACCI
 
 function fibo(n) {
-  return Array.apply(0, Array(n)).reduce(function(acc, curr, i) {
+  return Array.from({length: n}).reduce((acc, curr, i) => {
     return acc.concat((i < 2) ? i : acc[i - 1] + acc[i - 2]);
   }, []);
 }
@@ -134,6 +181,22 @@ function lcs(word1, word2) {
 }
 
 lcs('kabooba', 'habooba');
+
+
+
+// Find the maximal product of any triplet.
+
+var arr = [-3, 1, 2, -2, 5, 6];
+
+function maximalProduct(A) {
+  return A.sort(function(a,b) {
+    return b < a;
+  }).splice(-3).reduce(function(a,b) {
+    return a * b;
+  });
+}
+
+maximalProduct(arr);
 
 
 
@@ -247,7 +310,7 @@ function areCharactersUnique(str) {
   [].slice.call(str)
     .sort((a,b) => a > b)
     .map((v, i, a) => {
-      if (v === a[i+1]) {
+      if (v === a[i + 1]) {
         result = false;
       }
   });
@@ -622,3 +685,50 @@ function twoSum(numbers, target) {
 }
 
 twoSum([2,3,4], 6);
+
+
+
+/*
+Write a program to check whether a given number is an ugly number.
+
+Ugly numbers are positive numbers whose prime factors only include 2, 3, 5.
+For example, 6, 8 are ugly while 14 is not ugly since it includes another prime factor 7.
+
+Note that 1 is typically treated as an ugly number.
+*/
+
+function isUgly(num) {
+  if (num < 1) return false;
+
+  [2,3,5].map(d => {
+    while (num % d === 0) {
+      num = num / d;
+    }
+  });
+
+  return num === 1;
+}
+
+
+
+function getFactors(n) {
+  // Any number over half is too big to be a factor
+  const half = Math.floor(n / 2);
+  let i, j;
+  let factors = [];
+
+  // determine starting position and incrementer
+  if (n % 2 === 0 ) i = 2, j = 1;
+  else i = 3, j = 2;
+
+  while (i <= half) {
+    if (n % i === 0) {
+      factors.push(i);
+    }
+    i += j;
+  }
+
+  factors.push(1, n);
+
+  return factors;
+}

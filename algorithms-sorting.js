@@ -17,13 +17,13 @@ function CArray(numElements) {
   this.shellSort = shellSort;
   this.gaps = [5,3,1];
 
-  for (var i = 0; i < numElements; ++i) {
+  for (let i = 0; i < numElements; ++i) {
     this.dataStore[i] = i;
   }
 }
 
 function setData() {
-  for (var i = 0; i < this.numElements; ++i) {
+  for (let i = 0; i < this.numElements; ++i) {
     this.dataStore[i] = Math.floor(Math.random() * (this.numElements+1));
   }
 }
@@ -37,7 +37,7 @@ function insert(element) {
 }
 
 function toString() {
-  var retstr = '';
+  let retstr = '';
 
   this.dataStore.map(function(v,i) {
     retstr += (i > 0 && i % 10 == 0) ? '\n' : v + ' ';
@@ -47,18 +47,18 @@ function toString() {
 }
 
 function swap(arr, index1, index2) {
-  var temp = arr[index1];
+  let temp = arr[index1];
   arr[index1] = arr[index2];
   arr[index2] = temp;
 }
 
 function bubbleSort() {
-  var numElements = this.dataStore.length;
-  var temp;
-  for (var outer = numElements; outer >= 2; --outer) {
-    for (var inner = 0; inner <= outer - 1; ++inner) {
-      if (this.dataStore[inner] > this.dataStore[inner+1]) {
-        swap(this.dataStore, inner, inner+1);
+  let numElements = this.dataStore.length;
+
+  for (let outer = numElements; outer >= 2; --outer) {
+    for (let inner = 0; inner <= outer - 1; ++inner) {
+      if (this.dataStore[inner] > this.dataStore[inner + 1]) {
+        swap(this.dataStore, inner, inner + 1);
         console.log(this.toString());
       }
     }
@@ -66,10 +66,10 @@ function bubbleSort() {
 }
 
 function selectionSort() {
-  var min, temp, length = this.dataStore.length;
-  for (var outer = 0; outer <= length-2; ++outer) {
+  let min, temp, length = this.dataStore.length;
+  for (let outer = 0; outer <= length-2; ++outer) {
     min = outer;
-    for (var inner = outer + 1; inner <= length-1; ++inner) {
+    for (let inner = outer + 1; inner <= length-1; ++inner) {
       if (this.dataStore[inner] < this.dataStore[min]) {
         min = inner;
       }
@@ -80,8 +80,8 @@ function selectionSort() {
 }
 
 function insertionSort() {
-  var temp, inner, length = this.dataStore.length;
-  for (var outer = 1; outer <= length-1; ++outer) { // outer loop moves element by element through the array
+  let temp, inner, length = this.dataStore.length;
+  for (let outer = 1; outer <= length-1; ++outer) { // outer loop moves element by element through the array
     temp = this.dataStore[outer];
     inner = outer;
     while(inner > 0 && (this.dataStore[inner-1] >= temp)) { // inner loop compares the element chosen in the outer loop to the element next to it in the array.
@@ -94,10 +94,10 @@ function insertionSort() {
 }
 
 function shellSort() {
-  for (var g = 0; g < this.gaps.length; ++g) { // outer loop loops through each number in the gaps array
-    for (var i = this.gaps[g]; i < this.dataStore.length; ++i) { // middle loop loops the number amount in the gaps array
-      var temp = this.dataStore[i];
-      for (var j = i; j >= this.gaps[g] && this.dataStore[j - this.gaps[g]] > temp; j -= this.gaps[g]) {
+  for (let g = 0; g < this.gaps.length; ++g) { // outer loop loops through each number in the gaps array
+    for (let i = this.gaps[g]; i < this.dataStore.length; ++i) { // middle loop loops the number amount in the gaps array
+      let temp = this.dataStore[i];
+      for (let j = i; j >= this.gaps[g] && this.dataStore[j - this.gaps[g]] > temp; j -= this.gaps[g]) {
         this.dataStore[j] = this.dataStore[j - this.gaps[g]];
       }
       this.dataStore[j] = temp;
@@ -115,8 +115,8 @@ function setGaps(arr) {
 }
 
 
-var numElements = 10;
-var myNums = new CArray(numElements);
+let numElements = 10;
+let myNums = new CArray(numElements);
 myNums.setData();
 myNums.toString();
 // myNums.bubbleSort();
@@ -132,7 +132,7 @@ myNums.toString();
 
 // Fisher-Yates shuffle
 function shuffle(arr) {
-  var currIndex = arr.length, temp, randIndex;
+  let currIndex = arr.length, temp, randIndex;
 
   while(currIndex) {
     randIndex = Math.floor(Math.random() * currIndex--); // pick a remaining element...
@@ -145,7 +145,7 @@ function shuffle(arr) {
   return arr;
 }
 
-var arr = [1,2,3,4,5,6,7,8,9];
+let arr = [1,2,3,4,5,6,7,8,9];
 
 shuffle(arr);
 
@@ -157,9 +157,9 @@ shuffle(arr);
 
 function quickSort(arr) {
   if (arr.length == 0) { return []; }
-  var left = [], right = [];
-  var pivot = arr[0];
-  for (var i = 1; i < arr.length; i++) {
+  let left = [], right = [];
+  let pivot = arr[0];
+  for (let i = 1; i < arr.length; i++) {
     console.log('pivot: ' + pivot + ' current element: ' + arr[i]);
     if (arr[i] < pivot) {
       console.log('moving ' + arr[i] + ' to the left');
@@ -177,8 +177,8 @@ function quickSort(arr) {
 }
 
 // random list to test quicksort
-var array = [];
-for (var i = 0; i < 10; i++) {
+let array = [];
+for (let i = 0; i < 10; i++) {
   array[i] = Math.floor((Math.random() * 100) + 1);
 }
 console.log('ORIGINAL ARRAY: ', array);
@@ -187,35 +187,35 @@ quickSort(array);
 
 
 function snailSort(array) {
-	var result = [];
+	let result = [];
 
 	if (array.length == 0 ) return result;
 
-	var max = array[0].length-1;
+	let max = array[0].length-1;
 
 	//grab the first row | result.push.apply(result,array[0])
-	for (var i = 0; i <= max; i++) {
+	for (let i = 0; i <= max; i++) {
 		result.push(array[0][i]);
 	}
 
 	//grab the last column
-	for (var i = 1; i < max; i++) {
+	for (let i = 1; i < max; i++) {
 		result.push(array[i][max]);
 	}
 
 	//grab the last row
-	for (var i = max; i >= 0; i--){
+	for (let i = max; i >= 0; i--){
 		result.push(array[max][i]);
 	}
 
 	//grab the first column
-	for (var i = max - 1 ; i > 0; i--) {
+	for (let i = max - 1 ; i > 0; i--) {
 		result.push(array[i][0]);
 	}
 
 	subarray = [];
 	//form the inner matrix
-	for (var i = 1 ; i < max ; i++) {
+	for (let i = 1 ; i < max ; i++) {
 		subarray.push(array[i].splice(1, max-1));
 	}
 
@@ -242,7 +242,7 @@ snailSort(input2);
 
 
 // Insertion Sort - Part 1
-var input = `6
+let input = `6
 1 4 3 5 6 2`;
 
 function insertionSort(input) {
