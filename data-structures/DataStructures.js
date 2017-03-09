@@ -113,7 +113,7 @@ names.getElement();
 
 
 //
-// ARRAYS in ES6
+// ARRAY
 //
 
 class Array {
@@ -248,114 +248,6 @@ q.dequeue();
 console.log(q.toString());
 console.log("Front of queue: " + q.front());
 console.log("Back of queue: " + q.back());
-
-
-
-//
-// LINKED LIST
-//
-
-function Node(data) {
-  this.data = data;
-  this.next = null;
-}
-
-class LinkedList {
-  constructor() {
-    this.head = null
-  }
-
-  find(item) {
-    let current = this.head;
-
-    while (current.data !== item) {
-      current = current.next;
-    }
-
-   return current;
-  }
-
-  append(data) {
-    const newNode = new Node(data);
-
-    if (!this.head) {
-      this.head = newNode;
-      return;
-    }
-
-    let current = this.head;
-
-    while (current.next !== null) {
-      current = current.next;
-    }
-
-    current.next = newNode;
-  }
-
-  prepend(data) {
-   let newHead = new Node(data);
-   newHead.next = this.head;
-   this.head = newHead;
-  }
-
-  print() {
-    let current = this.head;
-
-    while (current !== null) {
-      console.log(current.data);
-      current = current.next;
-    }
-  }
-
-  printLinks() {
-    let current = this.head;
-    let elements = [];
-
-    while (current !== null) {
-      elements.push(current.data);
-      current = current.next;
-    }
-
-    console.log(elements.join(' -> '));
-  }
-
-  reversePrint(node) {
-    if (node === null) return;
-
-    this.reversePrint(node.next);
-
-    console.log(node.data);
-  }
-}
-
-function mergeSortedLists(l1, l2) {
-  let copy = merged = new Node(0);
-
-  while (l1 !== null && l2 !== null) {
-    if (l1.data < l2.data) {
-      merged.next = l1;
-      l1 = l1.next;
-      merged = merged.next;
-    }
-    else {
-      merged.next = l2;
-      l2 = l2.next;
-      merged = merged.next;
-    }
-  }
-
-  if (l1 !== null) merged.next = l1;
-  if (l2 !== null) merged.next = l2;
-
-  return copy.next;
-}
-
-let cities = new LinkedList();
-cities.append("Jersey City");
-cities.append("NYC");
-cities.append("Miami");
-cities.append("LA");
-cities.reversePrint(cities.head);
 
 
 
