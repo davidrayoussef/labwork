@@ -3,7 +3,7 @@
 //
 
 function CArray(numElements) {
-  this.dataStore = [];
+  this.store = [];
   this.pos = 0;
   this.numElements = numElements;
   this.insert = insert;
@@ -18,28 +18,28 @@ function CArray(numElements) {
   this.gaps = [5,3,1];
 
   for (let i = 0; i < numElements; ++i) {
-    this.dataStore[i] = i;
+    this.store[i] = i;
   }
 }
 
 function setData() {
   for (let i = 0; i < this.numElements; ++i) {
-    this.dataStore[i] = Math.floor(Math.random() * (this.numElements+1));
+    this.store[i] = Math.floor(Math.random() * (this.numElements+1));
   }
 }
 
 function clear() {
-  this.dataStore.forEach(function(v) { v = 0; })
+  this.store.forEach(function(v) { v = 0; })
 }
 
 function insert(element) {
-  this.dataStore[this.pos++] = element;
+  this.store[this.pos++] = element;
 }
 
 function toString() {
   let retstr = '';
 
-  this.dataStore.map(function(v,i) {
+  this.store.map(function(v,i) {
     retstr += (i > 0 && i % 10 == 0) ? '\n' : v + ' ';
   })
 
@@ -53,12 +53,12 @@ function swap(arr, index1, index2) {
 }
 
 function bubbleSort() {
-  let numElements = this.dataStore.length;
+  let numElements = this.store.length;
 
   for (let outer = numElements; outer >= 2; --outer) {
     for (let inner = 0; inner <= outer - 1; ++inner) {
-      if (this.dataStore[inner] > this.dataStore[inner + 1]) {
-        swap(this.dataStore, inner, inner + 1);
+      if (this.store[inner] > this.store[inner + 1]) {
+        swap(this.store, inner, inner + 1);
         console.log(this.toString());
       }
     }
@@ -66,41 +66,42 @@ function bubbleSort() {
 }
 
 function selectionSort() {
-  let min, temp, length = this.dataStore.length;
+  let min, temp, length = this.store.length;
   for (let outer = 0; outer <= length-2; ++outer) {
     min = outer;
     for (let inner = outer + 1; inner <= length-1; ++inner) {
-      if (this.dataStore[inner] < this.dataStore[min]) {
+      if (this.store[inner] < this.store[min]) {
         min = inner;
       }
     }
-    swap(this.dataStore, outer, min); // placed after inner loop (instead of in if statement) so inner loop can check all numbers first
+    swap(this.store, outer, min); // placed after inner loop (instead of in if statement) so inner loop can check all numbers first
     console.log(this.toString());
   }
 }
 
 function insertionSort() {
-  let temp, inner, length = this.dataStore.length;
-  for (let outer = 1; outer <= length-1; ++outer) { // outer loop moves element by element through the array
-    temp = this.dataStore[outer];
+  let temp, inner, length = this.store.length;
+  for (let outer = 1; outer <= length - 1; outer++) { // outer loop moves element by element through the array
+    temp = this.store[outer];
     inner = outer;
-    while(inner > 0 && (this.dataStore[inner-1] >= temp)) { // inner loop compares the element chosen in the outer loop to the element next to it in the array.
-      this.dataStore[inner] = this.dataStore[inner-1]; // if outer loop element less than inner loop element, array elements shifted right to make room for inner-loop el
-      --inner;
+
+    while (inner > 0 && (this.store[inner - 1] >= temp)) { // inner loop compares the element chosen in the outer loop to the element next to it in the array.
+      this.store[inner] = this.store[inner - 1]; // if outer loop element is less than inner loop element, array elements are shifted right to make room for inner-loop element
+      inner--;
     }
-    this.dataStore[inner] = temp;
+    this.store[inner] = temp;
     console.log(this.toString());
   }
 }
 
 function shellSort() {
   for (let g = 0; g < this.gaps.length; ++g) { // outer loop loops through each number in the gaps array
-    for (let i = this.gaps[g]; i < this.dataStore.length; ++i) { // middle loop loops the number amount in the gaps array
-      let temp = this.dataStore[i];
-      for (let j = i; j >= this.gaps[g] && this.dataStore[j - this.gaps[g]] > temp; j -= this.gaps[g]) {
-        this.dataStore[j] = this.dataStore[j - this.gaps[g]];
+    for (let i = this.gaps[g]; i < this.store.length; ++i) { // middle loop loops the number amount in the gaps array
+      let temp = this.store[i];
+      for (let j = i; j >= this.gaps[g] && this.store[j - this.gaps[g]] > temp; j -= this.gaps[g]) {
+        this.store[j] = this.store[j - this.gaps[g]];
       }
-      this.dataStore[j] = temp;
+      this.store[j] = temp;
     }
   }
 }
@@ -134,7 +135,7 @@ myNums.toString();
 function shuffle(arr) {
   let currIndex = arr.length, temp, randIndex;
 
-  while(currIndex) {
+  while (currIndex) {
     randIndex = Math.floor(Math.random() * currIndex--); // pick a remaining element...
 
     temp = arr[currIndex]; // swap with current element

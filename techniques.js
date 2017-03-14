@@ -1327,3 +1327,220 @@ function findSubstringInString(substring, string) {
 }
 
 findSubstringInString('david', 'efdavidyouss');
+
+
+
+// HOW TO TRAVERSE 2D ARRAYS...
+/*
+Given an 2D board, count how many battleships are in it. The battleships are represented with 'X's,
+empty slots are represented with '.'s. You may assume the following rules:
+- You receive a valid board, made of only battleships or empty slots.
+- Battleships can only be placed horizontally or vertically. In other words, they can only be made of the
+  shape 1xN (1 row, N columns) or Nx1 (N rows, 1 column), where N can be of any size.
+- At least one horizontal or vertical cell separates between two battleships - there are no adjacent battleships.
+*/
+
+function countBattleships(board) {
+  const height = board.length;
+  const width = board[0].length;
+  let count = 0;
+  let traversedPositions = [];
+  let x = 0;
+  let y = 0;
+
+  while (x < width && y < height) {
+    let shipWalker;
+
+    if ( board[y][x] === 'X' && !traversedPositions.includes(y + '-' + x) ) {
+      count++;
+      traversedPositions.push(y + '-' + x);
+
+      shipWalker = x + 1;
+
+      while (shipWalker < width) {
+        if (board[y][shipWalker] === 'X') {
+          traversedPositions.push(y + '-' + shipWalker);
+          shipWalker++;
+        }
+        else break;
+      }
+
+      shipWalker = y + 1;
+
+      while (shipWalker < height) {
+        if (board[shipWalker][x] === 'X') {
+          traversedPositions.push(shipWalker + '-' + x);
+          shipWalker++;
+        }
+        else break;
+      }
+    }
+
+    if (x !== width - 1) {
+      x++;
+    }
+    else {
+      x = 0;
+      y++;
+    }
+
+  }
+
+  return count;
+}
+
+countBattleships([
+  ['X', '.', '.', 'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+  ['.', 'X', 'X', '.', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '.'],
+  ['X', '.', '.', 'X', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'X'],
+  ['X', '.', 'X', '.', 'X', '.', 'X', '.', '.', '.', '.', '.', 'X', '.', '.'],
+  ['X', '.', '.', 'X', '.', 'X', '.', 'X', 'X', 'X', 'X', 'X', '.', 'X', 'X'],
+  ['X', '.', 'X', '.', 'X', '.', '.', '.', '.', '.', '.', '.', 'X', '.', '.'],
+  ['X', '.', '.', '.', '.', 'X', 'X', 'X', 'X', 'X', 'X', '.', 'X', '.', 'X'],
+  ['X', '.', 'X', 'X', '.', '.', '.', '.', '.', '.', '.', '.', 'X', '.', '.'],
+  ['X', '.', '.', '.', 'X', 'X', '.', 'X', 'X', 'X', 'X', '.', 'X', '.', 'X'],
+  ['.', '.', 'X', '.', '.', '.', 'X', '.', '.', '.', '.', '.', 'X', '.', 'X'],
+  ['.', 'X', '.', 'X', '.', '.', 'X', '.', '.', 'X', '.', '.', 'X', '.', 'X'],
+  ['X', '.', '.', 'X', '.', '.', 'X', '.', '.', 'X', '.', '.', 'X', '.', 'X'],
+  ['.', 'X', '.', 'X', '.', '.', 'X', '.', 'X', '.', '.', 'X', '.', '.', 'X'],
+  ['.', 'X', '.', 'X', '.', '.', 'X', '.', '.', '.', '.', 'X', '.', 'X', '.'],
+  ['X', '.', '.', 'X', '.', '.', 'X', '.', '.', 'X', '.', 'X', '.', '.', 'X']
+]);
+
+/* Visualized representation with counts
+[' 1', ' .', ' .', ' 2', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' 3'],
+[' .', ' 4', ' 4', ' .', ' 5', ' 5', ' 5', ' 5', ' 5', ' 5', ' 5', ' 5', ' 5', ' 5', ' .'],
+[' 6', ' .', ' .', ' 7', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' 8'],
+[' 6', ' .', ' 9', ' .', '10', ' .', '11', ' .', ' .', ' .', ' .', ' .', '12', ' .', ' .'],
+[' 6', ' .', ' .', '13', ' .', '14', ' .', '15', '15', '15', '15', '15', ' .', '16', '16'],
+[' 6', ' .', '17', ' .', '18', ' .', ' .', ' .', ' .', ' .', ' .', ' .', '19', ' .', ' .'],
+[' 6', ' .', ' .', ' .', ' .', '20', '20', '20', '20', '20', '20', ' .', '19', ' .', '21'],
+[' 6', ' .', '22', '22', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', '19', ' .', ' .'],
+[' 6', ' .', ' .', ' .', '23', '23', ' .', '24', '24', '24', '24', ' .', '19', ' .', '25'],
+[' .', ' .', '26', ' .', ' .', ' .', '27', ' .', ' .', ' .', ' .', ' .', '19', ' .', '25'],
+[' .', '28', ' .', '29', ' .', ' .', '27', ' .', ' .', '30', ' .', ' .', '19', ' .', '25'],
+['31', ' .', ' .', '29', ' .', ' .', '27', ' .', ' .', '30', ' .', ' .', '19', ' .', '25'],
+[' .', '32', ' .', '29', ' .', ' .', '27', ' .', '33', ' .', ' .', '34', ' .', ' .', '25'],
+[' .', '32', ' .', '29', ' .', ' .', '27', ' .', ' .', ' .', ' .', '34', ' .', '35', ' .'],
+['36', ' .', ' .', '29', ' .', ' .', '27', ' .', ' .', '37', ' .', '34', ' .', ' .', '38']
+*/
+
+
+
+/*
+You are given a map in form of a two-dimensional integer grid where 1 represents land and 0 represents water.
+
+Grid cells are connected horizontally/vertically (not diagonally). The grid is completely surrounded by water,
+and there is exactly one island (i.e., one or more connected land cells). The island doesn't have "lakes"
+(water inside that isn't connected to the water around the island). One cell is a square with side length 1.
+
+The grid is rectangular, width and height don't exceed 100. Determine the perimeter of the island.
+*/
+
+function islandPerimeter(grid) {
+  let perimeter = 0;
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      let borders = 0;
+
+      if (grid[i][j] === 1) {
+        if (grid[i][j - 1] !== 1) borders++;
+        if (grid[i][j + 1] !== 1) borders++;
+        if (!grid[i - 1] || grid[i - 1][j] !== 1) borders++;
+        if (!grid[i + 1] || grid[i + 1][j] !== 1) borders++;
+      }
+
+      perimeter += borders;
+    }
+  }
+
+  return perimeter;
+}
+
+islandPerimeter([
+ [0,1,0,0],
+ [1,1,1,0],
+ [0,1,0,0],
+ [1,1,0,0]
+]);
+
+
+
+// Get sum of a range of numbers (inclusive) without adding them all together
+function getSum(a, b) {
+  const min = Math.min(a, b);
+  const max = Math.max(a, b);
+
+  return (max - min + 1) * (min + max) / 2;
+}
+
+getSum(0,100); //=> 5050
+
+
+
+// Alter array in place by moving zeroes (string and number) to the end while still maintaining the same order
+function removeZeros(arr) {
+  let k = 0;
+
+  for (let i = 0, j = 0; i < arr.length; i++) {
+    if (arr[i] !== 0 && arr[i] !== '0') {
+      k = i - 1;
+      while (k >= j) {
+        [arr[i], arr[k]] = [arr[k], arr[i]];
+        k--;
+        i--;
+      }
+      j++;
+    }
+  }
+
+  return arr;
+}
+
+removeZeros([13, '0', 0, '0', 0, 78, 0, '0', 19, 14]); //=> ""[13, 78, 19, 14, "0", 0, "0", 0, 0, "0"]""
+
+
+
+// Find duplicates in an array where 1 ≤ a[i] ≤ size of array, without using filter()
+
+// Negate each number's index. Once a value is negated, if it requires to be negated again, it's a duplicate.
+function findDuplicates(nums) {
+  let result = [];
+
+  for (let i = 0; i < nums.length; i++) {
+    let index = Math.abs(nums[i]) - 1;
+
+    if (nums[index] < 0) { // at this point, if number is negative, it's a duplicate
+      result.push(Math.abs(index + 1));
+    }
+
+    nums[index] = -nums[index];
+  }
+
+  return result;
+};
+
+findDuplicates([4,3,2,7,8,2,3,14,14,20,30,20,1]); //=> [2,3]
+
+
+
+// Get the sum of two values using bitwise operators rather than + operator
+function getSum(a, b) {
+  while (b) {
+    // The bitwise AND operator returns a one in each bit position for which the corresponding bits of both operands are ones.
+    // For example, given a=5=101 and b=7=111, a & b = 101 (in bits) or 5 (in decimal)
+    // Then when the result is shifted by 1 bit, it is the carry.
+    // For example, 101 << 1 = 1010 (in bits) or 10 (in decimal)
+    let carry = (a & b) << 1;
+    // The bitwise XOR operator returns a zero in each bit position for which the corresponding bits are the same,
+    // and returns a one in each bit position for which the corresponding bits are different.
+    // For example, given a=5=101 and b=7=111, a ^ b = 010 (in bits) or 2 (in decimal)
+    a = a ^ b;
+    b = carry;
+  }
+
+  return a;
+}
+
+getSum(5,7);
