@@ -1,3 +1,6 @@
+// https://github.com/davidrayoussef/data-structures-in-es6
+
+
 //
 // LIST
 //
@@ -109,49 +112,6 @@ names.append("Bryan");
 names.append("Danny");
 names.front();
 names.getElement();
-
-
-
-//
-// ARRAY
-//
-
-class Array {
-  constructor(){
-    this.store = [];
-  }
-
-  add(data) {
-    this.store.push(data);
-  }
-
-  remove(data) {
-    this.store = this.store.filter(v => v !== data);
-  }
-
-  search(data) {
-    // tilde operator runs this algo -(N+1) which converts -1 to 0
-    let foundIndex = ~this.store.indexOf(data);
-
-    return foundIndex ? foundIndex : null;
-  }
-
-  find(index) {
-    return this.store[index];
-  }
-
-  length() {
-    return this.store.length;
-  }
-}
-
-let myArray = new Array();
-myArray.add('David');
-myArray.add('Bill');
-myArray.add('Jenny');
-myArray.search('Bill');
-myArray.find(2);
-myArray.length();
 
 
 

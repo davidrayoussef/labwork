@@ -1544,3 +1544,36 @@ function getSum(a, b) {
 }
 
 getSum(5,7);
+
+
+
+// Using a positive lookahead to string replace all but the last four characters...
+function mask(cc) {
+  return cc.replace(/.(?=....)/g, '#');
+}
+
+mask("4556364607935616") //=> "############5616"
+
+
+
+// Calculating with functions
+const zero = (fn) => fn ? fn(0) : 0;
+const one = (fn) => fn ? fn(1) : 1;
+const two = (fn) => fn ? fn(2) : 2;
+const three = (fn) => fn ? fn(3) : 3;
+const four = (fn) => fn ? fn(4) : 4;
+const five = (fn) => fn ? fn(5) : 5;
+const six = (fn) => fn ? fn(6) : 6;
+const seven = (fn) => fn ? fn(7) : 7;
+const eight = (fn) => fn ? fn(8) : 8;
+const nine = (fn) => fn ? fn(9) : 9;
+
+const plus = (a) => (b) => b + a;
+const minus = (a) => (b) => b - a;
+const times = (a) => (b) => b * a;
+const dividedBy = (a) => (b) => b / a;
+
+seven(times(five())); //=> 35
+four(plus(nine())); //=> 13
+eight(minus(three())); //=> 5
+six(dividedBy(two())); //=> 3
