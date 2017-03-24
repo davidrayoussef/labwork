@@ -1577,3 +1577,61 @@ seven(times(five())); //=> 35
 four(plus(nine())); //=> 13
 eight(minus(three())); //=> 5
 six(dividedBy(two())); //=> 3
+
+
+
+// curried add function using recursion and valueOf
+function curriedAdd(n) {
+  let acc = (x) => curriedAdd(n + x);
+
+  acc.valueOf = () => n;
+
+  return acc;
+}
+
+curriedAdd(1)(2)(3)(4)(5); //=> 15
+
+
+
+// Extend the Function prototype with a pipe method
+const addOne = (v) => v + 1;
+const square = (v) => v * v;
+
+Function.prototype.pipe = function(fn) {
+  return (arg) => fn(this(arg));
+};
+
+[1,2,3,4,5].map(addOne.pipe(square)); //=> [4, 9, 16, 25, 36]
+
+
+
+// Replicate the 'new' operator
+function NEW(constructor, ...args) {
+  const newObj = Object.create(constructor.prototype);
+
+  const result = constructor.apply(newObj, args);
+
+  return result === Object(result) ? result : newObj;
+}
+
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayHi = function() {
+  return 'Hi, I am ' + this.name;
+}
+
+let guy = NEW(Person, 'Guy');
+
+guy.name; //=> 'Guy'
+guy.sayHi(); //=> 'Hi, I am Guy'
+
+
+
+// Use regex capturing to create phone number from array of 10 digits
+function createPhoneNumber(n){
+  return n.join('').replace(/(...)(...)(....)/, '($1) $2-$3');
+}
+
+createPhoneNumber([1,2,3,4,5,6,7,8,9,0]); //=> "(123) 456-7890"
