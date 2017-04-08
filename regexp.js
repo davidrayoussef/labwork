@@ -51,3 +51,9 @@ alphanumeric("Mazinkaiser"); //=> true
 alphanumeric("hello world_"); //=> false
 alphanumeric("PassW0rd"); //=> true
 alphanumeric("     "); //=> false
+
+
+
+function isValidIP(str) {
+  return /^(([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])(\.(?!$)|$)){4}$/.test(str);
+}
