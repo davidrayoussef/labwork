@@ -1,344 +1,199 @@
+// Use Map() to get a tally by order of insertion
+const arr = [1,1,1,2,2,2,3,3,3,3,3,4,4];
 
-// Checks if a string ends in a substring, using the RegExp Constructor
-function solution(str, ending) {
-  return new RegExp(ending + '$').test(str);
-}
-solution('abc', 'bc')
+const tally = arr.reduce((map,key) => {
+  map.has(key) ? map.set(key, map.get(key) + 1) : map.set(key, 1);
+  return map;
+}, new Map());
 
+console.log(tally); //=> {1 => 3, 2 => 3, 3 => 5, 4 => 2}
+console.log(tally.entries()); //=> {[1, 3], [2, 3], [3, 5], [4, 2]}
 
 
-function reject(array, iterator) {
-  return array.filter(function(element) {
-    return !iterator(element);
-  });
-}
 
-let numArray = [1, 2, 3, 4, 5, 6];
-let isOdd = function(num) { return num % 2 == 0; };
-let odds = reject(numArray, isOdd);
-console.log(odds); //=> [1, 3, 5]
+// check if subsequence can be found in a sequence... same as ransom note from magazine (sorted) problem
+function isSubsequence(s, t) {
+  let match = 0;
 
-
-
-// Returns missing number by subtracting the sum of numbers in
-// order from the sum of the complete set of numbers
-
-function getMissingNumber(arr) {
-  return Array
-    .from({length: arr.length + 1})
-    .map((_,i) => i)
-    .reduce((acc,curr) => acc + curr) -
-
-    arr.reduce((acc,curr) => acc + curr);
-}
-
-let arr = [0,1,2,4,5,6,7,8,9];
-
-getMissingNumber(arr); //=> 3
-
-
-
-function sortList(sortBy, list) {
-  return list.sort(function(a, b) {
-    return b[sortBy] < a[sortBy];
-  });
-}
-
-const list = [
-  { key1: 1, key2: 3 },
-  { key1: 3, key2: 2 },
-  { key1: 2, key2: 40 },
-  { key1: 4, key2: 12 }
-];
-// Sorts objects ascending by key2
-sortList('key2', list);
-
-
-
-function elapsedSeconds(startDate, endDate){
-  let startTime = startDate.getTime();
-  let endTime = endDate.getTime();
-  let timeDiff = endTime - startTime;
-  timeDiff /= 1000;
-
-  return Math.round(timeDiff);
-}
-
-
-
-function isLeapYear(year) {
-  if (year % 400 == 0) {
-    return true;
-  }
-  else if (year % 100 == 0) {
-    return false;
-  }
-  else if (year % 4 == 0) {
-    return true;
-  }
-  else return false;
-}
-
-isLeapYear(400);
-
-
-
-// RECURSIVE REPEAT
-
-function recursiveRepeat(n, str) {
-  return n < 1 ? str : str + recursiveRepeat(n - 1, str);
-}
-
-recursiveRepeat(8, 'nana-') + ' Batman!';
-
-
-
-function range(start, count) {
-  return Array.from({length: count}).map((_, i) => start + i);
-}
-
-range(0, 100);
-
-
-
-// Return an object's key and value pairs as a string or array
-
-function keysAndValues(obj){
-  return Object
-    .keys(obj)
-    .map(key => `${key} = ${obj[key]}`)
-    .join(', ');
-}
-
-const data = {
-  key1: 'value1',
-  key2: 'value2',
-  key3: 'value3'
-}
-
-keysAndValues(data); //=> key1 = value1, key2 = value2, key3 = value3
-
-
-
-function nextNumDays(date, num){
-  return Array
-  .from({length: num})
-  .map(_ => {
-    date.setDate(date.getDate() + 1);
-    return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-  })
-  .join(', ');
-}
-
-nextNumDays(new Date(), 5);
-
-
-
-// Return number of differences between two strings
-
-function hamming(a, b) {
-  return a
-    .split('')
-    .filter((v,i) => a[i] !== b[i])
-    .length;
-}
-hamming('I like turtles', 'I like turkeys'); //=> 3
-
-
-
-// Return last item whether array or args
-
-function last(list) {
-  return arguments.length > 1 ? arguments[arguments.length - 1] : list[list.length - 1]
-}
-
-
-
-function autocomplete(input, dictionary){
-  const letters = /[^a-zA-Z]/g;
-  input = input.replace(letters, '').toLowerCase();
-
-  return dictionary
-    .filter(v => input === v.substr(0, input.length).toLowerCase())
-    .slice(0,5);
-}
-
-autocomplete('ai', ['airplane', 'airport', 'apple', 'ball', 'aisle', 'airbender', 'ails', 'aids', 'air']);
-
-
-
-// Memoize a function with more than one arg
-
-function cache(func) {
-  let cacheObj = {};
-
-  return function() {
-    const key = JSON.stringify(Array.prototype.slice.call(arguments));
-
-    return key in cacheObj ? cacheObj[key] : cacheObj[key] = func.apply(this, arguments);
-  }
-}
-
-const complexFunction = (arg1, arg2) => arg1 + arg2;
-const cachedFunction = cache(complexFunction);
-cachedFunction('foo', 'bar');
-
-
-
-function mapWith(fn) {
-  return function(list) {
-    return Array.prototype.map.call(list, function(v) {
-      return fn.call(this, v);
-    });
-  }
-}
-
-
-
-let Singleton = function() {
-  if (Singleton.instance) {
-    return Singleton.instance;
-  }
-  if (!(this instanceof Singleton)) {
-    return new Singleton();
-  }
-  Singleton.instance = this;
-}
-
-
-
-
-// Return largest n numbers from array
-
-function largest(n,xs) {
-  return n === 0 ? [] : xs.sort((a,b) => a - b).slice(-n);
-}
-
-largest(2, [7,6,5,4,3,2,1]); //=> [6, 7]
-
-
-
-function ipToNum(ip) {
-  return parseInt(ip.split('.').map(v => {
-    return '00000000'.concat(parseInt(v).toString(2)).slice(-8);
-  }).join(''), 2);
-}
-
-function numToIp(number) {
-  let ip = number % 256;
-
-  for (let i = 1; i <= 3; i++) {
-    number = Math.floor(number / 256);
-    ip = number % 256 + '.' + ip;
+  for (let i = 0; i < t.length; i++) {
+    if (s[match] === t[i]) {
+      match++;
+    }
   }
 
-  return ip;
+  return s.length === match;
 }
 
+isSubsequence('abc', 'ahbgdc'); //=> true
 
 
-function rgbToHex(r, g, b) {
-  if (r <= 0) r = '00';
-  else if (r > 255) r = 'FF';
 
-  if (g <= 0) g = '00';
-  else if (g > 255) g = 'FF';
-
-  if (b <= 0) b = '00';
-  else if (b > 255) b = 'FF';
-
-  return (r.toString(16) + g.toString(16) + b.toString(16)).toUpperCase();
+function findSubstringInString(substring, string) {
+  return (string + string).indexOf(substring);
 }
 
-rgbToHex(255, 255, 255);
+findSubstringInString('david', 'efdavidra'); //=> 2
 
 
 
-String.prototype.removeChars = function(character) {
-  let regex = new RegExp(character, 'g');
+// Use regex capturing to create phone number from array of 10 digits
+function createPhoneNumber(n){
+  return n.join('').replace(/(...)(...)(....)/, '($1) $2-$3');
+}
 
-  return this.replace(regex, '');
+createPhoneNumber([1,2,3,4,5,6,7,8,9,0]); //=> "(123) 456-7890"
+
+
+
+// Replicate the 'new' operator
+function NEW(constructor, ...args) {
+  const newObj = Object.create(constructor.prototype);
+
+  const result = constructor.apply(newObj, args);
+
+  return result === Object(result) ? result : newObj;
+}
+
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayHi = function() {
+  return 'Hi, I am ' + this.name;
+}
+
+let guy = NEW(Person, 'Guy');
+
+guy.name; //=> 'Guy'
+guy.sayHi(); //=> 'Hi, I am Guy'
+
+
+
+// Extend the Function prototype with a pipe method
+const addOne = (v) => v + 1;
+const square = (v) => v * v;
+
+Function.prototype.pipe = function(fn) {
+  return (arg) => fn(this(arg));
 };
 
-'Thisy isy a stringy with too many whyyyys'.removeChars('y');
+[1,2,3,4,5].map(addOne.pipe(square)); //=> [4, 9, 16, 25, 36]
 
 
 
-// Write an arithmetic list which is basically a list that contains consecutive terms in the sequence.
-// You will be given three parameters :
+// curried add function using recursion and valueOf
+function curriedAdd(n) {
+  let acc = (x) => curriedAdd(n + x);
 
-// first, the first term in the sequence
-// c, the constant that you are going to ADD ( since it is an arithmetic sequence...)
-// l, the number of terms that should be returned
+  acc.valueOf = () => n;
+
+  return acc;
+}
+
+curriedAdd(1)(2)(3)(4)(5); //=> 15
 
 
-function seqlist(first, c, l) {
-  let arr = [];
 
-  if (c < 0) {
-    for (let i = first; i > l * c + first; i += c) {
-      arr.push(i);
+// Calculating with functions
+const zero = (fn) => fn ? fn(0) : 0;
+const one = (fn) => fn ? fn(1) : 1;
+const two = (fn) => fn ? fn(2) : 2;
+const three = (fn) => fn ? fn(3) : 3;
+const four = (fn) => fn ? fn(4) : 4;
+const five = (fn) => fn ? fn(5) : 5;
+const six = (fn) => fn ? fn(6) : 6;
+const seven = (fn) => fn ? fn(7) : 7;
+const eight = (fn) => fn ? fn(8) : 8;
+const nine = (fn) => fn ? fn(9) : 9;
+
+const plus = (a) => (b) => b + a;
+const minus = (a) => (b) => b - a;
+const times = (a) => (b) => b * a;
+const dividedBy = (a) => (b) => b / a;
+
+seven(times(five())); //=> 35
+four(plus(nine())); //=> 13
+eight(minus(three())); //=> 5
+six(dividedBy(two())); //=> 3
+
+
+
+// Using a positive lookahead to string replace all but the last four characters...
+function mask(cc) {
+  return cc.replace(/.(?=....)/g, '#');
+}
+
+mask('4556364607935616') //=> "############5616"
+
+
+
+// Get the sum of two values using bitwise operators rather than + operator
+function getSum(a, b) {
+  while (b) {
+    // The bitwise AND operator returns a one in each bit position for which the corresponding bits of both operands are ones.
+    // For example, given a=5=101 and b=7=111, a & b = 101 (in bits) or 5 (in decimal)
+    // Then when the result is shifted by 1 bit, it is the carry.
+    // For example, 101 << 1 = 1010 (in bits) or 10 (in decimal)
+    let carry = (a & b) << 1;
+    // The bitwise XOR operator returns a zero in each bit position for which the corresponding bits are the same,
+    // and returns a one in each bit position for which the corresponding bits are different.
+    // For example, given a=5=101 and b=7=111, a ^ b = 010 (in bits) or 2 (in decimal)
+    a = a ^ b;
+    b = carry;
+  }
+
+  return a;
+}
+
+getSum(5,7);
+
+
+
+// Find duplicates in an array where 1 ≤ a[i] ≤ size of array, without using filter()
+
+// Negate each number's index. Once a value is negated, if it needs to be negated again, it's a duplicate.
+function findDuplicates(nums) {
+  let result = [];
+
+  for (let i = 0; i < nums.length; i++) {
+    let index = Math.abs(nums[i]) - 1;
+
+    if (nums[index] < 0) { // at this point, if number is negative, it's a duplicate
+      result.push(Math.abs(index + 1));
+    }
+
+    nums[index] = -nums[index];
+  }
+
+  return result;
+};
+
+findDuplicates([4,3,2,7,8,2,3,14,14,20,30,20,1]); //=> [2,3]
+
+
+
+// Alter array in place by moving zeroes (string and number) to the end while still maintaining the same order
+function removeZeros(arr) {
+  for (let i = 0, j = 0, k = 0; i < arr.length; i++) {
+    if (arr[i] !== 0 && arr[i] !== '0') {
+      k = i - 1;
+      while (k >= j) {
+        [arr[i], arr[k]] = [arr[k], arr[i]];
+        k--;
+        i--;
+      }
+      j++;
     }
   }
-  else {
-    for (let i = first; i < l * c + first; i += c) {
-      arr.push(i);
-    }
-  }
+
   return arr;
 }
 
-seqlist(6,3,5); //=> [6, 9, 12, 15, 18]
-
-// ORRRRR
-
-function seqlist(f, c, l){
-  return Array.from({length: l}).map((_,i) => f + i * c);
-}
-
-
-
-function powerset(list) {
-  return Math.pow(2, list.length);
-}
-
-
-
-// RETURNS POWERSET COMBINATIONS
-function power(s) {
-  let ps = [[]];
-
-  for (let i = 0; i < s.length; i++) {
-    for (let j = 0, len = ps.length; j < len; j++) {
-      ps.push(ps[j].concat(s[i]));
-    }
-  }
-
-  return ps;
-}
-
-power([1,2,3]);
-
-
-
-
-function toWeirdCase(str) {
-  return str
-    .split(' ')
-    .map(word => word
-      .split('')
-      .map((letter,i) => i % 2 === 0 ? letter.toUpperCase() : letter.toLowerCase())
-      .join('')
-    ).join(' ');
-}
-
-toWeirdCase( "Weird string case" ); // "WeIrD StRiNg CaSe"
-toWeirdCase( "String" ); // "StRiNg"
+removeZeros([13, '0', 0, '0', 0, 78, 0, '0', 19, 14]); //=> "[13, 78, 19, 14, "0", 0, "0", 0, 0, "0"]"
 
 
 
 // Returns array with zeroes moved to the right and other values untouched
-
 function moveZeros(arr) {
   return arr
     .filter(v => v !== 0)
@@ -349,989 +204,61 @@ moveZeros([false,1,0,1,2,0,1,3,"a"])
 
 
 
-function isValidIP(str) {
-  return str
-    .split('.')
-    .filter(v => v.match(' ') ? false : (v < 256))
-    .length === 4;
+// Get sum of a range of numbers (inclusive) without adding them all together
+function getSum(a, b) {
+  const min = Math.min(a, b);
+  const max = Math.max(a, b);
+
+  return (max - min + 1) * (min + max) / 2;
 }
 
-isValidIP('0.0.0.0')
+getSum(0,100); //=> 5050
 
-// ORRR
 
-function isValidIP(str) {
-  return /^(([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])(\.(?!$)|$)){4}$/.test(str);
-}
 
-
-
-function isIntArray(arr) {
-  return Array.isArray(arr) ? arr.every(v => v === null ? false : Math.floor(v) === v, 0) : false;
-}
-
-
-
-function createSecretHolder(secret) {
-  let holder = secret;
-
-  return {
-    getSecret: function() {
-      return holder;
-    },
-    setSecret: function(secret) {
-      holder = secret;
-    }
-  }
-}
-
-
-
-// CHECK IF SENTENCES WITH FULL PUNCTUATION AND SPACES ARE PALINDROMES WITHOUT USING REVERSE
-
-function palindrome(str) {
-  str = str.toLowerCase().replace(/[^a-z0-9]+/g, '');
-
-  return str === str.split('').reduce((str,curr) => curr + str, '');
-}
-
-palindrome("A man, a plan, a canal: Panama");
-
-
-
-// EDIT FUNCTION.PROTOTYPE.BIND TO ALLOW REBINDING
-
-Function.prototype.bind = function(ctx) {
-  let rebind = function() {
-  	return rebind.original.call(ctx);
-  }
-  console.log('this.orginal is: ' + this.original + ' and this is: ' + this)
-  rebind.original = this.original || this;
-
-  return rebind;
-};
-
-let func = function() {
-  return this.prop;
-};
-
-let obj1 = {prop: 1};
-let obj2 = {prop: 2};
-
-func = func.bind(obj1);
-func = func.bind(obj2);
-
-func(); //=> 2
-
-
-
-// remove random divs from page every half second
-
-setInterval(function() {
-  let divs = document.getElementsByTagName('div');
-  let randomDiv = divs[Math.floor(Math.random() * divs.length)];
-  console.log(randomDiv);
-  randomDiv.parentNode.removeChild(randomDiv);
-}, 500);
-
-
-// remove random divs from page on clicks
-
-document.addEventListener('click', function() {
-  let divs = document.getElementsByTagName('div');
-  let randomDiv = divs[Math.floor(Math.random() * divs.length)];
-  console.log(randomDiv);
-  randomDiv.parentNode.removeChild(randomDiv);
-});
-
-
-// OBSERVER PATTERN
-function observe() {
-  let subscribers {};
-
-  function subscribe(type, fn) {
-    if (!subscribers[type]) {
-      subscribers[type] = [];
-    }
-
-    if (subscribers[type].indexOf(fn) == -1) {
-      subscribers.push(fn);
-    }
-  }
-
-  function unsubscribe(type, fn) {
-    let listeners = subscribers[type];
-
-    if (!listeners) {
-      return;
-    }
-
-    let index = listeners.indexOf(fn);
-
-    if (index > -1) {
-      listeners.splice(index, 1)
-    }
-  }
-
-  function publish(type, evtObj) {
-    if (!subscribers[type]) {
-      return;
-    }
-
-    if (!evtObj.type) {
-      evtObj.type = type;
-    }
-
-    let listeners = subscribers[type];
-
-    for (let ii = 0, ll = listeners.length; ii < ll; ii++) {
-      listeners[ii](evtObj);
-    }
-  }
-
-  return {
-    subscribe: subscribe,
-    unsubscribe: unsubscribe,
-    publish: publish
-  };
-}
-
-
-// DISPLAY EVENTS BEGINNING WITH 'ON' IN THE WINDOW OBJECT
-
-function showEventListeners() {
-  return Object
-    .keys(window)
-    .filter(v => /^on/.test(v))
-    .join('\n');
-}
-
-
-
-function typing(param) {
-  let typ = typeof param;
-
-  switch (typ) {
-    case 'undefined':
-      return 'undefined';
-    case 'function':
-      return 'function=' + param;
-    default:
-      return typ + '=' + JSON.stringify(param);
-  }
-}
-
-
-
-function assert(outcome, description) {
-  let result = {};
-
-  result.outcome = outcome ? 'PASS' : 'FAIL';
-  result.description = description;
-
-  console.log(result.outcome + ' : ' + result.description)
-
-  if (result.outcome === 'FAIL') {
-    throw new Error('FAIL');
-  }
-}
-
-function add(num1, num2) {
-  return num1 + num2;
-}
-
-let result = add(5, 20);
-assert(result === 24, 'checking the add function')
-assert(eval("5 + 5") === 10, "5 and 5 is 10");
-
-
-
-function divisors(num) {
-  let res = [];
-
-  for (let i = 2; i < num - 1; i++) {
-    if (num % i == 0) res.push(i);
-  }
-
-  return res.length ? res : num + ' is prime';
-}
-
-
-
-// RECURSIVE REVERSE STRING
-function reverse(str) {
-  return str.length <= 1 ? str : reverse(str.substr(1)) + str.charAt(0);
-}
-
-
-
-function cycle(direction, array, current) {
-  if (arr.indexOf(cur) === -1) return null;
-
-  let index = arr.indexOf(cur);
-
-  if (index === 0 && dir < 0) {
-    return arr[arr.length - 1];
-  }
-  else if (cur === arr[arr.length - 1] && dir > 0) {
-    return arr[0]
-  }
-  else return dir > 0 ? arr[index + dir] : arr[index - Math.abs(dir)];
-}
-
-cycle(1, [1,2,3], 3)
-
-//ORRRR
-
-function cycle(dir, arr, cur) {
-  let len = arr.length;
-  let idx = arr.indexOf(cur);
-
-  return ~idx ? arr[(idx + dir + len) % len] : null;
-}
-
-
-
-// REAL WORLD APPLICATION OF CURRY USED IN SERVICE
-
-function NotificationService() {
-
-  function showMessage(type, message) {
-    alert(type + ': ' + message);
-  }
-
-  function createShowMessageFunction(type) {
-    return function(message) {
-      showMessage(type, message);
-    }
-  }
-
-  return {
-    showConfirm: createShowMessageFunction('confirm'),
-    showWarning: createShowMessageFunction('warning'),
-    showError: createShowMessageFunction('error')
-  }
-}
-
-let notification = new NotificationService();
-notification.showWarning('This becomes a warning message');
-
-
-
-// wraps returned function, creates closure, stores private data
-
-let setup = function() {
-let count = 0;
-
-return function() {
-	return count++;
-};
-};
-
-let next = setup();
-
-next(); // 1
-next(); // 2
-
-
-
-// Use reduce to do tally with hash map
-
-function wordCount(str) {
-  return str.split(/[^\w']+/).reduce((hash, word) => {
-    hash[word] ? hash[word]++ : hash[word] = 1;
-    return hash;
-  }, {});
-}
-
-let words = "You've recently taken an internship at an up and coming lingustic and natural language centre. Unfortunately, as with real life, the professors have allocated you the mundane task of counting every single word in a book and finding out how many occurences of each word there are. To them, this task would take hours but they are unaware of your programming background (They really didn't assess the candidates much). Impress them with that word count by the end of the day and you're surely in for more smooth sailing."
-console.log(JSON.stringify(wordCount(words), null, 2));
-
-
-
-// USE IMMEDIATE FUNCTION CLOSURES INSTEAD OF WITH STATEMENTS
-
-Object.extend(String.prototype.escapeHTML, {
-  div:  document.createElement('div'),
-  text: document.createTextNode('')
-});
-
-(function(s) {
-  s.div.appendChild(s.text);
-})(String.prototype.escapeHTML);
-
-
-
-let typer = (function() {
-
-  return {
-    isNumber: function(x) {
-      return typeof x == 'number' && !isNaN(x) || x instanceof Number && !isNaN(x);
-    },
-    isString: function(x) {
-      return typeof x == 'string' || x instanceof String;
-    },
-    isArray: function(x) {
-      return Array.isArray(x);
-    },
-    isFunction: function(x) {
-      return typeof x == 'function';
-    },
-    isDate: function(x) {
-      return x instanceof Date;
-    },
-    isRegExp: function(x) {
-      return x instanceof RegExp;
-    },
-    isBoolean: function(x) {
-      return typeof x == 'boolean' || x instanceof Boolean;
-    },
-    isError: function(x) {
-      return x instanceof Error;
-    },
-    isNull: function(x) {
-      return x == null;
-    },
-    isUndefined: function(x) {
-      return typeof x == 'undefined';
-    }
-  };
-})();
-
-
-
-
-// FUNCTION THAT CALLS TWO FUNCTIONS ON AN ARRAY AND RETURNS THE RESULTS
-
-function findMin(arr) {
-  return Math.min(...arr);
-}
-
-function findMax(arr) {
-  return Math.max(...arr);
-}
-
-function doThisDoThat(fn1, fn2) {
-  return function(arr) {
-    return [fn1(arr), fn2(arr)];
-  }
-}
-
-let minAndMax = doThisDoThat(findMin, findMax);
-minAndMax([555,66,7,345,23,45,67]); //=> [7, 555]
-
-
-
-// Alternative to switch statement
-
-function doAction(action) {
-  let actions = {
-    'hack': function() {
-      return 'hack';
-    },
-
-    'slash': function() {
-      return 'slash';
-    },
-
-    'run': function() {
-      return 'run';
-    }
-  };
-
-  if (typeof actions[action] !== 'function') {
-    throw new Error('Invalid action.');
-  }
-
-  return actions[action]();
-}
-
-
-
-// TEMPLATING ENGINE TO REPLACE EXPRESSIONS WITH VALUES
-function merge(content, values) {
-  return Object.keys(values).map(function(key){
-    return content.replace('{{' + key + '}}', values[key]);
-  });
-}
-
-let mailValues = {};
-mailValues.firstName = "Janet";
-let emailTemplate = "Hi {{firstName}}! Thanks for completing this code challenge :)";
-let mergedContent = merge(emailTemplate, mailValues);
-
-
-
-const fizzBuzzShort=()=>{for (i=0;i<100;)console.log((++i%3?'':'Fizz')+(i%5?'':'Buzz')||i)}
-fizzBuzzShort();
-
-
-
-function christmasTree(height) {
-  let tree = '';
-
-  for (let i = height; i > 0; i--) {
-    tree = repeat(height - i, ' ') + repeat(i * 2 - 1, '*') + repeat(height - i, ' ') + newLine(i) + tree;
-  }
-
-  function repeat(count, el) {
-    return new Array(count + 1).join(el);
-  }
-
-  function newLine(line) {
-    return line == height ? '' : '\n';
-  }
-
-  console.log(tree);
-}
-
-christmasTree(3)
-
-
-
-function triangleLeft(n) {
-  let str = '';
-
-  for (let row = 1; row <= n; row++) {
-    for (let character = 1; character <= row; character++) {
-      str += '*';
-    }
-    str += '\n';
-  }
-
-  console.log(str);
-}
-
-triangleLeft(5);
-
-
-
-function triangleRight(n) {
-  let str = '';
-
-  for (let i = 1; i <= n; i++) {
-    for (let j = 1; j <= n; j++) {
-      if (i + j > n) {
-        str += '#';
-      } else str += ' ';
-    }
-    str += '\n';
-  }
-
-  console.log(str);
-}
-triangleRight(5);
-
-
-
-function diamond(n) {
-  if (n < 3 || n % 2 === 0) return null;
-  let str = '';
-
-  for (let i = 1; i <= n; i += 2) {
-    for (let space = 0; space < (n - i) / 2; space++ ) {
-      str += ' ';
-    }
-    for (let star = 0; star < i; star++) {
-      str += '*';
-    }
-    str += i === n ? '' : '\n';
-  }
-
-  let reverseStr = str.split('\n').reverse().slice(1).join('\n');
-
-  return str + '\n' + reverseStr + '\n';
-}
-
-
-
-// A benchmark runner for for-loops vs while-loops vs map
-
-let ol;
-
-function runBenchmark(name, test) {
-  if (!ol) {
-    ol = document.createElement('ol');
-    document.body.appendChild(ol);
-  }
-
-  setTimeout(() => {
-    let start = new Date().getTime();
-    test();
-    let total = new Date().getTime() - start;
-
-    let li = document.createElement('li');
-    li.innerHTML = name + ': ' + total + 'ms';
-    ol.appendChild(li);
-  }, 15);
-}
-
-let array = function populateArray() {
-  let loopLength = 500000;
-  let array = [];
-  for (let i = 0; i < loopLength; i++) {
-    array[i] = 'item' + i;
-  }
-  return array;
-}();
-
-let loopPerfTests = {
-  forLoop: function() {
-    for (let i = 0, item; i < array.length; i++) {
-      item = array[i];
-    }
-  },
-  arrayMap: function() {
-    let item;
-    array.map(v => item = v);
-  },
-  forLoopCachedLength: function() {
-    for (let i = 0, l = array.length, item; i < l; i++) {
-      item = array[i];
-    }
-  },
-  forLoopDirectAccess: function() {
-    for (let i = 0, item; (item = array[i]); i++) {
-    }
-  },
-  whileLoop: function() {
-    let i = 0, item;
-
-    while (i < array.length) {
-      item = array[i];
-      i++;
-    }
-  },
-  whileLoopCachedLength: function() {
-    let i = 0, l = array.length, item;
-
-    while (i < l) {
-      item = array[i];
-      i++;
-    }
-  },
-  reversedWhileLoop: function() {
-    let l = array.length, item;
-
-    while (l--) {
-      item = array[l];
-    }
-  },
-  doubleReversedWhileLoop: function() {
-    let l = array.length, i = 1, item;
-
-    while (i--) {
-      item = array[l - i - 1];
-    }
-  }
-};
-
-runBenchmark('for loop', loopPerfTests.forLoop);
-runBenchmark('array map', loopPerfTests.arrayMap);
-runBenchmark('for loop cached length', loopPerfTests.forLoopCachedLength);
-runBenchmark('for loop direct access', loopPerfTests.forLoopDirectAccess);
-runBenchmark('while loop', loopPerfTests.whileLoop);
-runBenchmark('while loop cached length', loopPerfTests.whileLoopCachedLength);
-runBenchmark('reversed while loop', loopPerfTests.reversedWhileLoop);
-runBenchmark('double reversed while loop', loopPerfTests.doubleReversedWhileLoop);
-
-
-
-// FIND LONGEST WITH ARRAY.reduce
-
-function findLongestString(arr) {
-  return arr.reduce((longest, entry) => {
-    return entry.length > longest.length ? entry : longest;
-  }, '');
-}
-
-findLongestString(['abc', 'fddede', 'cbcccded', 'eeeeeeeeeee']);
-
-
-
-function countOccurences(regex, str) {
-  return (str.match(regex) || []).length;
-}
-
-
-
-// CLOSURE EXAMPLE WITH FOR LOOP AND SETTIMEOUT
-
-for (let i = 0; i < 100; i++) {
-  setTimeout(function(x) {
-    return function() {
-      console.log(x);
-    }
-  }(i), 100);
-}
-
-
-
-// USING REDUCE TO DO GROUPING
-
-let list = [
-  { name: 'Dave', age: 40 },
-  { name: 'Dan', age: 35 },
-  { name: 'Kurt', age: 44 },
-  { name: 'Josh', age: 33 }
-];
-
-list.reduce((acc, item) => {
-  let key = item.age < 40 ? 'under40' : 'over40';
-  acc[key] = acc[key] || [];
-  acc[key].push(item);
-  return acc;
-}, {} );
-
-
-
-
-
-
-
-// SWAP NUMBERS WITHOUT TEMP
-
-function swap(a, b) {
-  console.log(`before swap: a => ${a}  b => ${b}`);
-  b = b - a;
-  a = a + b;
-  b = a - b;
-  console.log(`after swap: a => ${a}  b => ${b}`);
-}
-swap(2,3);
-
-
-
-// Use recursion to compute sum
-let numbers = [3,4,6,7,8];
-
-function recursiveSum(arr, n) {
-  if (n == 0) return arr[n];
-  else return arr[n] + recursiveSum(arr, n - 1);
-}
-
-recursiveSum(numbers, numbers.length - 1);
-
-
-
-// Merges two lists
-// For example: given the two lists [a, b, c] and [1, 2, 3], the function should return [a, 1, b, 2, c, 3].
-
-let list1 = ['a', 'b', 'c'];
-let list2 = [1, 2, 3];
-
-function merge(arr1, arr2) {
-  let result = [];
-  let arrlength = arr1.length;
-  let i = 0;
-  let j = 0;
-
-  for (; i < arrlength; i++, j++) {
-    result.push(arr1[i], arr2[j]);
-  }
-  return result;
-}
-
-merge(list1, list2);
-
-
-
-function walkTheDOM(node, func) {
-  if (node.nodeType === 1) {
-  	func(node);
-    node = node.firstChild;
-
-    while (node) {
-      walkTheDOM(node, func);
-      node = node.nextSibling;
-    }
-  }
-}
-
-const log = (node) => console.log(node);
-
-walkTheDOM(document.body, log);
-
-
-
-// Returns a function, that, as long as it continues to be invoked, will not
-// be triggered. The function will be called after it stops being called for
-// N milliseconds. If `immediate` is passed, trigger the function on the
-// leading edge, instead of the trailing.
-
-// The debounce function will not allow a callback to be used more than once per given time frame.
-// This is especially important when assigning a callback function to frequently-firing events.
-function debounce(func, wait, immediate) {
-  let timeout;
-
-  return function() {
-    let context = this;
-    let args = arguments;
-    let later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    let callNow = immediate && !timeout;
-
-    clearTimeout(timeout);
-
-    timeout = setTimeout(later, wait);
-
-    if (callNow) func.apply(context, args);
-  };
-}
-
-let myEfficientFn = debounce(function() {
-  for (let i =0; i < 1000; i++) {
-    console.log(i);
-  }
-}, 250); // true can be passed in as last parameter here for immediate execution
-
-myEfficientFn();
-
-// window.addEventListener('resize', myEfficientFn);
-// best used for taxing functions like resizing and scrolling
-
-
-
-// Poll is almost the same as debounce, but it keeps checking if
-// a function can be run, at intervals, before running a callback
-
-function poll(fn, callback, errback, timeout, interval) {
-  let endTime = Date.now() + (timeout || 6000);
-  interval = interval || 100;
-
-  (function p() {
-    // if the condition is met, we're done!
-    if (fn()) {
-      callback();
-    }
-    // if the condition isn't met but the timeout hasn't elapsed, try again
-    else if (Date.now() < endTime) {
-      setTimeout(p, interval);
-    }
-    // Didn't match and too much time, reject!
-    else errback(new Error('timed out for ' + fn + ': ' + arguments));
-  })();
-}
-
-// Usage: ensure element is visible
-
-poll(
-  function() {
-    return document.getElementById('lightbox').offsetWidth > 0;
-},
-// wait 5 seconds to create #lightbox to test
-setTimeout(function() {
-  let div = document.createElement('div');
-  let text = document.createTextNode('Hi I\'m a lightbox');
-  div.appendChild(text);
-  div.style.fontSize = '3em';
-  div.setAttribute('id', 'lightbox');
-  document.body.appendChild(div);
-}, 5000),
-  function() {
-    console.log('error');
-  }
-);
-
-
-
-function once(fn, context) {
-  let result;
-
-  return function() {
-    if (fn) {
-      result = fn.apply(context || this, arguments);
-      fn = null;
-    }
-
-    return result;
-  }
-}
-
-let canOnlyFireOnce = once(function() {
-  console.log('hey');
-});
-
-canOnlyFireOnce(); //=> "hey"
-canOnlyFireOnce(); //=>
-
-// Or if you want to just run a function once without having a once()
-// wrapper to use with any other function
-function onceFn() {
-  console.log('hello');
-  onceFn = null;
-}
-
-onceFn();
-
-
-
-// Use reduce to concatenate a list of names into a string, taking into account commas and ampersands
-
-function list(names) {
-  return names.reduce((acc,curr,i) => {
-    return i === 0 ? curr.name : i === names.length - 1 ? `${acc} & ${curr.name}` : `${acc}, ${curr.name}`;
-  }, '');
-}
-
-list([{name: 'Bart'},{name: 'Lisa'},{name: 'Maggie'},{name: 'Homer'},{name: 'Marge'}]); //=> "Bart, Lisa, Maggie, Homer & Marge"
-
-
-
-class DI {
-  constructor(dependency) {
-    this.dependency = dependency;
-  }
-
-  inject(fn) {
-    return function() {
-      const args = fn.toString().match(/\((.*?)\)/)[1].split(', ');
-      if (args.every(v => v === '')) return 0;
-      const funcArr = args.map(arg => this.dependency[arg]);
-      return fn.apply(this, funcArr);
-    }.bind(this);
-  }
-}
-
-let deps = {
-  'dep1': function() { return 'this is dep1'; },
-  'dep2': function() { return 'this is dep2'; },
-  'dep3': function() { return 'this is dep3'; },
-  'dep4': function() { return 'this is dep4'; }
-};
-
-let di = new DI(deps);
-
-let myFunc = di.inject(function(dep3, dep1, dep2) {
-  return [dep1(), dep2(), dep3()].join(' -> ');
-});
-
-myFunc();
-
-
-
-// PARTIAL APPLICATION IN ES6
-
-const mapWith = (unaryFn) => (collection) => collection.map(unaryFn);
-const square = (n) => n * n;
-const partiallyAppliedMapWith = mapWith(square);
-
-const result = partiallyAppliedMapWith([1,2,3]);
-
-console.log(result);
-
-
-
-// FILL ARRAY WITH 26 LETTERS OF ALPHABET
-
-let alphabetFill = new Array(26).fill().map((_, i) => String.fromCharCode(65 + i));
-
-
-
-// MAYBE FUNCTION - DECORATES FUNCTION TO BE NULL SAFE
-
-const maybe = function(fn) {
-	return function(input) {
-		if (!input) return;
-		return fn.call(this, input)
-	}
-}
-
-const imp1 = input => input.toLowerCase();
-imp1(void 0);
-const imp2 = maybe(input => input.toLowerCase());
-imp2(void 0);
-
-
-
-// COMPOSE
-
-const compose = (fn1, fn2) => input => fn1(fn2(input));
-const prefix = (i) => 'Some text: ' + i;
-const shrink = (i) => i.toLowerCase();
-const prefixedAndShrunk = compose(prefix, shrink);
-
-prefixedAndShrunk('DAVID');
-
-
-
-// MORE PARTIAL APPLICATION
-
-const partial = (fn, a) => (b) => fn(a, b);
-const greet = (greeting, name) => greeting + ', ' + name;
-const hello = partial(greet, 'hello');
-
-hello('david');
-
-
-
-
-// DESTRUCTURING OBJECTS
-
-const complicatedObj = {
-	arrayProp: [
-		'Eddard',
-		{ second: 'Stark' }
-	]
-};
-const { arrayProp: [first, { second }] } = complicatedObj;
-console.log(first); // 'Eddard'
-console.log(second); // 'Stark'
-
-
-
-// GENERATORS
-
-let sq = function* (initialValue) {
-	let num = initialValue || 2;
-	let step = 0;
-	let current;
-	while (true) {
-		current = num * step++;
-		yield current;
-	}
-};
-
-let sequence = sq(20);
-
-
-
-// SUBCLASSING IN ES6 VS ES5
-
-class ColorPoint extends Point {
-  constructor(x, y, color) {
-    super(x, y);
-    this.color = color;
-  }
-  toString() {
-    return this.color + ' ' + super.toString();
-  }
-}
-
-function ColorPoint(x, y, color) {
-  Point.call(this, x, y);
-  this.color = color;
-}
-ColorPoint.prototype = Object.create(Point.prototype);
-ColorPoint.prototype.constructor = ColorPoint;
-ColorPoint.prototype.toString = function() {
-  return this.color + ' ' + Point.prototype.toString.call(this);
-};
-
-
-
-function findSubstringInString(substring, string) {
-  return (string + string).indexOf(substring);
-}
-
-findSubstringInString('david', 'efdavidyouss');
-
-
-
-// HOW TO TRAVERSE 2D ARRAYS...
 /*
+You are given a map in form of a two-dimensional integer grid where 1 represents land and 0 represents water.
+
+Grid cells are connected horizontally/vertically (not diagonally). The grid is completely surrounded by water,
+and there is exactly one island (i.e., one or more connected land cells). The island doesn't have "lakes"
+(water inside that isn't connected to the water around the island). One cell is a square with side length 1.
+
+The grid is rectangular, width and height don't exceed 100. Determine the perimeter of the island.
+*/
+
+function islandPerimeter(grid) {
+  let perimeter = 0;
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      let borders = 0;
+
+      if (grid[i][j] === 1) {
+        if (grid[i][j - 1] !== 1) borders++;
+        if (grid[i][j + 1] !== 1) borders++;
+        if (!grid[i - 1] || grid[i - 1][j] !== 1) borders++;
+        if (!grid[i + 1] || grid[i + 1][j] !== 1) borders++;
+      }
+
+      perimeter += borders;
+    }
+  }
+
+  return perimeter;
+}
+
+islandPerimeter([
+ [0,1,0,0],
+ [1,1,1,0],
+ [0,1,0,0],
+ [1,1,0,0]
+]); //=> 16
+
+
+
+/*
+Traverse 2d arrays...
+
 Given an 2D board, count how many battleships are in it. The battleships are represented with 'X's,
 empty slots are represented with '.'s. You may assume the following rules:
 - You receive a valid board, made of only battleships or empty slots.
@@ -1405,7 +332,7 @@ countBattleships([
   ['.', 'X', '.', 'X', '.', '.', 'X', '.', 'X', '.', '.', 'X', '.', '.', 'X'],
   ['.', 'X', '.', 'X', '.', '.', 'X', '.', '.', '.', '.', 'X', '.', 'X', '.'],
   ['X', '.', '.', 'X', '.', '.', 'X', '.', '.', 'X', '.', 'X', '.', '.', 'X']
-]);
+]); //=> 38
 
 /* Visualized representation with counts
 [' 1', ' .', ' .', ' 2', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' .', ' 3'],
@@ -1427,211 +354,859 @@ countBattleships([
 
 
 
+// Subclassing in ES6 vs ES5
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+}
+class ColorPoint extends Point {
+  constructor(x, y, color) {
+    super(x, y);
+    this.color = color;
+  }
+  toString() {
+    return this.color + ' ' + super.toString();
+  }
+}
+
+function ColorPoint(x, y, color) {
+  Point.call(this, x, y);
+  this.color = color;
+}
+ColorPoint.prototype = Object.create(Point.prototype);
+ColorPoint.prototype.constructor = ColorPoint;
+ColorPoint.prototype.toString = function() {
+  return this.color + ' ' + Point.prototype.toString.call(this);
+};
+
+
+
+// Destructuring objects
+const complicatedObj = {
+	arrayProp: [
+		'Eddard',
+		{ second: 'Stark' }
+	]
+};
+const { arrayProp: [first, { second }] } = complicatedObj;
+console.log(first); // 'Eddard'
+console.log(second); // 'Stark'
+
+
+
+// Maybe function... decorates function to be null-safe
+const maybe = function(fn) {
+	return function(input) {
+		if (!input) return;
+		return fn.call(this, input)
+	}
+}
+
+const notNullSafe = (input) => input.toLowerCase();
+notNullSafe(void 0); //=> Uncaught TypeError: Cannot read property 'toLowerCase' of undefined
+
+const nullSafe = maybe(input => input.toLowerCase());
+nullSafe(void 0); //=> (No error)
+
+
+
+class DI {
+  constructor(dependency) {
+    this.dependency = dependency;
+  }
+
+  inject(fn) {
+    return function() {
+      const args = fn.toString().match(/\((.*?)\)/)[1].split(', ');
+
+      if (args.every(v => v === '')) return 0;
+
+      const funcArr = args.map(arg => this.dependency[arg]);
+
+      return fn.apply(this, funcArr);
+    }.bind(this);
+  }
+}
+
+const deps = {
+  dep1() { return 'this is dep1'; },
+  dep2() { return 'this is dep2'; },
+  dep3() { return 'this is dep3'; },
+  dep4() { return 'this is dep4'; }
+};
+
+let di = new DI(deps);
+
+const myFunc = di.inject(function(dep3, dep1, dep2) {
+  return [dep1(), dep2(), dep3()].join(' -> ');
+});
+
+myFunc(); //=> "this is dep1 -> this is dep2 -> this is dep3"
+
+
+
+// Use reduce to concatenate a list of names into a string, taking into account commas and ampersands
+function list(names) {
+  return names.reduce((acc,curr,i) => {
+    return i === 0 ? curr.name : i === names.length - 1 ? `${acc} & ${curr.name}` : `${acc}, ${curr.name}`;
+  }, '');
+}
+
+list([
+  { name: 'Bart' },
+  { name: 'Lisa' },
+  { name: 'Maggie' },
+  { name: 'Homer' },
+  { name: 'Marge' }
+]); //=> "Bart, Lisa, Maggie, Homer & Marge"
+
+
+
+// Function that only fires once
+function once(fn, context) {
+  let result;
+
+  return function() {
+    if (fn) {
+      result = fn.apply(context || this, arguments);
+      fn = null;
+    }
+
+    return result;
+  }
+}
+
+const canOnlyFireOnce = once(() => console.log('hey'));
+
+canOnlyFireOnce(); //=> "hey"
+canOnlyFireOnce(); //=>
+
+// Or if you want to just run a function once without having a once()
+// wrapper to use with any other function
+function once() {
+  console.log('hello');
+  once = null;
+}
+
+once(); //=> "hello"
+once(); //=> TypeError: onceFn is not a function
+
+
+
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+
+// The debounce function will not allow a callback to be used more than once per given time frame.
+// This is especially important when assigning a callback function to frequently-firing events.
+function debounce(fn, wait, immediate) {
+  let timeout;
+
+  return function() {
+    let context = this;
+    let args = arguments;
+    const later = () => {
+      timeout = null;
+      if (!immediate) fn.apply(context, args);
+    };
+    let callNow = immediate && !timeout;
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(later, wait);
+
+    if (callNow) fn.apply(context, args);
+  };
+}
+
+const efficientFn = debounce(() => {
+  for (let i = 0; i < 1000; i++) {
+    console.log(i);
+  }
+}, 250); // true can be passed in as last parameter here for immediate execution
+
+efficientFn();
+
+// Best used for taxing functions like resizing and scrolling, e.g....
+// window.addEventListener('resize', efficientFn);
+
+
+
+function walkTheDOM(node, fn) {
+  if (node.nodeType === 1) {
+  	fn(node);
+    node = node.firstChild;
+
+    while (node) {
+      walkTheDOM(node, fn);
+      node = node.nextSibling;
+    }
+  }
+}
+
+const log = (node) => console.log(node);
+
+walkTheDOM(document.body, log);
+
+
+
+// Sum numbers recursively
+function recursiveSum(arr, n) {
+  if (n === 0) return arr[n];
+  else return arr[n] + recursiveSum(arr, n - 1);
+}
+
+recursiveSum([3,4,6,7,8], nums.length - 1); //=> 28
+
+
+
+// Recursive reverse string
+function recursiveReverse(str) {
+  return str.length <= 1 ? str : recursiveReverse(str.slice(1)) + str[0];
+}
+
+
+
+function recursiveRepeat(n, str) {
+  return n < 1 ? str : str + recursiveRepeat(n - 1, str);
+}
+
+recursiveRepeat(8, 'nana-') + ' Batman!'; //=> "nana-nana-nana-nana-nana-nana-nana-nana-nana- Batman!"
+
+
+
+// Using reduce to do grouping
+const list = [
+  { name: 'Dave', age: 40 },
+  { name: 'Dan', age: 35 },
+  { name: 'Kurt', age: 44 },
+  { name: 'Josh', age: 33 }
+];
+
+const groupedList = list.reduce((acc, item) => {
+  let key = item.age < 40 ? 'under40' : 'over40';
+
+  acc[key] = acc[key] || [];
+  acc[key].push(item);
+
+  return acc;
+}, {});
+
+JSON.stringify(groupedList); //=>
 /*
-You are given a map in form of a two-dimensional integer grid where 1 represents land and 0 represents water.
-
-Grid cells are connected horizontally/vertically (not diagonally). The grid is completely surrounded by water,
-and there is exactly one island (i.e., one or more connected land cells). The island doesn't have "lakes"
-(water inside that isn't connected to the water around the island). One cell is a square with side length 1.
-
-The grid is rectangular, width and height don't exceed 100. Determine the perimeter of the island.
+{
+  "over40": [
+    { "name": "Dave", "age": 40 },
+    { "name": "Kurt", "age": 44 }
+  ],
+  "under40": [
+    { "name": "Dan", "age": 35 },
+    { "name":"Josh", "age": 33 }
+  ]
+}
 */
 
-function islandPerimeter(grid) {
-  let perimeter = 0;
 
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      let borders = 0;
 
-      if (grid[i][j] === 1) {
-        if (grid[i][j - 1] !== 1) borders++;
-        if (grid[i][j + 1] !== 1) borders++;
-        if (!grid[i - 1] || grid[i - 1][j] !== 1) borders++;
-        if (!grid[i + 1] || grid[i + 1][j] !== 1) borders++;
-      }
+// Closure example with for loop and setTimeout
+for (var i = 0; i < 100; i++) {
+  setTimeout(function(x) {
+    return function() {
+      console.log(x);
+    }
+  }(i), 100);
+}
 
-      perimeter += borders;
+// Or just use let
+for (let i = 0; i < 100; i++) {
+  setTimeout(function() {
+    console.log(i);
+  }, 100);
+}
+
+
+
+// Get longest string with reduce
+function findLongestString(arr) {
+  return arr.reduce((acc, curr) => {
+    return curr.length > acc.length ? curr : acc;
+  }, '');
+}
+
+findLongestString(['abc', 'fddede', 'cbcccded', 'eeeeeeeeeee']); //=> "eeeeeeeeeee"
+
+
+
+// A benchmark runner for for-loops vs while-loops vs map
+let ol;
+
+function runBenchmark(name, test) {
+  if (!ol) {
+    ol = document.createElement('ol');
+    document.body.appendChild(ol);
+  }
+
+  setTimeout(() => {
+    let start = new Date().getTime();
+    test();
+    let total = new Date().getTime() - start;
+
+    let li = document.createElement('li');
+    li.innerHTML = name + ': ' + total + 'ms';
+    ol.appendChild(li);
+  }, 15);
+}
+
+let array = function populateArray() {
+  let loopLength = 500000;
+  let array = [];
+
+  for (let i = 0; i < loopLength; i++) {
+    array[i] = 'item' + i;
+  }
+
+  return array;
+}();
+
+let loopPerfTests = {
+  forLoop() {
+    for (let i = 0, item; i < array.length; i++) {
+      item = array[i];
+    }
+  },
+  arrayMap() {
+    let item;
+    array.map(v => item = v);
+  },
+  forLoopCachedLength() {
+    for (let i = 0, l = array.length, item; i < l; i++) {
+      item = array[i];
+    }
+  },
+  forLoopDirectAccess() {
+    for (let i = 0, item; (item = array[i]); i++) {
+    }
+  },
+  whileLoop() {
+    let i = 0, item;
+
+    while (i < array.length) {
+      item = array[i];
+      i++;
+    }
+  },
+  whileLoopCachedLength() {
+    let i = 0, l = array.length, item;
+
+    while (i < l) {
+      item = array[i];
+      i++;
+    }
+  },
+  reversedWhileLoop() {
+    let l = array.length, item;
+
+    while (l--) {
+      item = array[l];
+    }
+  },
+  doubleReversedWhileLoop() {
+    let l = array.length, i = 1, item;
+
+    while (i--) {
+      item = array[l - i - 1];
+    }
+  }
+};
+
+runBenchmark('for loop', loopPerfTests.forLoop);
+runBenchmark('array map', loopPerfTests.arrayMap);
+runBenchmark('for loop cached length', loopPerfTests.forLoopCachedLength);
+runBenchmark('for loop direct access', loopPerfTests.forLoopDirectAccess);
+runBenchmark('while loop', loopPerfTests.whileLoop);
+runBenchmark('while loop cached length', loopPerfTests.whileLoopCachedLength);
+runBenchmark('reversed while loop', loopPerfTests.reversedWhileLoop);
+runBenchmark('double reversed while loop', loopPerfTests.doubleReversedWhileLoop);
+/*
+Sample test run (results may vary)...
+1. for loop: 3ms
+2. array map: 68ms
+3. for loop cached length: 2ms
+4. for loop direct access: 3ms
+5. while loop: 1ms
+6. while loop cached length: 1ms
+7. reversed while loop: 1ms
+8. double reversed while loop: 1ms
+*/
+
+
+
+function drawDiamond(n) {
+  if (n < 3 || n % 2 === 0) return null;
+  let str = '';
+
+  for (let i = 1; i <= n; i += 2) {
+    for (let space = 0; space < (n - i) / 2; space++ ) {
+      str += ' ';
+    }
+    for (let star = 0; star < i; star++) {
+      str += '*';
+    }
+    str += i === n ? '' : '\n';
+  }
+
+  const reverseStr = str.split('\n').reverse().slice(1).join('\n');
+
+  return str + '\n' + reverseStr + '\n';
+}
+
+drawDiamond(5); //=>
+/*
+
+  *
+ ***
+*****
+ ***
+  *
+
+*/
+
+
+
+function drawTriangleRight(n) {
+  let str = '';
+
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (i + j > n) {
+        str += '#';
+      } else str += ' ';
+    }
+    str += '\n';
+  }
+
+  console.log(str);
+}
+
+drawTriangleRight(5); //=>
+/*
+
+    #
+   ##
+  ###
+ ####
+#####
+
+*/
+
+
+
+function drawTriangleLeft(n) {
+  let str = '';
+
+  for (let row = 1; row <= n; row++) {
+    for (let character = 1; character <= row; character++) {
+      str += '#';
+    }
+    str += '\n';
+  }
+
+  console.log(str);
+}
+
+drawTriangleLeft(5); //=>
+/*
+
+#
+##
+###
+####
+#####
+
+*/
+
+
+
+function drawChristmasTree(height) {
+  const repeat = (count, el) => new Array(count + 1).join(el);
+  const newLine = (line) => line === height ? '' : '\n';
+  let tree = '';
+
+  for (let i = height; i > 0; i--) {
+    tree = repeat(height - i, ' ') + repeat(i * 2 - 1, '*') + repeat(height - i, ' ') + newLine(i) + tree;
+  }
+
+  console.log(tree);
+}
+
+drawChristmasTree(3); //=>
+/*
+
+  *
+ ***
+*****
+
+*/
+
+
+
+// Don't ever do this
+const fizzBuzzShort=()=>{for(i=0;i<100;)console.log((++i%3?'':'Fizz')+(i%5?'':'Buzz')||i)}
+fizzBuzzShort();
+
+
+
+// Templating function to replace expressions with values
+function merge(content, values) {
+  return Object.keys(values).map(key => {
+    return content.replace('{{' + key + '}}', values[key]);
+  }).join('');
+}
+
+let mailValues = {};
+mailValues.firstName = 'Dave';
+let emailTemplate = 'Hi {{firstName}}! Thanks for completing this code challenge.';
+merge(emailTemplate, mailValues); //=> "Hi Dave! Thanks for completing this code challenge."
+
+
+
+// Alternative to switch statement
+function doAction(action) {
+  const actions = {
+    hack() {
+      return 'hack';
+    },
+    slash() {
+      return 'slash';
+    },
+    run() {
+      return 'run';
+    }
+  };
+
+  if (typeof actions[action] !== 'function') {
+    throw new Error('Invalid action.');
+  }
+
+  return actions[action]();
+}
+
+doAction('hack'); //=> "hack"
+
+
+
+// Function that calls two functions on an array and returns the results
+function findMin(arr) {
+  return Math.min(...arr);
+}
+
+function findMax(arr) {
+  return Math.max(...arr);
+}
+
+function doThisDoThat(fn1, fn2) {
+  return function(arr) {
+    return [fn1(arr), fn2(arr)];
+  }
+}
+
+const minAndMax = doThisDoThat(findMin, findMax);
+minAndMax([555,66,7,345,23,45,67]); //=> [7, 555]
+
+
+
+// Simple type checker
+const typer = (() => {
+  return {
+    isNumber(x) {
+      return typeof x == 'number' && !isNaN(x) || x instanceof Number && !isNaN(x);
+    },
+    isString(x) {
+      return typeof x == 'string' || x instanceof String;
+    },
+    isArray(x) {
+      return Array.isArray(x);
+    },
+    isFunction(x) {
+      return typeof x == 'function';
+    },
+    isDate(x) {
+      return x instanceof Date;
+    },
+    isRegExp(x) {
+      return x instanceof RegExp;
+    },
+    isBoolean(x) {
+      return typeof x == 'boolean' || x instanceof Boolean;
+    },
+    isError(x) {
+      return x instanceof Error;
+    },
+    isNull(x) {
+      return x == null;
+    },
+    isUndefined(x) {
+      return typeof x == 'undefined';
+    }
+  };
+})();
+
+typer.isArray([]); //=> true
+
+
+
+
+// Partial application
+function NotificationService() {
+
+  function showMessage(type, message) {
+    console[type](message);
+  }
+
+  function createShowMessageFunction(type) {
+    return function(message) {
+      showMessage(type, message);
     }
   }
 
-  return perimeter;
+  return {
+    showLog: createShowMessageFunction('log'),
+    showWarning: createShowMessageFunction('warn'),
+    showError: createShowMessageFunction('error')
+  }
 }
 
-islandPerimeter([
- [0,1,0,0],
- [1,1,1,0],
- [0,1,0,0],
- [1,1,0,0]
-]);
+let notification = new NotificationService();
+notification.showLog('Regular message');
+notification.showWarning('Warning message');
+notification.showError('Error message');
 
 
 
-// Get sum of a range of numbers (inclusive) without adding them all together
-function getSum(a, b) {
-  const min = Math.min(a, b);
-  const max = Math.max(a, b);
 
-  return (max - min + 1) * (min + max) / 2;
+// Display events beginning with 'on' in window Object
+function showEventListeners() {
+  return Object
+    .keys(window)
+    .filter(v => /^on/.test(v))
+    .join('\n');
 }
 
-getSum(0,100); //=> 5050
 
 
+// Observer pattern
+function observe() {
+  let subscribers {};
 
-// Alter array in place by moving zeroes (string and number) to the end while still maintaining the same order
-function removeZeros(arr) {
-  let k = 0;
+  function subscribe(type, fn) {
+    if (!subscribers[type]) {
+      subscribers[type] = [];
+    }
 
-  for (let i = 0, j = 0; i < arr.length; i++) {
-    if (arr[i] !== 0 && arr[i] !== '0') {
-      k = i - 1;
-      while (k >= j) {
-        [arr[i], arr[k]] = [arr[k], arr[i]];
-        k--;
-        i--;
-      }
-      j++;
+    if (!subscribers[type].includes(fn)) {
+      subscribers.push(fn);
     }
   }
 
-  return arr;
-}
+  function unsubscribe(type, fn) {
+    let listeners = subscribers[type];
 
-removeZeros([13, '0', 0, '0', 0, 78, 0, '0', 19, 14]); //=> ""[13, 78, 19, 14, "0", 0, "0", 0, 0, "0"]""
-
-
-
-// Find duplicates in an array where 1 ≤ a[i] ≤ size of array, without using filter()
-
-// Negate each number's index. Once a value is negated, if it requires to be negated again, it's a duplicate.
-function findDuplicates(nums) {
-  let result = [];
-
-  for (let i = 0; i < nums.length; i++) {
-    let index = Math.abs(nums[i]) - 1;
-
-    if (nums[index] < 0) { // at this point, if number is negative, it's a duplicate
-      result.push(Math.abs(index + 1));
+    if (!listeners) {
+      return;
     }
 
-    nums[index] = -nums[index];
+    let index = listeners.indexOf(fn);
+
+    if (index > -1) {
+      listeners.splice(index, 1);
+    }
+  }
+
+  function publish(type, evtObj) {
+    if (!subscribers[type]) {
+      return;
+    }
+
+    if (!evtObj.type) {
+      evtObj.type = type;
+    }
+
+    let listeners = subscribers[type];
+
+    for (let ii = 0, ll = listeners.length; ii < ll; ii++) {
+      listeners[ii](evtObj);
+    }
+  }
+
+  return {
+    subscribe,
+    unsubscribe,
+    publish
+  };
+}
+
+
+
+// remove random divs from page every half second
+setInterval(() => {
+  const divs = document.getElementsByTagName('div');
+  const randomDiv = divs[Math.floor(Math.random() * divs.length)];
+  console.log(randomDiv);
+  randomDiv.parentNode.removeChild(randomDiv);
+}, 500);
+
+// remove random divs from page on clicks
+document.addEventListener('click', () => {
+  const divs = document.getElementsByTagName('div');
+  const randomDiv = divs[Math.floor(Math.random() * divs.length)];
+  console.log(randomDiv);
+  randomDiv.parentNode.removeChild(randomDiv);
+});
+
+
+
+// private variables
+function createSecretHolder(secret) {
+  let holder = secret;
+
+  return {
+    getSecret: function() {
+      return holder;
+    },
+    setSecret: function(secret) {
+      holder = secret;
+    }
+  }
+}
+
+
+
+// get powerset combinations (permutations)
+function powerset(set) {
+  let result = [[]];
+
+  for (let i = 0; i < set.length; i++) {
+    for (let j = 0, len = result.length; j < len; j++) {
+      result.push(result[j].concat(set[i]));
+    }
   }
 
   return result;
-};
+}
 
-findDuplicates([4,3,2,7,8,2,3,14,14,20,30,20,1]); //=> [2,3]
+JSON.stringify(powerset([1,2,3])); //=> "[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]"
 
 
 
-// Get the sum of two values using bitwise operators rather than + operator
-function getSum(a, b) {
-  while (b) {
-    // The bitwise AND operator returns a one in each bit position for which the corresponding bits of both operands are ones.
-    // For example, given a=5=101 and b=7=111, a & b = 101 (in bits) or 5 (in decimal)
-    // Then when the result is shifted by 1 bit, it is the carry.
-    // For example, 101 << 1 = 1010 (in bits) or 10 (in decimal)
-    let carry = (a & b) << 1;
-    // The bitwise XOR operator returns a zero in each bit position for which the corresponding bits are the same,
-    // and returns a one in each bit position for which the corresponding bits are different.
-    // For example, given a=5=101 and b=7=111, a ^ b = 010 (in bits) or 2 (in decimal)
-    a = a ^ b;
-    b = carry;
+// Returns an arithmetic list; a list that contains consecutive terms in the sequence.
+// The parameters are:
+// - first, the first term in the sequence
+// - constant, the constant that gets added (since it is an arithmetic sequence...)
+// - length, the number of terms that should be returned
+function seqList(first, constant, length) {
+  return Array
+    .from({length})
+    .map((_,i) => first + (i * constant));
+}
+
+seqList(3, 5, 10); //=> [3, 8, 13, 18, 23, 28, 33, 38, 43, 48]
+
+
+
+function rgbToHex(r,g,b) {
+  return '#' + r.toString(16) + g.toString(16) + b.toString(16);
+}
+
+rgbToHex(25,43,45); //=> "#192b2d"
+
+
+
+function Singleton() {
+  if (Singleton.instance) {
+    return Singleton.instance;
   }
 
-  return a;
+  if (!(this instanceof Singleton)) {
+    return new Singleton();
+  }
+
+  Singleton.instance = this;
 }
 
-getSum(5,7);
 
 
+function autocomplete(input, dictionary, limit = 5) {
+  const nonAlpha = /[^a-zA-Z]/g;
+  input = input.replace(nonAlpha, '').toLowerCase();
 
-// Using a positive lookahead to string replace all but the last four characters...
-function mask(cc) {
-  return cc.replace(/.(?=....)/g, '#');
+  return dictionary
+    .filter(v => input === v.substr(0, input.length).toLowerCase())
+    .slice(0, limit);
 }
 
-mask("4556364607935616") //=> "############5616"
+autocomplete('ai', ['airplane', 'airport', 'apple', 'ball', 'aisle', 'airbender', 'ails', 'aids', 'air']);
+//=> ["airplane", "airport", "aisle", "airbender", "ails"]
 
 
 
-// Calculating with functions
-const zero = (fn) => fn ? fn(0) : 0;
-const one = (fn) => fn ? fn(1) : 1;
-const two = (fn) => fn ? fn(2) : 2;
-const three = (fn) => fn ? fn(3) : 3;
-const four = (fn) => fn ? fn(4) : 4;
-const five = (fn) => fn ? fn(5) : 5;
-const six = (fn) => fn ? fn(6) : 6;
-const seven = (fn) => fn ? fn(7) : 7;
-const eight = (fn) => fn ? fn(8) : 8;
-const nine = (fn) => fn ? fn(9) : 9;
-
-const plus = (a) => (b) => b + a;
-const minus = (a) => (b) => b - a;
-const times = (a) => (b) => b * a;
-const dividedBy = (a) => (b) => b / a;
-
-seven(times(five())); //=> 35
-four(plus(nine())); //=> 13
-eight(minus(three())); //=> 5
-six(dividedBy(two())); //=> 3
-
-
-
-// curried add function using recursion and valueOf
-function curriedAdd(n) {
-  let acc = (x) => curriedAdd(n + x);
-
-  acc.valueOf = () => n;
-
-  return acc;
+function nextNDays(date, n) {
+  return Array
+  .from({length: n})
+  .map(_ => {
+    date.setDate(date.getDate() + 1);
+    return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+  })
+  .join(', ');
 }
 
-curriedAdd(1)(2)(3)(4)(5); //=> 15
+nextNDays(new Date(), 5);
 
 
 
-// Extend the Function prototype with a pipe method
-const addOne = (v) => v + 1;
-const square = (v) => v * v;
-
-Function.prototype.pipe = function(fn) {
-  return (arg) => fn(this(arg));
-};
-
-[1,2,3,4,5].map(addOne.pipe(square)); //=> [4, 9, 16, 25, 36]
-
-
-
-// Replicate the 'new' operator
-function NEW(constructor, ...args) {
-  const newObj = Object.create(constructor.prototype);
-
-  const result = constructor.apply(newObj, args);
-
-  return result === Object(result) ? result : newObj;
+function range(start, count) {
+  return Array.from({length: count}).map((_, i) => start + i);
 }
 
-function Person(name) {
-  this.name = name;
+range(5, 10); //=> [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+
+
+
+function sortListBy(sortBy, list) {
+  return list.sort((a,b) => b[sortBy] < a[sortBy]);
 }
 
-Person.prototype.sayHi = function() {
-  return 'Hi, I am ' + this.name;
+const list = [
+  { key1: 1, key2: 3 },
+  { key1: 3, key2: 2 },
+  { key1: 2, key2: 40 },
+  { key1: 4, key2: 12 }
+];
+
+JSON.stringify(sortListBy('key2', list)); //=>
+/*
+"[
+  {"key1": 3, "key2": 2},
+  {"key1": 1, "key2": 3},
+  {"key1": 4, "key2": 12},
+  {"key1": 2, "key2": 40}
+]"
+*/
+
+
+
+// Returns missing number by subtracting the sum of numbers in
+// order from the sum of the complete set of numbers
+function getMissingNumber(arr) {
+  return Array
+    .from({length: arr.length + 1})
+    .map((_,i) => i)
+    .reduce((acc,curr) => acc + curr) - // minus sign
+    arr.reduce((acc,curr) => acc + curr);
 }
 
-let guy = NEW(Person, 'Guy');
+let arr = [0,1,2,4,5,6,7,8,9];
 
-guy.name; //=> 'Guy'
-guy.sayHi(); //=> 'Hi, I am Guy'
-
-
-
-// Use regex capturing to create phone number from array of 10 digits
-function createPhoneNumber(n){
-  return n.join('').replace(/(...)(...)(....)/, '($1) $2-$3');
-}
-
-createPhoneNumber([1,2,3,4,5,6,7,8,9,0]); //=> "(123) 456-7890"
+getMissingNumber(arr); //=> 3
