@@ -385,10 +385,10 @@ ColorPoint.prototype.toString = function() {
 
 // Destructuring objects
 const complicatedObj = {
-	arrayProp: [
-		'Eddard',
-		{ second: 'Stark' }
-	]
+  arrayProp: [
+    'Eddard',
+    { second: 'Stark' }
+  ]
 };
 const { arrayProp: [first, { second }] } = complicatedObj;
 console.log(first); // 'Eddard'
@@ -398,10 +398,10 @@ console.log(second); // 'Stark'
 
 // Maybe function... decorates function to be null-safe
 const maybe = function(fn) {
-	return function(input) {
-		if (!input) return;
-		return fn.call(this, input)
-	}
+  return function(input) {
+    if (!input) return;
+    return fn.call(this, input)
+  }
 }
 
 const notNullSafe = (input) => input.toLowerCase();
