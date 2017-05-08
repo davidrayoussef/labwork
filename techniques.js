@@ -1,3 +1,64 @@
+// For problems where you have to figure out if the sum of several numbers equals the product of a known number and
+// an unknown number (k), check if the sum is divisible by the known number. If it is, then k is the sum divided by the
+// known number.
+function digPow(n, p, sum = 0) {
+  const digits = String(n).split('');
+
+  for (let i = 0, j = p; i < digits.length; i++, j++) {
+    sum += (+digits[i]) ** j;
+  }
+
+  return sum % n === 0 ? sum / n : -1;
+}
+
+
+
+// Simple generator
+function* multiplier(a, b = 1) {
+  while (true) yield `${a} x ${b} = ${a * b++}`;
+}
+
+let mult = multiplier(1);
+mult.next().value; //=> "1 x 1 = 1"
+mult.next().value; //=> "1 x 2 = 2"
+mult.next().value; //=> "1 x 3 = 3"
+
+
+
+// Simple Counter iterator
+let counter = {
+  [Symbol.iterator]() {
+    let count = 0;
+    return {
+      next() {
+        return { done: false, value: count++ };
+      }
+    }
+  }
+}
+
+for (var n of counter) {
+  if (n > 10) {
+    break;
+  }
+  console.log(n);
+}
+
+
+
+// Remove duplicates using regex backreference '\1'
+function removeDupes(nums) {
+  return nums
+    .map(String)
+    .sort()
+    .join('')
+    .replace(/(.)\1/g, '');
+}
+
+removeDupes([2,3,5,5,3,2,1,1,1,2,5,3,4,4,4]); //=> "12345"
+
+
+
 // Use Map() to get a tally by order of insertion
 const arr = [1,1,1,2,2,2,3,3,3,3,3,4,4];
 
