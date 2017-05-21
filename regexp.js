@@ -57,3 +57,21 @@ alphanumeric("     "); //=> false
 function isValidIP(str) {
   return /^(([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])(\.(?!$)|$)){4}$/.test(str);
 }
+
+
+
+// Use a lookahead and non-capturing group to group numbers in threes from the end
+function groupByCommas(n) {
+  return n.toString().split(/(?=(?:\d{3})+$)/).join(',');
+}
+
+groupByCommas(35235235); //=> "35,235,235"
+
+
+
+// Use a positive lookahead and lastMatch ($&) to insert a dash between two odd numbers
+function insertDash(num) {
+   return num.toString().replace(/[13579](?=[13579])/g, "$&-");
+}
+
+insertDash(283746590873); //=> "283-7465-9087-3";

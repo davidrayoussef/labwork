@@ -1,3 +1,81 @@
+/*
+Write function scramble(str1,str2) that returns true if a portion of str1 characters can be
+rearranged to match str2, otherwise returns false.
+*/
+
+// imperative
+function substringInString(str1, str2) {
+  const arr1 = str1.replace(new RegExp('[^' + str2 + ']', 'g'), '').split('').sort();
+  const arr2 = str2.split('').sort();
+  let i = 0;
+  let j = 0;
+
+  while (i < arr1.length && j < arr2.length) {
+    if (arr1[i] === arr2[j]) j++;
+    i++;
+  }
+
+  return i <= arr1.length;
+}
+
+// functional
+function substringInString(str1, str2) {
+  let occurrenceMap = str1
+    .split('')
+    .reduce((obj,key) => {
+      obj[key] ? obj[key]++ : obj[key] = 1;
+      return obj;
+    }, {});
+
+  return str2.split('').every(letter => occurrenceMap[letter]-- > 0);
+}
+
+substringInString('rkqodlw', 'world'); //=> true
+substringInString('cedewaraaossoqqyt', 'codewars'); //=> true
+substringInString('katas', 'steak'); //=> false
+
+
+
+// Get count of most frequent values using .values() method of Map()
+function mostFrequentItemCount(collection) {
+  return Math.max(...collection
+    .reduce((map,key) => {
+      map.has(key) ? map.set(key, map.get(key) + 1) : map.set(key, 1);
+      return map;
+    }, new Map())
+    .values()
+  )
+}
+
+mostFrequentItemCount([3,3,3,4,2,2,2,2,2]); //=> 5
+
+
+
+// Returns a currency formatted number with commas
+const groupByCommas = (n) => n.toLocaleString();
+
+groupByCommas(35235235); //=> "35,235,235"
+
+
+
+// Sort characters alphabetically, upper-case first
+function sortAlphaUpperFirst(str) {
+  return str
+    .split('')
+    .sort((a,b) => a.localeCompare(b,'kf', { caseFirst: 'upper' }))
+    .join('');
+}
+
+sortAlphaUpperFirst('baAbaBb'); //=> "AaaBbbb"
+
+
+
+// Get summation of n without adding every number between 1 and n
+// e.g., summation(8) => 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 => 36
+const summation = (n) => n * (n + 1) / 2;
+
+
+
 // For problems where you have to figure out if the sum of several numbers equals the product of a known number and
 // an unknown number (k), check if the sum is divisible by the known number. If it is, then k is the sum divided by the
 // known number.
