@@ -1,62 +1,18 @@
-function testReg(str, reg) {
-  if (reg.test(str)) {
-    console.log(str.match(reg));
-  }
+// chunkify a string into n-sized chunks and return as array
+function chunkify(str, n) {
+  return str.match(RegExp('.{1,' + n + '}', 'g')) || [];
 }
 
-const nameRegExp = /[a-zA-Z0-9]+/;
-
-const usernameRegExp = /^[a-z0-9_-]{3,6}$/;
-
-const passwordRegExp = /^[a-z0-9_-]{6,18}$/;
-
-const hexRegExp = /^#?([a-f0-9]{6}|[a-f0-9]{3})$/;
-
-const emailRegExp = /^([a-z0-9_\.-]+)@([a-z0-9_\.-])\.([a-z\.]{2,6})$/;
-
-const urlRegExp = /^(https?:\/\/)?/;
-
-const ipRegExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-
-const htmltagRegExp = /^<([a-z]+)([^>]+)*(?:>(.*)<\/\1>|\s+\/>)$/;
+chunkify('hello world', 2); //=> ["he", "ll", "o ", "wo", "rl", "d"]
 
 
 
-// CAPTURE WHATS IN OPENING TAG TO USE FOR CLOSING TAG REGEXP
-const re = /<(\w+)>(.+)<\/\1>/;
-
-
-
-// REGEX SEARCH AND REPLACE USING CAPTURE
-'<a> <bbb>'.replace(/<(.*?)>/g, '[$1]');
-
-
-
-// Regex to test if all characters are unique.
-const regex = /^(?!.*(.).*\1)/;
-
-regex.test('1'); //=> true;
-regex.test('1232'); //=> false
-regex.test('10284'); //=> true
-regex.test('79222'); //=> false
-
-
-
-// Validate if a string is ONLY alphanumeric
-function alphanumeric(str) {
-  return /^[a-z0-9]+$/i.test(str);
+// Use a positive lookahead and lastMatch ($&) to insert a dash between two odd numbers
+function insertDash(num) {
+   return num.toString().replace(/[13579](?=[13579])/g, "$&-");
 }
 
-alphanumeric("Mazinkaiser"); //=> true
-alphanumeric("hello world_"); //=> false
-alphanumeric("PassW0rd"); //=> true
-alphanumeric("     "); //=> false
-
-
-
-function isValidIP(str) {
-  return /^(([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])(\.(?!$)|$)){4}$/.test(str);
-}
+insertDash(283746590873); //=> "283-7465-9087-3";
 
 
 
@@ -69,9 +25,32 @@ groupByCommas(35235235); //=> "35,235,235"
 
 
 
-// Use a positive lookahead and lastMatch ($&) to insert a dash between two odd numbers
-function insertDash(num) {
-   return num.toString().replace(/[13579](?=[13579])/g, "$&-");
-}
+// Test if all characters are unique.
+const regex = /^(?!.*(.).*\1)/;
 
-insertDash(283746590873); //=> "283-7465-9087-3";
+regex.test('1'); //=> true;
+regex.test('1232'); //=> false
+regex.test('10284'); //=> true
+regex.test('79222'); //=> false
+
+
+
+// search and replace using capture
+'<a> <bbb>'.replace(/<(.*?)>/g, '[$1]');
+
+
+
+// Capture what's in opening tag to use for closing tag
+const re = /<(\w+)>(.+)<\/\1>/;
+
+
+
+const hexRegExp = /^#?([a-f0-9]{6}|[a-f0-9]{3})$/;
+
+const emailRegExp = /^([a-z0-9_\.-]+)@([a-z0-9_\.-])\.([a-z\.]{2,6})$/;
+
+const urlRegExp = /^(https?:\/\/)?/;
+
+const ipRegExp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
+const htmltagRegExp = /^<([a-z]+)([^>]+)*(?:>(.*)<\/\1>|\s+\/>)$/;
