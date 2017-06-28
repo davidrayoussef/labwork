@@ -245,7 +245,36 @@ function NamedOne(first, last) {
   });
 }
 
-let named = new NamedOne('john', 'doh');
-named.firstName = 'jane';
-named.fullName = 'new name';
-named.fullName;
+let named = new NamedOne('John', 'Doh');
+named.firstName = 'Jane';
+named.fullName = 'New Name';
+named.fullName //=> "New Name";
+
+
+
+// Es6 setters/getters
+class Archiver {
+  constructor() {
+    this.archive = [];
+    this.temp = null;
+  }
+
+  get temperature() {
+    return this.temp;
+  }
+
+  set temperature(temp) {
+    this.temp = temp;
+    this.archive.push( { date: new Date(), val: temp } );
+  }
+
+  getArchive() {
+    return this.archive;
+  }
+}
+
+let arc = new Archiver();
+arc.temperature = 33;
+arc.temperature = 28;
+arc.temperature = 21;
+arc.getArchive() // == [{date: 2013-09-24..., val:33},{date: 2013-09-24..., val:28},{date: 2013-09-24..., val:21}
