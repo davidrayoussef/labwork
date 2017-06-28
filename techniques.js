@@ -1,3 +1,79 @@
+// Get the type of any object
+function type(val) {
+  return {}.toString.call(val).slice(8, -1).toLowerCase();
+}
+
+type(2); //=> "number"
+type({}); //=> "object"
+type([]); //=> "array"
+type(new Date()); //=> "date"
+type(() => 'x'); //=> "function"
+type(function* gen() {return 'x'}); //=> "generatorfunction"
+type(null); //=> "null"
+type(undefined); //=> "undefined"
+type(true); //=> "boolean"
+type(new RegExp()); //=> "regexp"
+type(NaN); //=> "number"
+type(Symbol('x')); //=> "symbol"
+
+
+
+// Simple esolang interpreter to flip bits using bitwise xor op
+function interpreter(tape, input) {
+  input = input.split('');
+
+  for (let i = 0, j = 0; j < input.length; ++i) {
+    switch (tape[i % tape.length]) {
+      case '1': input[j] ^= 1; break;
+      case '0': j++; break;
+    }
+  }
+
+  return input.join('');
+}
+
+
+
+// Use regex and spread to convert a string of two digit character codes in one line
+function convert(str) {
+  return String.fromCharCode(...str.match(/../g));
+}
+
+convert('74658665836782738084'); //=> "JAVASCRIPT"
+
+
+
+// Use XOR operator to return the only unique number in array of duplicates
+function findUnique(numbers) {
+  return numbers.reduce((a, b) => a ^ b);
+}
+
+findUnique([ 1, 8, 4, 4, 6, 1, 8 ]); //=> 6
+
+
+
+// Transform 'a' => 'z', 'b' => 'y', 'c' => 'x', etc.
+function decode(message) {
+  return message.replace(/[a-z]/g, (m) => {
+    return String.fromCharCode(219 - m.charCodeAt());
+  });
+}
+
+decode('svool'); //=> "hello"
+
+
+
+// Transpose a matrix's rows and columns
+function transpose(matrix) {
+  return matrix[0].map((_,i) => {
+    return matrix.map((_,j) => {
+      return matrix[j][i];
+    });
+  });
+}
+
+
+
 /*
 Write function scramble(str1,str2) that returns true if a portion of str1 characters can be
 rearranged to match str2, otherwise returns false.
