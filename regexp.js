@@ -1,3 +1,28 @@
+// Capture first letters to initialize a name
+function toInitials(name) {
+  return name.replace(/([a-z])[a-z]+/gi, '$1.')
+}
+
+toInitials('David Ra'); //=> "D. R."
+
+
+
+// Match a str that contains at least one capital letter, one lowercase letter, one number, and has at least 8 chars
+function password(str) {
+  return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(str);
+}
+
+
+
+// Rearrange letters with capture groups
+function spoonerize(words) {
+  return words.replace(/^(.)(.* )(.)(.*)$/, '$3$2$1$4');
+}
+
+spoonerize('nit picking'); //=> "pit nicking"
+
+
+
 // chunkify a string into n-sized chunks and return as array
 function chunkify(str, n) {
   return str.match(RegExp('.{1,' + n + '}', 'g')) || [];
