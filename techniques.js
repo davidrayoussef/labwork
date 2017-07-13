@@ -1,3 +1,26 @@
+// complex function caches results and uses cache version if arguments are the same
+function cache(fn) {
+  let calls = {};
+
+  return function(...args) {
+    let key = JSON.stringify(args);
+
+    if (!(key in calls)) {
+      calls[key] = fn(...args);
+    }
+
+    return calls[key];
+  };
+}
+
+const add = (a,b) => a + b;
+const cachedAdd = cache(add);
+
+cachedAdd(5,6); // runs add function and caches result
+cachedAdd(5,6); // returns cached result without running function again
+
+
+
 // Get the type of any object
 function type(val) {
   return {}.toString.call(val).slice(8, -1).toLowerCase();
@@ -1331,21 +1354,9 @@ seqList(3, 5, 10); //=> [3, 8, 13, 18, 23, 28, 33, 38, 43, 48]
 
 
 
-function rgbToHex(r,g,b) {
-  return '#' + r.toString(16) + g.toString(16) + b.toString(16);
-}
-
-rgbToHex(25,43,45); //=> "#192b2d"
-
-
-
 function Singleton() {
   if (Singleton.instance) {
     return Singleton.instance;
-  }
-
-  if (!(this instanceof Singleton)) {
-    return new Singleton();
   }
 
   Singleton.instance = this;
