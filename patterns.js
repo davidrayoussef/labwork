@@ -1,3 +1,10 @@
+// recursive Fibonacci with caching
+function fib(num, cache = {}) {
+  return cache[num] ? cache[num] : num < 2 ? num : cache[num] = fib(num - 1, cache) + fib(num - 2, cache);
+}
+
+
+
 // complex function caches results and uses cache version if arguments are the same
 function cache(fn) {
   let calls = {};
@@ -868,13 +875,11 @@ for (let i = 0; i < 100; i++) {
 
 
 // Get longest string with reduce
-function findLongestString(arr) {
-  return arr.reduce((acc, curr) => {
-    return curr.length > acc.length ? curr : acc;
-  }, '');
+function longestWord(arr) {
+  return arr.reduce((a,b) => b.length > a.length ? b : a);
 }
 
-findLongestString(['abc', 'fddede', 'cbcccded', 'eeeeeeeeeee']); //=> "eeeeeeeeeee"
+longestWord(['a', 'do', 'the', 'down', 'bring']); //=> "bring"
 
 
 
