@@ -1,3 +1,9 @@
+// Tests if an integer is a prime number
+function isPrime(x) {
+  return !/^.?$|^(..+?)\1+$/.test('1'.repeat(x));
+}
+
+
 // Capture first letters to initialize a name
 function toInitials(name) {
   return name.replace(/([a-z])[a-z]+/gi, '$1.')
