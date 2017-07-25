@@ -1,3 +1,30 @@
+// Performant palindrome permutation checker
+function isPalindromePermutation(str) {
+  str = str.toLowerCase();
+  let unmatched = new Set();
+
+  for (let curr of str) {
+    unmatched.has(curr) ? unmatched.delete(curr) : unmatched.add(curr);
+  }
+
+  return unmatched.size <= 1;
+}
+
+isPalindromePermutation('Eve'); // true
+isPalindromePermutation('Evee'); // false
+isPalindromePermutation('A man a plan a canal Panama'); // true
+
+
+
+// Use a modifier to sort upper before lower
+function sortCaseSensitive(arr) {
+  return arr.sort((a,b) => a.localeCompare(b,'en-US-u-kf-upper'));
+}
+
+sortCaseSensitive('abcdABCD'.split(''));
+
+
+
 // recursive Fibonacci with caching
 function fib(num, cache = {}) {
   return cache[num] ? cache[num] : num < 2 ? num : cache[num] = fib(num - 1, cache) + fib(num - 2, cache);
@@ -45,6 +72,7 @@ type(true); //=> "boolean"
 type(new RegExp()); //=> "regexp"
 type(NaN); //=> "number"
 type(Symbol('x')); //=> "symbol"
+type(new Error()); //=> "error"
 
 
 
