@@ -1,3 +1,24 @@
+// One-liner to shuffle an array with sort
+[1,2,3,4,5,6,7,8,9,10].sort(() => [-1, 1][~~(Math.random() * 2)]);
+
+
+
+// Use Set to return only chars with an odd number of occurrences (in order)
+function oddOccurrences(str) {
+  let chars = new Set();
+
+  for (let char of str) {
+    if (chars.has(char)) chars.delete(char);
+    else chars.add(char);
+  }
+
+  return [...chars].join('');
+}
+
+oddOccurrences('Hello World!') //=> "He Wrld!"
+
+
+
 // Performant palindrome permutation checker
 function isPalindromePermutation(str) {
   str = str.toLowerCase();
