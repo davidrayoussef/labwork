@@ -1,3 +1,8 @@
+// Use capturing groups to swap every two characters
+'badcfehg'.replace(/(.)(.)/g,'$2$1'); //=> "abcdefgh"
+
+
+
 // Tests if an integer is a prime number
 function isPrime(x) {
   return !/^.?$|^(..+?)\1+$/.test('1'.repeat(x));
@@ -30,11 +35,11 @@ spoonerize('nit picking'); //=> "pit nicking"
 
 
 // chunkify a string into n-sized chunks and return as array
-function chunkify(str, n) {
+function chunk(str, n) {
   return str.match(RegExp('.{1,' + n + '}', 'g')) || [];
 }
 
-chunkify('hello world', 2); //=> ["he", "ll", "o ", "wo", "rl", "d"]
+chunk('hello world', 2); //=> ["he", "ll", "o ", "wo", "rl", "d"]
 
 
 
