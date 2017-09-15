@@ -847,6 +847,15 @@ walkTheDOM(document.body, log);
 
 
 
+// Recursive reverse array
+function reverse(arr, result = []) {
+  return arr.length === 0 ? result : reverse(arr, result.concat( arr.pop() ));
+}
+
+reverse([1,2,3,4,5]); //=> [5, 4, 3, 2, 1]
+
+
+
 // Sum numbers recursively
 function recursiveSum(arr, n) {
   if (n === 0) return arr[n];
