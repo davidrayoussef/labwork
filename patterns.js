@@ -1,3 +1,18 @@
+// retursion: a function that returns itself as opposed to a recursive function that calls itself;
+function addg(first) {
+  if (first !== undefined) return more;
+
+  function more(next) {
+    if (next === undefined) return first;
+    first += next;
+    return more;
+  }
+}
+
+addg(2)(5)(1)(4)(); //=> 12
+
+
+
 // One-liner to shuffle an array with sort
 [1,2,3,4,5,6,7,8,9,10].sort(() => [-1, 1][~~(Math.random() * 2)]);
 
