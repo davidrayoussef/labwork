@@ -223,7 +223,6 @@ mostFrequentItemCount([3,3,3,4,2,2,2,2,2]); //=> 5
 
 // Returns a currency formatted number with commas
 const groupByCommas = (n) => n.toLocaleString();
-
 groupByCommas(35235235); //=> "35,235,235"
 
 
@@ -345,8 +344,8 @@ findSubstringInString('david', 'efdavidra'); //=> 2
 
 
 
-// Use regex capturing to create phone number from array of 10 digits
-function createPhoneNumber(n){
+// Use regex capturing to create a string sequence of numbers from an array
+function createPhoneNumber(n) {
   return n.join('').replace(/(...)(...)(....)/, '($1) $2-$3');
 }
 
@@ -721,6 +720,7 @@ nullSafe(void 0); //=> (No error)
 
 
 
+// Dependency injection
 class DI {
   constructor(dependency) {
     this.dependency = dependency;
@@ -1299,7 +1299,6 @@ let notification = new NotificationService();
 notification.showLog('Regular message');
 notification.showWarning('Warning message');
 notification.showError('Error message');
-
 
 
 
