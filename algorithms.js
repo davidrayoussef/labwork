@@ -83,7 +83,7 @@ function greatestCommonDivisor(a, b) {
 
 // Recursive GCD
 function gcd(a, b) {
-  return a % b === 0 ? b : gcd(b, a % b);
+  return b === 0 ? a : gcd(b, a % b);
 }
 
 
@@ -211,11 +211,38 @@ maxSequence([-2, 1, -3, 4, -1, 2, 1, -5, 4]); //=> [4, -1, 2, 1] => 6
 
 
 
+// Find the median of two sorted arrays
+function median(nums1, nums2) {
+  let result = [];
+
+  function mergeSorted(left, right) {
+    let merged = [];
+
+    while (left.length && right.length) {
+      if (left[0] < right[0]) {
+        merged.push( left.shift() );
+      }
+      else merged.push( right.shift() );
+    }
+
+    return merged.concat(...left, ...right);
+  }
+
+  const arr = mergeSorted(nums1, nums2);
+
+  if (arr.length % 2 !== 0) {
+    return arr[Math.floor(arr.length / 2)];
+  }
+  else {
+    return (arr[arr.length / 2 - 1] + arr[arr.length / 2]) / 2;
+  }
+}
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
 // Towers of hanoi
-// Median of two sorted arrays
 // Huffman Coding
 // Longest Increasing Subsequence
 // Longest Common Subsequence
