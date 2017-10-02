@@ -239,6 +239,57 @@ function median(nums1, nums2) {
 }
 
 
+
+// Finds the permutations of an array of numbers
+function permuteArr(nums) {
+  let result = [];
+  const dfs = (nums, temp) => {
+    if (nums.length === temp.length) result.push(temp.slice());
+    else {
+      for (let num of nums) {
+        if (!temp.includes(num)) {
+          temp.push(num);
+          dfs(nums, temp);
+          temp.pop();
+        }
+      }
+    }
+  }
+
+  dfs(nums, []);
+
+  return result;
+}
+
+permuteArr([1,2,3]); //=> "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]"
+
+
+
+// Finds the permutations of a string
+function permuteStr(str) {
+  let result = [];
+  const dfs = (str, temp) => {
+    if (str.length === temp.length) result.push(temp);
+    else {
+      for (let char of str) {
+        if (!temp.includes(char)) {
+          temp += char;
+          dfs(str, temp);
+          temp = temp.slice(0, -1);
+        }
+      }
+    }
+  }
+
+  dfs(str, '');
+
+  return result;
+}
+
+permuteStr('abc'); //=> ["abc", "acb", "bac", "bca", "cab", "cba"]
+
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
