@@ -290,10 +290,21 @@ permuteStr('abc'); //=> ["abc", "acb", "bac", "bca", "cab", "cba"]
 
 
 
+function hanoi(discs, src, aux, dest) {
+  if (discs > 0) {
+    hanoi(discs - 1, src, dest, aux);
+    console.log(`Moving disc ${discs} from ${src} to ${dest}`);
+    hanoi(discs -1, aux, src, dest);
+  }
+}
+
+hanoi(3, 'source', 'buffer', 'destination');
+
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
-// Towers of hanoi
 // Huffman Coding
 // Longest Increasing Subsequence
 // Longest Common Subsequence
