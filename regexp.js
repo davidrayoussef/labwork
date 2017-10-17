@@ -1,3 +1,25 @@
+// Get text content of html tag even if multiline
+function getTagContent(htmlStr, tag) {
+  return (htmlStr
+    .match(new RegExp('<' + tag + '.*?' + '>(.|\n)*?</' + tag + '>', 'g')) || [])
+    .map(v => v
+      .replace(new RegExp('(<\/?' + tag + '.*?>)|\n', 'g'), '')
+      .trim()
+    );
+}
+
+getTagContent(`<div>
+  <h1>Heading</h1>
+  <p class="description">Paragraph 1</p>
+  <section>
+    <p class="content">
+      Paragraph 2
+    </p>
+  </section>
+</div>`, 'p'); //=> ["Paragraph 1", "Paragraph 2"]
+
+
+
 // Use capturing groups to swap every two characters
 'badcfehg'.replace(/(.)(.)/g,'$2$1'); //=> "abcdefgh"
 
@@ -7,6 +29,7 @@
 function isPrime(x) {
   return !/^.?$|^(..+?)\1+$/.test('1'.repeat(x));
 }
+
 
 
 // Capture first letters to initialize a name

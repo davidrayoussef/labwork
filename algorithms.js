@@ -290,6 +290,7 @@ permuteStr('abc'); //=> ["abc", "acb", "bac", "bca", "cab", "cba"]
 
 
 
+// Towers of Hanoi
 function hanoi(discs, src, aux, dest) {
   if (discs > 0) {
     hanoi(discs - 1, src, dest, aux);
