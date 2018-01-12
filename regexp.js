@@ -59,7 +59,7 @@ spoonerize('nit picking'); //=> "pit nicking"
 
 // chunkify a string into n-sized chunks and return as array
 function chunk(str, n) {
-  return str.match(RegExp('.{1,' + n + '}', 'g')) || [];
+  return str.match(new RegExp('.{1,' + n + '}', 'g')) || [];
 }
 
 chunk('hello world', 2); //=> ["he", "ll", "o ", "wo", "rl", "d"]
@@ -81,6 +81,11 @@ function groupByCommas(n) {
 }
 
 groupByCommas(35235235); //=> "35,235,235"
+
+// Alternate with lookahead and capturing, without conversion to array
+function groupByCommas(n) {
+  return n.toString().replace(/.(?=(\d{3})+$)/g,'$&,');
+}
 
 
 
