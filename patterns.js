@@ -1,3 +1,25 @@
+// using Proxies to intercept
+function logPropAccess(obj) {
+  return new Proxy(obj, {
+    get(target, key) {
+      console.log('Accessing:', key);
+      return Reflect.get(target, key);
+    },
+    set(target, key, value) {
+      console.log('Setting key', key, 'to', value);
+      Reflect.set(target, key, value);
+    }
+  });
+}
+
+const user = { name: 'Dave', age: 42 }
+
+const userWithLogging = logPropAccess(user);
+userWithLogging.name; //=> "Accessing: name"; "Dave"
+userWithLogging.age = 99; //=> "Setting key age to 99"; 99
+
+
+
 // retursion: a function that returns itself as opposed to a recursive function that calls itself;
 function addg(first) {
   if (first !== undefined) return more;
@@ -138,6 +160,7 @@ convert('74658665836782738084'); //=> "JAVASCRIPT"
 
 
 // Use XOR operator to return the only unique number in array of duplicates
+// Also works to find the only number occuring an odd number of times
 function findUnique(numbers) {
   return numbers.reduce((a, b) => a ^ b);
 }
