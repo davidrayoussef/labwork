@@ -12,8 +12,7 @@ function sequentialSearch(arr, item) {
   return false;
 }
 
-// returns index of item or -1 if not found
-function sequentialSearch(arr, item) {
+function sequentialSearchPosition(arr, item) {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] === item) {
       return i;
@@ -38,4 +37,28 @@ function binarySearch(arr, num) {
   }
 
   return -1;
+}
+
+function findMinVal(arr) {
+  let min = arr[0];
+
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] < min) {
+      min = arr[i];
+    }
+  }
+
+  return min;
+}
+
+function findMaxVal(arr) {
+  let max = arr[0];
+
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+      max = arr[i];
+    }
+  }
+
+  return max;
 }
