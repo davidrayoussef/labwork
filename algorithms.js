@@ -295,11 +295,53 @@ function hanoi(discs, src, aux, dest) {
   if (discs > 0) {
     hanoi(discs - 1, src, dest, aux);
     console.log(`Moving disc ${discs} from ${src} to ${dest}`);
-    hanoi(discs -1, aux, src, dest);
+    hanoi(discs - 1, aux, src, dest);
   }
 }
 
 hanoi(3, 'source', 'buffer', 'destination');
+
+
+
+function printSpiralMatrix(matrix) {
+  let top = 0;
+  let right = matrix[0].length - 1;
+  let bottom = matrix.length - 1;
+  let left = 0;
+
+  while (left <= right && top <= bottom) {
+    for (let x = left; x <= right; x++) {
+      console.log( matrix[top][x] );
+    }
+
+    top++;
+
+    for (let y = top; y <= bottom; y++) {
+      console.log( matrix[y][right] );
+    }
+
+    right--;
+
+    for (let x = right; x >= left; x--) {
+      console.log( matrix[bottom][x] );
+    }
+
+    bottom--;
+
+    for (let y = bottom; y >= top; y--) {
+      console.log( matrix[y][left] );
+    }
+
+    left++;
+  }
+}
+
+printSpiralMatrix([
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 16]
+]);
 
 
 

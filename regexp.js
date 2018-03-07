@@ -92,7 +92,7 @@ function groupByCommas(n) {
 // Test if all characters are unique.
 const regex = /^(?!.*(.).*\1)/;
 
-regex.test('1'); //=> true;
+regex.test('1'); //=> true
 regex.test('1232'); //=> false
 regex.test('10284'); //=> true
 regex.test('79222'); //=> false
@@ -109,7 +109,7 @@ const re = /<(\w+)>(.+)<\/\1>/;
 
 
 
-const hexRegExp = /^#?([a-f0-9]{6}|[a-f0-9]{3})$/;
+const hexRegExp = /^([0-9a-f]{3}){1,2}$/i;
 
 const emailRegExp = /^([a-z0-9_\.-]+)@([a-z0-9_\.-])\.([a-z\.]{2,6})$/;
 
