@@ -345,6 +345,27 @@ printSpiralMatrix([
 
 
 
+// Brute force Longest Palindromic Substring
+function longestPalindromicSubstring(str) {
+  const isPalindrome = (s) => s === s.split('').reverse().join('');
+  let longest = '';
+
+  for (let i = 0; i < str.length; i++) {
+    for (let j = i + 1; j <= str.length; j++) {
+      const substring = str.slice(i, j);
+
+      if ( isPalindrome(substring) && substring.length > longest.length ) {
+        longest = substring;
+      }
+    }
+  }
+
+  return longest;
+}
+
+longestPalindromicSubstring('bananas'); //= "anana"
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
@@ -352,7 +373,6 @@ printSpiralMatrix([
 // Longest Increasing Subsequence
 // Longest Common Subsequence
 // Longest Palindromic Subsequence
-// Longest Palindromic Substring
 // Maximum Length of Pair Chain
 // Minimum number of jumps to reach end
 // Maximal Rectangle in matrix
