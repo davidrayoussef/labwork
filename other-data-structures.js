@@ -359,3 +359,31 @@ g.addEdge(1,3);
 g.addEdge(2,4);
 g.showGraph();
 g.dfs(0);
+
+
+
+//
+// BLOOM FILTER
+//
+
+class BloomFilter {
+  constructor(arraySize, ...hashFns) {
+    this.store = Array(arraySize).fill(false);
+    this.hashFns = hashFns;
+  }
+
+  add(str) {
+    this.hashFns
+      .map(fn => fn(str))
+      .forEach(n => {
+        this.store[n % this.store.length] = true;
+      });
+  }
+
+  check(str) {
+    return this.hashFns
+      .map(fn => fn(str))
+      .every(n => this.store[n % this.store.length]);
+  }
+
+}
