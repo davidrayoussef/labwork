@@ -113,6 +113,40 @@ function shellSort(arr) {
       arr[j] = k;
     }
   }
-  
+
+  return arr;
+}
+
+
+
+function radixSort(arr) {
+  const getDigit = (number, place, longestNum) => {
+    const str = String(number);
+    const size = str.length;
+    const mod = longestNum - size;
+    return str[place - mod] || 0;
+  };
+
+  const longestNum = arr.reduce((max, curr) => {
+    const length = String(curr).length;
+    return length > max ? length : max;
+  }, 0);
+
+  const buckets = Array.from({length: 10}, () => []);
+
+  for (let i = longestNum - 1; i >= 0; i--) {
+    while (arr.length) {
+      const current = arr.shift();
+      const index = getDigit(current, i, longestNum);
+      buckets[index].push(current);
+    }
+
+    for (let j = 0; j < 10; j++) {
+      while (buckets[j].length) {
+        arr.push( buckets[j].shift() );
+      }
+    }
+  }
+
   return arr;
 }
