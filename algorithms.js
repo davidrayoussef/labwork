@@ -366,6 +366,73 @@ function longestPalindromicSubstring(str) {
 longestPalindromicSubstring('bananas'); //= "anana"
 
 
+
+// Returns all valid (i.e., properly opened and closed) combinations of n-pairs of parentheses.
+function generateParens(n) {
+  const set = new Set();
+
+  if (n === 0) set.add('');
+  else {
+    const prev = generateParens(n - 1);
+
+    for (let str of prev) {
+      for (let i = 0; i < str.length; i++) {
+        if ( str[0] === '(' ) {
+          set.add( str.slice(0, i + 1) + '()' + str.slice(i + 1) );
+        }
+      }
+
+      set.add('()' + str);
+    }
+  }
+
+  return set;
+}
+
+generateParens(3); //=> {"(()())", "((()))", "(())()", "()(())", "()()()"}
+
+
+
+/*
+"Paint fill" function that one might see on many image editing programs. That is, given a
+screen (represented by a two-dimensional array of colors), a point, and a new color, fills
+in the surrounding area until the color changes from the original color to the new color.
+*/
+
+function paintFill(matrix, y, x, oldColor, newColor) {
+  if ( isOutside(matrix, y, x) || matrix[y][x] === newColor ) {
+    return false;
+  }
+
+  matrix[y][x] = newColor;
+
+  paintFill(matrix, y - 1, x, oldColor, newColor);
+  paintFill(matrix, y + 1, x, oldColor, newColor);
+  paintFill(matrix, y, x - 1, oldColor, newColor);
+  paintFill(matrix, y, x + 1, oldColor, newColor);
+}
+
+function isOutside(matrix, y, x) {
+  if ( y < 0 || y >= matrix.length || x < 0 || x >= matrix[0].length ) {
+    return true;
+  }
+}
+
+const matrix = [
+  [ 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue' ],
+  [ 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue' ],
+  [ 'blue', 'blue', 'red', 'red', 'red', 'blue', 'blue' ],
+  [ 'blue', 'blue', 'red', 'red', 'red', 'blue', 'blue' ],
+  [ 'blue', 'blue', 'red', 'red', 'red', 'blue', 'blue' ],
+  [ 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue' ],
+  [ 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue' ],
+];
+
+paintFill(matrix, 2, 2, matrix[2][2], 'blue');
+console.dir(matrix);
+
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
