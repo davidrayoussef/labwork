@@ -119,6 +119,7 @@ function fibonacci(n) {
 }
 
 
+
 // Recursive fibonacci
 function fib(n) {
   if (n < 2) return n;
@@ -303,6 +304,7 @@ hanoi(3, 'source', 'buffer', 'destination');
 
 
 
+// Spiral Matrix
 function printSpiralMatrix(matrix) {
   let top = 0;
   let right = matrix[0].length - 1;
@@ -433,6 +435,34 @@ console.dir(matrix);
 
 
 
+// Sieve Of Eratosthenes
+function sieveOfEratosthenes(n) {
+  const isPrime = Array(n + 1).fill(true);
+  isPrime[0] = false;
+  isPrime[1] = false;
+
+  const primes = [];
+
+  for (let i = 2; i < n; i++) {
+    if ( isPrime[i] ) {
+      primes.push(i);
+
+      let num = i * i;
+
+      while (num <= n) {
+        isPrime[num] = false;
+        num += i;
+      }
+    }
+  }
+
+  return primes;
+}
+
+sieveOfEratosthenes(20); //=> [2, 3, 5, 7, 11, 13, 17, 19]
+
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
@@ -444,6 +474,5 @@ console.dir(matrix);
 // Minimum number of jumps to reach end
 // Maximal Rectangle in matrix
 // Minimum number of coins that make a given value
-// Sieve of Eratosthenes
 // Pascal's Triangle
 // ...
