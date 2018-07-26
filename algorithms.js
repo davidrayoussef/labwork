@@ -463,6 +463,19 @@ sieveOfEratosthenes(20); //=> [2, 3, 5, 7, 11, 13, 17, 19]
 
 
 
+// Pascal's Triangle
+function pascalsTriangle(n, result = [1]) {
+  for (let i = 1; i < n + 1; i++) {
+    result[i] = result[i - 1] * (n - i + 1) / i;
+  }
+
+  return result;
+}
+
+pascalsTriangle(3); //=> [1, 3, 3, 1]
+
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
@@ -474,5 +487,4 @@ sieveOfEratosthenes(20); //=> [2, 3, 5, 7, 11, 13, 17, 19]
 // Minimum number of jumps to reach end
 // Maximal Rectangle in matrix
 // Minimum number of coins that make a given value
-// Pascal's Triangle
 // ...
