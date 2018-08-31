@@ -476,6 +476,25 @@ pascalsTriangle(3); //=> [1, 3, 3, 1]
 
 
 
+// O(n) solution to twoSum
+function twoSum(arr, sum) {
+  const map = {};
+  const results = [];
+
+  for (const num of arr) {
+    if (num in map) {
+      results.push([num, map[num]]);
+    }
+    else map[sum - num] = num;
+  }
+
+  return results;
+}
+
+twoSum([7, 0, -4, 5, 2, 3], 5); //=> [ [ 5, 0 ], [ 3, 2 ] ]
+
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
