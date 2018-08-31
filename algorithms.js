@@ -494,13 +494,56 @@ function twoSum(arr, sum) {
 twoSum([7, 0, -4, 5, 2, 3], 5); //=> [ [ 5, 0 ], [ 3, 2 ] ]
 
 
+// Longest Common Subsequence
+// TODO Refactor
+function longestCommonSubsequence(str1, str2) {
+  const matrix = Array
+    .from({length: str2.length + 1})
+    .map((_,y) => Array
+      .from({length: str1.length + 1})
+      .map((_,x) => x === 0 || y === 0 ? 0 : null)
+    );
+  
+  for (let y = 1; y <= str2.length; y++) {
+    for (let x = 1; x <= str1.length; x++) {
+      if ( str2[y - 1] === str1[x - 1] ) {
+        matrix[y][x] = matrix[y - 1][x - 1] + 1;
+      }
+      else matrix[y][x] = Math.max(
+        matrix[y - 1][x],
+        matrix[y][x - 1]
+      );
+    }
+  }
+  
+  let result = '';
+  let x = str1.length;
+  let y = str2.length;
+
+  if ( matrix[y][x] === 0 ) return '';
+
+  while (x > 0 || y > 0) {
+    if (str1[x - 1] === str2[y - 1]) {
+      result = str1[x - 1] + result;
+      x--;
+      y--;
+    }
+    else if (matrix[y][x] === matrix[y][x - 1]) x--;
+    else y--; 
+  }
+
+  return result;
+}
+
+longestCommonSubsequence('abcdef', 'abc'); //=> "abc"
+
+
 
 // TODO
 // The knapsack problem
 // The coin change problem
 // Huffman Coding
 // Longest Increasing Subsequence
-// Longest Common Subsequence
 // Longest Palindromic Subsequence
 // Maximum Length of Pair Chain
 // Minimum number of jumps to reach end
