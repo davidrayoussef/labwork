@@ -1,3 +1,52 @@
+// Traverse a deeply nested object/array, running a callback on each value
+function traverseObj(obj, fn) {
+  for (const key in obj) {
+    if (typeof obj[key] === 'object') {
+      traverseObj(obj[key], fn);
+    }
+    else obj[key] = fn(obj[key]);
+  }
+}
+
+const double = (n) => typeof n === 'number' ? n * 2 : n;
+const obj = {
+  a: 1,
+  b: {
+    c: 2,
+    d: {
+      e: 3
+    },
+    f: [ 4, 6, 7, 8, { h: 9 } ]
+  },
+  g: 5,
+};
+
+traverseObj(obj, double);
+console.log(JSON.stringify(obj, null, 2));
+/*
+{
+  "a": 2,
+  "b": {
+    "c": 4,
+    "d": {
+      "e": 6
+    },
+    "f": [
+      8,
+      12,
+      14,
+      16,
+      {
+        "h": 18
+      }
+    ]
+  },
+  "g": 10
+}
+*/
+
+
+
 // using Proxies to intercept
 function logPropAccess(obj) {
   return new Proxy(obj, {
@@ -12,7 +61,7 @@ function logPropAccess(obj) {
   });
 }
 
-const user = { name: 'Dave', age: 42 }
+const user = { name: 'Dave', age: 42 };
 
 const userWithLogging = logPropAccess(user);
 userWithLogging.name; //=> "Accessing: name"; "Dave"
@@ -1337,7 +1386,7 @@ function showEventListeners() {
 
 // Observer pattern
 function observe() {
-  let subscribers {};
+  let subscribers = {};
 
   function subscribe(type, fn) {
     if (!subscribers[type]) {
