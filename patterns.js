@@ -1,3 +1,37 @@
+// Clone a deeply nested object/array
+function deepClone(obj) {
+  const clone = Array.isArray(obj) ? [] : {};
+
+  for (const key of Object.getOwnPropertyNames(obj)) {
+    if (typeof obj[key] === 'object') {
+      clone[key] = deepClone(obj[key]);
+    }
+    else {
+      clone[key] = obj[key];
+    }
+  }
+
+  return clone;
+}
+
+const originalObj = {
+  a: {
+    b: [ 1, 2, 3 ],
+    c: { 
+      d: 4
+    }
+  },
+  e: 5
+};
+const clone = deepClone(originalObj);
+
+clone.a.b = null;
+
+console.log(clone.a.b); //=> null
+console.log(originalObj.a.b); //=> [ 1, 2, 3 ]
+
+
+
 // Traverse a deeply nested object/array, running a callback on each value
 function traverseObj(obj, fn) {
   for (const key in obj) {
