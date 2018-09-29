@@ -27,17 +27,18 @@ function binarySearch(arr, num) {
   let end = arr.length - 1;
 
   while (start <= end) {
-    let index = Math.floor((start + end) / 2);
-    let mid = arr[index];
+    const index = Math.floor((start + end) / 2);
+    const mid = arr[index];
 
-    if ( mid === num ) return index;
-
-    if ( mid < num ) start = index + 1;
+    if (mid === num) return index;
+    else if (mid < num) start = index + 1;
     else end = index - 1;
   }
 
   return -1;
 }
+
+
 
 function findMinVal(arr) {
   let min = arr[0];
