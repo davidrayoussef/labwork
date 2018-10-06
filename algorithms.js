@@ -539,6 +539,60 @@ longestCommonSubsequence('abcdef', 'abc'); //=> "abc"
 
 
 
+// The Egg Drop Problem
+function eggDrop(eggs, floors) {
+  if (floors <= 1 || eggs === 1) return floors;
+
+  let min = Number.MAX_VALUE;
+  let result = null;
+
+  for (let i = 1; i < floors; i++) {
+    result = Math.max(
+      // if egg breaks
+      eggDrop(eggs - 1, i - 1),
+      // if egg doesn't break
+      eggDrop(eggs, floors - i)
+    );
+
+    if (result < min) min = result;
+  }
+
+  return 1 + min;
+}
+
+eggDrop(2, 10);
+
+
+
+// Memoized Egg Drop Problem
+function eggDrop(eggs, floors, cache = {}) {
+  if (floors <= 1 || eggs === 1) return floors;
+
+  let min = Number.MAX_VALUE;
+  let result = null;
+
+  for (let i = 1; i < floors; i++) {
+    const key = `${eggs}-${floors}-${i}`;
+
+    if ( !(key in cache) ) {
+      cache[key] = Math.max(
+        eggDrop(eggs - 1, i - 1, cache),
+        eggDrop(eggs, floors - i, cache)
+      );
+    }
+
+    result = cache[key];
+
+    if (result < min) min = result;
+  }
+
+  return 1 + min;
+}
+
+eggDrop(2, 10);
+
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
