@@ -1,3 +1,25 @@
+// Using trampolines to avoid stack overflow (doesn't stack execution contexts).
+function trampoline(fn) {
+  return (...args) => {
+    let result = fn(...args);
+
+    while (typeof result === 'function') {
+      result = result();
+    }
+
+    return result;
+  };
+}
+
+const recursiveRange = (n, result = []) => n < 1 ? result : recursiveRange(n - 1, [n, ...result]);
+const rangeWithThunk = (n, result = []) => n < 1 ? result : () => rangeWithThunk(n - 1, [n, ...result]);
+const trampolinedRecursiveRange = trampoline(rangeWithThunk);
+
+recursiveRange(10000); //=> Maximum call stack size exceeded
+trampolinedRecursiveRange(10000); //=> [1, 2, 3, 4, 5, ..., 10000]
+
+
+
 // Clone a deeply nested object/array
 function deepClone(obj) {
   const clone = Array.isArray(obj) ? [] : {};
