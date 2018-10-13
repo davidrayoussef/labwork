@@ -593,6 +593,27 @@ eggDrop(2, 10);
 
 
 
+/* 
+Check if two rectangles overlap by checking for any case where they don't overlap; 
+i.e., the right side of one is less than the left side of the other, or the top of one is 
+less than the bottom of the other, and then returning the negation of that. 
+Point [0,0] = bottom-left.
+*/
+
+function doOverlap([r1Left, r1Bottom, r1Right, r1Top], [r2Left, r2Bottom, r2Right, r2Top]) {
+  return !(
+    r1Right <= r2Left || 
+    r2Right <= r1Left || 
+    r1Top <= r2Bottom ||
+    r2Top <= r1Bottom
+  );
+};
+
+doOverlap([0,0,2,2], [1,1,3,3]); //=> true
+doOverlap([0,0,1,1], [1,0,2,1]); //=> false
+
+
+
 // TODO
 // The knapsack problem
 // The coin change problem
