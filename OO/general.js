@@ -1,69 +1,67 @@
 function inherits(ctor, superCtor) {
-	ctor.super_ = superCtor;
-	ctor.prototype = Object.create(superCtor.prototype, {
-		constructor: {
-			value: ctor,
-			enumerable: false,
-			writetable: true,
-			configurable: true
-		}
-	});
+  ctor.super_ = superCtor;
+  ctor.prototype = Object.create(superCtor.prototype, {
+    constructor: {
+      value: ctor,
+      enumerable: false,
+      writetable: true,
+      configurable: true
+    }
+  });
 }
 
 // Classical pattern for inheritance and instantation
 function Person(name) {
-	this.name = name;
+  this.name = name;
 }
 
 Person.prototype = {
-	sayName: function() {
-		console.log(this.name);
-		return this;
-	},
-	shoutName: function() {
-		console.log(('Hi my name is ' + this.name + '!').toUpperCase());
-	},
-	changeName: function(newName) {
-		this.name = newName;
-	}
+  sayName: function () {
+    console.log(this.name);
+    return this;
+  },
+  shoutName: function () {
+    console.log(('Hi my name is ' + this.name + '!').toUpperCase());
+  },
+  changeName: function (newName) {
+    this.name = newName;
+  }
 };
 
 let john = new Person('John');
 let bobby = new Person('Bobby');
 
 function Friend(name, friendOf) {
-	Person.call(this, name);
-	this.friendOf = friendOf;
+  Person.call(this, name);
+  this.friendOf = friendOf;
 }
 
 inherits(Friend, Person);
 
-Friend.prototype.sayFriendOf = function() {
-	console.log('Hi my name is ' + this.name + ' and my friend is ' + this.friendOf);
+Friend.prototype.sayFriendOf = function () {
+  console.log('Hi my name is ' + this.name + ' and my friend is ' + this.friendOf);
 };
 
 let justin = new Friend('Justin', 'David');
 
 justin.sayFriendOf(); //=> Hi my name is Justin and my friend is David
 
-
-
 // OLOO pattern
 let human = {
-	species: 'human',
-	saySpecies: function() {
-		console.log(this.species);
-	},
-	sayName: function() {
-		console.log(`My name is ${this.name}`);
-	}
+  species: 'human',
+  saySpecies: function () {
+    console.log(this.species);
+  },
+  sayName: function () {
+    console.log(`My name is ${this.name}`);
+  }
 };
 
 let musician = Object.create(human);
 
-musician.playInstrument = function() {
-	console.log(`Playing... ${this.instrument}`);
-}
+musician.playInstrument = function () {
+  console.log(`Playing... ${this.instrument}`);
+};
 
 human.saySpecies(); // "human"
 
@@ -75,45 +73,41 @@ david.name = 'David';
 david.sayName(); //=> "My name is David"
 david.playInstrument(); //=> "Playing... guitar"
 
-
-
 // Adding a create method
 let human = {
-	species: 'human',
-	create: function(props) {
-		let instance = Object.create(this);
+  species: 'human',
+  create: function (props) {
+    let instance = Object.create(this);
 
-		Object.keys(props).map(function(key) {
-			instance[key] = props[key];
-		});
+    Object.keys(props).map(function (key) {
+      instance[key] = props[key];
+    });
 
-		return instance;
-	}
+    return instance;
+  }
 };
 
 let david = human.create({
-	name: 'David',
-	job: 'FED'
+  name: 'David',
+  job: 'FED'
 });
 
 let musician = human.create({
-	species: 'musician',
-	instrument: 'keyboard',
-	playInstrument: function() {
-		console.log(`Playing ${this.instrument}`);
-	}
+  species: 'musician',
+  instrument: 'keyboard',
+  playInstrument: function () {
+    console.log(`Playing ${this.instrument}`);
+  }
 });
 
 let funkyDavid = musician.create({
-	name: 'Funky Dave',
-	instrument: 'Groovy Guitar'}
-);
+  name: 'Funky Dave',
+  instrument: 'Groovy Guitar'
+});
 
 console.log(david); //=> {name: "David", job: "FED"}
 console.log(musician); //=> {species: "musician", instrument: "keyboard", playInstrument: function}
 console.log(funkyDavid); //=> {name: "Funky Dave", instrument: "Groovy Guitar"}
-
-
 
 // Modern pattern
 class Animal {
@@ -137,28 +131,22 @@ let Animal = {
   }
 };
 
-
-
 // Without using the this keyword
-let Animal = (function(name = '') {
+let Animal = function (name = '') {
   let self = {};
-  self.walk = function() {
+  self.walk = function () {
     return 'Walked';
   };
   return self;
-});
-
-
+};
 
 // Douglas Crockford style
 function Animal({ name } = {}) {
   let walk = () => {
     console.log(`${name} is walking`);
   };
-  return Object.freeze({walk});
+  return Object.freeze({ walk });
 }
-
-
 
 // Factory pattern
 function createPerson(firstName, lastName) {
@@ -169,7 +157,7 @@ function createPerson(firstName, lastName) {
     get lastName() {
       return lastName;
     },
-    greet: function(name) {
+    greet: function (name) {
       return `Hello ${name}, my name is ${firstName + ' ' + lastName}`;
     }
   };
@@ -181,20 +169,20 @@ function createEmployee(firstName, lastName, position) {
   let personGreet = person.greet;
 
   Object.defineProperty(person, 'position', {
-    get: function() {
+    get: function () {
       return position;
     }
   });
 
-	Object.defineProperty(person, 'fullName', {
-		get: function() {
-			return `${firstName} ${lastName}`;
-		}
-	});
+  Object.defineProperty(person, 'fullName', {
+    get: function () {
+      return `${firstName} ${lastName}`;
+    }
+  });
 
-  person.greet = function(name) {
+  person.greet = function (name) {
     return `${personGreet(name)}, ${this.position}`;
-  }
+  };
 
   return person;
 }
@@ -205,18 +193,15 @@ let jim = createEmployee('Jim', 'Smith', 'Sales Person');
 john.greet('Jane');
 jim.greet('Jane');
 
-
-
-
 // Recreating 'new' keyword...
 function Person(saying1, saying2) {
   this.saying1 = saying1;
   this.saying2 = saying2;
 }
 
-Person.prototype.talk = function() {
+Person.prototype.talk = function () {
   console.log(this.saying1 + ', ' + this.saying2);
-}
+};
 
 function NEW(constructor, ...args) {
   let obj = {};
@@ -225,10 +210,8 @@ function NEW(constructor, ...args) {
   return obj;
 }
 
-let arnold = NEW(Person, 'It\'s not a tuma', 'I\'ll be back');
+let arnold = NEW(Person, "It's not a tuma", "I'll be back");
 arnold.talk();
-
-
 
 // Use Object.defineProperty so that changes to instances carry over to other combined properties eg fullName
 function NamedOne(first, last) {
@@ -236,10 +219,12 @@ function NamedOne(first, last) {
   this.lastName = last;
 
   Object.defineProperty(this, 'fullName', {
-    get() { return this.firstName + ' ' + this.lastName; },
+    get() {
+      return this.firstName + ' ' + this.lastName;
+    },
     set(newValue) {
-      if ( (/\s/).test(newValue) ) {
-        [ this.firstName, this.lastName ] = newValue.split(' ');
+      if (/\s/.test(newValue)) {
+        [this.firstName, this.lastName] = newValue.split(' ');
       }
     }
   });
@@ -248,9 +233,7 @@ function NamedOne(first, last) {
 let named = new NamedOne('John', 'Doh');
 named.firstName = 'Jane';
 named.fullName = 'New Name';
-named.fullName //=> "New Name";
-
-
+named.fullName; //=> "New Name";
 
 // Es6 setters/getters
 class Archiver {
@@ -265,7 +248,7 @@ class Archiver {
 
   set temperature(temp) {
     this.temp = temp;
-    this.archive.push( { date: new Date(), val: temp } );
+    this.archive.push({ date: new Date(), val: temp });
   }
 
   getArchive() {
@@ -277,4 +260,29 @@ let arc = new Archiver();
 arc.temperature = 33;
 arc.temperature = 28;
 arc.temperature = 21;
-arc.getArchive() // == [{date: 2013-09-24..., val:33},{date: 2013-09-24..., val:28},{date: 2013-09-24..., val:21}
+arc.getArchive(); // == [{date: 2013-09-24..., val:33},{date: 2013-09-24..., val:28},{date: 2013-09-24..., val:21}
+
+// Create a shooter where you start off with 100 health, lose 10 when you get shot, and lose when your health drops down to 0
+class Shooter {
+  health = 100;
+
+  turn() {
+    const attempt = this.shoot();
+    const target = this.shoot();
+    if (attempt === target) {
+      this.health = 100;
+      console.log('Target hit');
+    } else this.health -= 10;
+    if (this.health === 0) {
+      console.log('You lose.');
+    }
+    return this.health;
+  }
+
+  shoot() {
+    return Math.ceil(Math.random() * 10);
+  }
+}
+
+const shooter = new Shooter();
+shooter.turn();
