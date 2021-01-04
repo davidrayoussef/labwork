@@ -1,7 +1,7 @@
 class Modal {
-  constructor({ headerText = 'Are you sure?', contentText = '' }) {
-    this.headerText = headerText;
-    this.contentText = contentText;
+  constructor({ title = 'Are you sure?', content = '' }) {
+    this.title = title;
+    this.content = content;
   }
 
   handleClose() {
@@ -20,17 +20,17 @@ class Modal {
   };
 
   render() {
-    const { headerText, contentText } = this;
+    const { title, content } = this;
     const html = `
       <div class="overlay">
-        <div class="modal-container">
-          <header>${headerText}</header>
-          ${contentText && '<div class="modal-content">' + contentText + '</div>'}
+        <section class="modal-container">
+          <header>${title}</header>
+          ${content && '<section class="modal-content">' + content + '</section>'}
           <footer>
             <button class="button__cancel">CANCEL</button>
             <button class="button__delete">DELETE</button>
           </footer>
-        </div>
+        </section>
       </div>
     `;
     document.body.innerHTML += html;
@@ -39,8 +39,8 @@ class Modal {
 }
 
 const modal = new Modal({
-  headerText: 'Are you sure you want to delete?',
-  contentText: 'This action cannot be undone.'
+  title: 'Are you sure you want to delete?',
+  content: 'This action cannot be undone.'
 });
 modal.render();
 renderOpenModalButton();
@@ -73,7 +73,7 @@ function renderStyles() {
       display: flex;
     }
     .modal-container {
-      width: 400px;
+      width: 100%;
       height: 200px;
       background: white;
       display: grid;
@@ -106,6 +106,11 @@ function renderStyles() {
     }
     .modal-container .button__delete {
       background: #d9544f;
+    }
+    @media only screen and (min-width: 1000px) {
+      .modal-container {
+        width: 400px;
+      }
     }
   `;
   const style = document.createElement('style');
