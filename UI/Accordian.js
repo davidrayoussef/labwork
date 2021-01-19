@@ -16,7 +16,7 @@ class Accordian {
     });
     document.body.appendChild(containerDiv);
     document.querySelectorAll('h3').forEach(heading => {
-      heading.addEventListener('click', handleHeadingClick);
+      heading.addEventListener('click', this.handleHeadingClick);
     });
     this.renderStyle();
   }
@@ -26,16 +26,15 @@ class Accordian {
       h3 {
         font-weight: normal;
         font-size: 1.4rem;
-        background: #EEE;
-        padding: .2rem;
-        padding-left: 1rem;
-        border: 1px solid #AAA;
-        border-radius: 5px;
+        background: #f4f4f4;
+        padding: .4rem;
+        padding-left: .4rem;
         margin-bottom: .5rem;
         cursor: pointer;
       }
       p {
         font-size: 1rem;
+        padding-left: .4rem;
       }
       .collapse {
         display: none;
