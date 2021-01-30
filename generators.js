@@ -18,8 +18,30 @@ class Primes {
   }
 }
 
-const primes = Primes.stream();
+const primesStream = Primes.stream();
+const primes = [];
 
 for (let i = 0; i < 10; i++) {
-  console.log(primes.next().value);
+  primes.push(primesStream.next().value);
 }
+
+console.log(primes); // [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+
+// Creates an infinite stream of fibonacci numbers
+
+function* fibonacciSequence() {
+  let [prev, curr] = [0, 1];
+  while (true) {
+    yield curr;
+    [prev, curr] = [curr, prev + curr];
+  }
+}
+
+const fibStream = fibonacciSequence();
+const fibs = [];
+
+for (let i = 0; i < 10; i++) {
+  fibs.push(fibStream.next().value);
+}
+
+console.log(fibs);
